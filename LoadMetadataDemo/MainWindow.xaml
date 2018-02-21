@@ -1,0 +1,76 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:core="clr-namespace:ActiveQueryBuilder.Core;assembly=ActiveQueryBuilder.Core"
+
+        x:Class="MainWindow"
+        Title="LoadMetadataDemo" Height="677" Width="1086.75">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" Padding="0,2">
+            <MenuItem Header="Conntect">
+                <MenuItem Header="Connect to Microsoft SQL Server" Click="connectToMSSQLServerMenuItem_Click"/>
+                <MenuItem Header="Connect to Oracle Server" Click="connectToOracleServerMenuItem_Click"/>
+                <MenuItem Header="Connect to Microsoft Access database" Click="connectToAccessDatabaseMenuItem_Click"/>
+                <Separator/>
+                <MenuItem Header="Connect to database through OLE DB" Click="connectOleDbMenuItem_Click"/>
+                <MenuItem Header="Connect to database through ODBC" Click="connectODBCMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="About"/>
+        </Menu>
+
+        <TabControl Grid.Row="1" Margin="4">
+            <TabItem Header="Direct filling of MetadataContainer" x:Name="tabPageDirect">
+                <StackPanel>
+                    <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"  IsEnabled="False" Height="82" Text="This method demonstrates the direct access to the internal matadata objects collection (MetadataContainer)." Padding="4"/>
+                    <Button HorizontalAlignment="Right" Content="Load Metadata" Margin="0,4,0,2" Padding="10,2" x:Name="btnFourthWay"
+						Click="btn1Way_Click"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="On-demand filling using ItemMetadataLoading event" x:Name="tabPageOnDemand">
+                <StackPanel>
+                    <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"  IsEnabled="False" Height="82" 
+						Text="This method demonstrates manual filling of metadata structure using MetadataContainer.ItemMetadataLoading event." Padding="4"/>
+                    <Button HorizontalAlignment="Right" Content="Load Metadata" Margin="0,4,0,2" Padding="10,2" x:Name="btnThirdWay"
+						Click="btn2Way_Click"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Using the ExecSQL event" x:Name="tabPageExecSql">
+                <StackPanel>
+                    <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" IsEnabled="False" Height="82" Text="This method demonstrates loading of metadata through .NET data providers unsupported by our QueryBuilder component. If such data provider is able to execute SQL queries, you can use our EventMetadataProvider with handling it's ExecSQL event. In this event the EventMetadataProvider will provide you SQL queries it use for the metadata retrieval. You have to execute a query and return resulting data reader object.&#xA;&#xA;Note: In this sample we are using GenericSyntaxProvider that tries to detect the the server type automatically. In some conditions it's unable to detect the server type and it also has limited syntax parsing abilities. For this reason you have to use specific syntax providers in your application, e.g. MySQLSyntaxProver, OracleSyntaxProvider, etc." Padding="4"/>
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left" Foreground="OrangeRed" 
+							Text="Please setup a database connection by clicking on the 'Connect' menu item before testing this method."
+							VerticalAlignment="Center"/>
+                        <Button HorizontalAlignment="Right" Content="Load Metadata" Margin="0,4,0,2" Padding="10,2" x:Name="btnFirstWay"
+							Click="btn3Way_Click"/>
+                    </Grid>
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Fill from DataSet" x:Name="tabPageDataset">
+                <StackPanel>
+                    <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"  IsEnabled="False" Height="82" Text="This method demonstrates manual filling of metadata structure from stored DataSet." Padding="4"/>
+                    <Button HorizontalAlignment="Right" Content="Load Metadata" Margin="0,4,0,2" Padding="10,2" x:Name="btnFifthWay"
+						Click="btn4Way_Click"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <aqb:QueryBuilder x:Name="QBuilder" Grid.Row="2" Margin="4" BorderBrush="LightGray" BorderThickness="1" Background="{x:Static SystemColors.ControlBrush}"
+			SQLUpdated="QBuilder_OnSQLUpdated">
+            <aqb:QueryBuilder.SyntaxProvider>
+                <core:GenericSyntaxProvider/>
+            </aqb:QueryBuilder.SyntaxProvider>
+        </aqb:QueryBuilder>
+
+        <TextBox TextWrapping="Wrap" Grid.Row="3" Height="120" Margin="4,0,4,4" x:Name="SqlTextBox" LostFocus="SqlTextBox_OnLostFocus"/>
+    </Grid>
+</Window>

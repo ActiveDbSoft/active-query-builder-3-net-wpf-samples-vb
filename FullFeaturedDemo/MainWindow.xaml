@@ -1,0 +1,442 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:criteriaBuilder="clr-namespace:ActiveQueryBuilder.View.WPF.CriteriaBuilder;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:FullFeaturedDemo.Common"
+        xmlns:fullFeaturedDemo="clr-namespace:FullFeaturedDemo"
+        mc:Ignorable="d"
+        Title="Active Query Builder for .NET Standart WPF Edition - Full Featured Demo (VB)" Height="680" Width="840" Icon="Resources/App.ico">
+
+    <Window.Resources>
+        <Style TargetType="MenuItem" x:Key="MenuItemSyleCustom">
+            <Setter Property="Padding" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Trigger.Setters>
+                        <Setter Property="Opacity" Value=".5"/>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Command="New" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="Open" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="Save" Key="S" Modifiers="Control"/>
+        <KeyBinding Command="Undo" Key="Z" Modifiers="Control"/>
+        <KeyBinding Command="Redo" Key="Y" Modifiers="Control"/>
+        <KeyBinding Command="Copy" Key="C" Modifiers="Control"/>
+        <KeyBinding Command="Paste" Key="V" Modifiers="Control"/>
+        <KeyBinding Command="Cut" Key="X" Modifiers="Control"/>
+        <KeyBinding Command="SelectAll" Key="A" Modifiers="Control"/>
+    </Window.InputBindings>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="CommandNew_OnExecuted"/>
+        <CommandBinding Command="Open" Executed="CommandOpen_OnExecuted"/>
+        <CommandBinding Command="Save" Executed="CommandSave_OnExecuted"/>
+        <CommandBinding Command="Close" Executed="CommandExit_OnExecuted"/>
+
+        <CommandBinding Command="Undo" Executed="CommandUndo_OnExecuted"/>
+        <CommandBinding Command="Redo" Executed="CommandRedo_OnExecuted"/>
+        <CommandBinding Command="Copy" Executed="CommandCopy_OnExecuted"/>
+        <CommandBinding Command="Paste" Executed="CommandPaste_OnExecuted"/>
+        <CommandBinding Command="Cut" Executed="CommandCut_OnExecuted"/>
+        <CommandBinding Command="SelectAll" Executed="CommandSelectAll_OnExecuted"/>
+    </Window.CommandBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Menu BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="5,0,0,0">
+            <MenuItem Header="File">
+                <MenuItem Header="Connect..." InputGestureText="Ctrl+N" Command="New">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/connect.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <MenuItem Header="Open" InputGestureText="Ctrl+O" Command="Open">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/folder_page.ico" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="Save" x:Name="MenuItemSave">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/disk.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Exit" Command="Close"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo" InputGestureText="Ctrl+Z" Command="Undo" x:Name="MenuItemUndo" Style="{StaticResource MenuItemSyleCustom}"/>
+                <MenuItem Header="Redo" InputGestureText="Ctrl+Y" Command="Redo" x:Name="MenuItemRedo" Style="{StaticResource MenuItemSyleCustom}"/>
+                <Separator/>
+                <MenuItem Header="Cut" InputGestureText="Ctrl+X" Command="Cut" x:Name="MenuItemCut" Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/cut.ico" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="Copy" x:Name="MenuItemCopy" Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/page_copy.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Paste" InputGestureText="Ctrl+V" Command="Paste" x:Name="MenuItemPaste" Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/page_paste.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Select All" x:Name="MenuItemSelectAll" Command="SelectAll"/>
+            </MenuItem>
+            <MenuItem Header="Query">
+                <MenuItem Header="Add derived table" x:Name="MenuItemQueryAddDerived" Click="MenuItemQueryAddDerived_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/add_derived_table.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Add Object" x:Name="MenuItemAddObject"  Click="MenuItemAddObject_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/new_object.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Add union sub-query" x:Name="MenuItemAddUnionSq"  Click="MenuItemAddUnionSq_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/add_union_subquery.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Copy union sub-query" x:Name="MenuItemCopyUnionSq"  Click="MenuItemCopyUnionSq_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/copy_union_subquery.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <MenuItem Header="Properties" x:Name="MenuItemProp" Click="MenuItemProp_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/query_properties.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Query Statistics" x:Name="MenuItemQueryStatistics" Click="MenuItemQueryStatistics_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="Metadata" FontWeight="Bold" x:Name="MetadataItemMenu">
+                <MenuItem x:Name="TsmiOfflineMode" Header="Offline Mode" IsCheckable="True" FontWeight="Normal" Checked="MenuItem_OfflineMode_OnChecked" Unchecked="MenuItem_OfflineMode_OnChecked"/>
+
+                <Separator/>
+
+                <MenuItem Header="Refresh Metadata" FontWeight="Normal" Click="MenuItem_RefreashMetadata_OnClick"/>
+                <MenuItem Header="Clear Metadata" FontWeight="Normal" Click="MenuItem_ClearMetadata_OnClick"/>
+
+                <Separator/>
+
+                <MenuItem Header="Load Metadata from XML..." FontWeight="Normal" Click="MenuItem_LoadMetadata_OnClick"/>
+                <MenuItem Header="Save Metadata to XML..." FontWeight="Normal" Click="MenuItem_SaveMetadata_OnClick"/>
+
+            </MenuItem>
+            <MenuItem Header="Options">
+                <MenuItem Header="Language" x:Name="MenuItemLanguage">
+                    <MenuItem.Resources>
+                        <Style TargetType="MenuItem">
+                            <EventSetter Event="Checked" Handler="LanguageMenuItemChecked"/>
+                        </Style>
+                    </MenuItem.Resources>
+                </MenuItem>
+                <MenuItem Header="Properties" x:Name="MenuItemProperties" Click="MenuItemProperties_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="About..." Click="MenuItem_About_OnClick"/>
+        </Menu>
+
+        <Menu Grid.Row="1"  BorderBrush="LightGray" BorderThickness="0,0,0,1" Margin="0,0,0,4" Padding="5,0,0,0" VerticalContentAlignment="Center">
+            <Menu.Resources>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Width" Value="16"/>
+                    <Setter Property="Height" Value="16"/>
+                    <Setter Property="Stretch" Value="None"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </Menu.Resources>
+
+            <MenuItem Command="New" Header="" ToolTip="Establish new connection...">
+                <MenuItem.Icon>
+                    <Image Source="Resources/connect.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Command="Open" Header="" ToolTip="Load query from file...">
+                <MenuItem.Icon>
+                    <Image Source="Resources/folder_page.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="" x:Name="MenuItemSaveIco" ToolTip="Save the current query" Command="Save" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+                <MenuItem.Icon>
+                    <Image Source="Resources/disk.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+            <MenuItem Header="" Command="Cut" x:Name="MenuItemCutIco" ToolTip="Cut" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+                <MenuItem.Icon>
+                    <Image Source="Resources/cut.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="" Command="Copy" x:Name="MenuItemCopyIco" ToolTip="Copy" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+                <MenuItem.Icon>
+                    <Image Source="Resources/page_copy.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="" Command="Paste" x:Name="MenuItemPasteIco" ToolTip="Paste" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+                <MenuItem.Icon>
+                    <Image Source="Resources/page_paste.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            <MenuItem Header="" x:Name="MenuItemQueryProperties" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "Properties" Click="MenuItemProperties_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/query_properties.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="" x:Name="MenuItemNewObject" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False"  ToolTip = "Add object" Click="MenuItemAddObject_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/new_object.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+            <MenuItem Header="" x:Name="MenuItemAddDerivedTable" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "Add derived table" Click="MenuItemQueryAddDerived_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/add_derived_table.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="" x:Name="MenuItemAddUnionSubquery" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "New union sub-query" Click="MenuItemAddUnionSq_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/add_union_subquery.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="" x:Name="MenuItemCopyUnionSubquery" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "Copy union sub-query" Click="MenuItemCopyUnionSq_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/copy_union_subquery.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+            <MenuItem Header="" Click="MenuItem_About_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/help.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </Menu>
+
+        <Grid x:Name="GridRoot" Grid.Row="1"></Grid>
+
+        <TabControl Grid.Row="3" SelectionChanged="TabControl_OnSelectionChanged" x:Name="TabControl">
+            <TabItem Header="SQL">
+                <Grid Margin="3,0,3,3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="250"/>
+                    </Grid.RowDefinitions>
+
+                    <wpf:QueryBuilder x:Name="QBuilder" Grid.Row="0" SQLUpdated="QBuilder_OnSQLUpdated" ActiveUnionSubQueryChanged="QBuilder_OnActiveUnionSubQueryChanged"/>
+
+                    <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Padding="5" Background="Bisque" Margin="0,0,0,3" 
+                                BorderBrush="Gray" BorderThickness="1" x:Name="BorderSleepMode" Visibility="Collapsed">
+                            <TextBlock Text="Unsupported SQL statement. Visual Query Builder has been disabled. Either type a SELECT statement or start building a query visually to turn this mode off."/>
+                        </Border>
+
+                        <TabControl Grid.Row="1"  SelectionChanged="TabControlSql_OnSelectionChanged">
+                            <TabItem Header="SQL Query Text" x:Name="TabItemQueryText">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" Padding="7,3" Background="#5bc0de" CornerRadius="5" HorizontalAlignment="Left" Margin="5,3,0,0">
+                                        <TextBlock Text="Text of the entire SQL query." FontWeight="Bold" Foreground="White"/>
+                                    </Border>
+                                    <RichTextBox Grid.Row="1"
+                                         Margin="4,5,4,0" 
+                                         x:Name="BoxSql" 
+                                         LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
+                                         Background="#535353" 
+                                         Foreground="White" 
+                                         Padding="5"
+                                         FontFamily="Courier New"
+                                         VerticalScrollBarVisibility="Auto" 
+                                         HorizontalScrollBarVisibility="Auto"
+                                         TextChanged="BoxSql_OnTextChanged">
+                                        <RichTextBox.Resources>
+                                            <Style TargetType="{x:Type Paragraph}">
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </RichTextBox.Resources>
+                                    </RichTextBox>
+                                    <fullFeaturedDemo:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Current SubQuery Text" x:Name="TabItemCurrentSubQuery">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" Padding="7,3" Background="#5bc0de" CornerRadius="5" HorizontalAlignment="Left" Margin="5,3,0,0">
+                                        <TextBlock Text="Text of the currently visible subquery. May include multiple SELECT statements united with set operators. (UNION, EXCEPT, INTRESECT)" FontWeight="Bold" Foreground="White"/>
+                                    </Border>
+                                    <Grid Grid.Row="1">
+                                        <RichTextBox 
+                                        Margin="4,5,4,0" 
+                                        x:Name="BoxSqlCurrentSubQuery" 
+                                        LostKeyboardFocus="BoxSqlCurrentSubQuery_OnLostKeyboardFocus" 
+                                        Background="#535353" 
+                                        Foreground="White" 
+                                        Padding="5"
+                                        FontFamily="Courier New"
+                                        VerticalScrollBarVisibility="Auto" 
+                                        HorizontalScrollBarVisibility="Auto"
+                                        TextChanged="BoxSql_OnTextChanged">
+                                            <RichTextBox.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin" Value="0"/>
+                                                </Style>
+                                            </RichTextBox.Resources>
+                                        </RichTextBox>
+
+                                        <Border x:Name="BorderErrorFast" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1,1,1,1" CornerRadius="4,4,0,0" Padding="5"
+                                            Visibility="Collapsed" Background="Pink" Margin="3,0,3,0" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased">
+                                            <Grid>
+                                                <TextBlock x:Name="LabelErrorFast" Foreground="{x:Static SystemColors.InfoTextBrush}" TextOptions.TextFormattingMode="Display" />
+                                                <Image Source="Resources/cancel.png" HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="None" 
+                                                   Cursor="{x:Static Cursors.Hand}" MouseUp="CloseImage_OnMouseUp"/>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Current SubQuery Results Preview" x:Name="TabItemFastResult">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" Padding="7,3" Background="#5bc0de" CornerRadius="5" HorizontalAlignment="Left" Margin="0,3,0,0">
+                                        <TextBlock Text="First 10 records of the current subquery resultset" FontWeight="Bold" Foreground="White"/>
+                                    </Border>
+
+                                    <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0">
+                                        <CheckBox VerticalAlignment="Center" Content="Auto-refresh preview" Margin="0,0,10,0" x:Name="CheckBoxAutoRefreash"
+                                              Checked="CheckBoxAutoRefreash_OnChecked" Unchecked="CheckBoxAutoRefreash_OnChecked" IsChecked="True"/>
+                                        <Button Content="Refresh" Padding="10,2" x:Name="ButtonRefreashFastResult" Click="ButtonRefreashFastResult_OnClick" IsEnabled="False"/>
+                                    </StackPanel>
+
+                                    <DataGrid Grid.Row="1" x:Name="ListViewFastResultSql" Margin="0,5,0,0" AutoGenerateColumns="True" 
+                                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" 
+                                          SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="None">
+                                        <DataGrid.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                            </Style>
+                                        </DataGrid.CellStyle>
+                                    </DataGrid>
+
+                                    <Border x:Name="BorderError" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1,1,1,1" CornerRadius="4,4,0,0" Padding="5"
+                                        Visibility="Collapsed" Background="Pink" Margin="3,0,3,0" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" Grid.Row="1">
+                                        <Grid>
+                                            <TextBlock x:Name="LabelError" Foreground="{x:Static SystemColors.InfoTextBrush}" TextOptions.TextFormattingMode="Display" />
+                                            <Image Source="Resources/cancel.png"  HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="None" 
+                                               Cursor="{x:Static Cursors.Hand}" MouseUp="CloseImage_OnMouseUp"/>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Data" x:Name="TabItemData">
+                <Grid Margin="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="30"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="140" MinHeight="100"/>
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer Grid.Row="0" Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <criteriaBuilder:CriteriaBuilder x:Name="CBuilder"/>
+                    </ScrollViewer>
+
+                    <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>
+
+                    <Grid Grid.Row="1" Margin="0,6,0,0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <common:CustomDataGrid Grid.Row="0" x:Name="DataGridResult" RowsLoaded="DataGridResult_OnRowsLoaded"/>
+
+                        <Grid  Grid.Row="1">
+                            <common:PaginationPanel Margin="0,4,0,0" x:Name="PaginationPanel" Visibility="Collapsed" CurrentPageChanged="PaginationPanel_OnCurrentPageChanged"
+                                                    EnabledPaginationChanged="PaginationPanel_OnEnabledPaginationChanged" PageSizeChanged="PaginationPanel_OnPageSizeChanged"/>
+                            <Border x:Name="BorderBlockPagination" Background="Black" Opacity=".2"/>
+                        </Grid>
+
+                    </Grid>
+
+                    <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>
+
+                    <RichTextBox Grid.Row="2"
+                                 Padding="5"
+                                 Margin="0,4,0,0" 
+                                 x:Name="BoxSqlTransformer" 
+                                 Background="#FFFFE1" 
+                                 IsReadOnly="True"  
+                                 FontFamily="Courier New" 
+                                 VerticalScrollBarVisibility="Auto" 
+                                 HorizontalScrollBarVisibility="Auto">
+                        <RichTextBox.Resources>
+                            <Style TargetType="Paragraph">
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                    </RichTextBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

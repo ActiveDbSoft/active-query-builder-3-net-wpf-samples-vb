@@ -1,0 +1,12 @@
+﻿{
+  "dependencies": {
+    "Oracle.ManagedDataAccess": "12.2.1100"
+  },
+  "frameworks": {
+    "net40": {}
+  },
+  "runtimes": {
+    "win": {},
+    "win-x86": {}
+  }
+}

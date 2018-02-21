@@ -1,0 +1,32 @@
+﻿<Window x:Class="ConnectionWindows.OLEDBConnectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="OLEDBConnectionWindow" Width="300" SizeToContent="Height">
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Connection string:" Margin="0,0,0,3"/>
+            <TextBox Grid.Row="1" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="140" x:Name="textBoxConnectionString"/>
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Width" Value="75"/>
+                    <Setter Property="Padding" Value="7,2"></Setter>
+                </Style>
+            </Grid.Resources>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Connect" Margin="0,0,5,0" x:Name="buttonConnect" Click="ButtonConnect_OnClick"/>
+                <Button Content="Cancel" x:Name="buttonCancel" Click="ButtonCancel_OnClick"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

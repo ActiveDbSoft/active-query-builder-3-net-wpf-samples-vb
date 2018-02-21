@@ -1,0 +1,293 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "MySql.Data/6.9.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MySql.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MySql.Data.dll": {}
+        }
+      },
+      "Npgsql/3.2.6": {
+        "type": "package",
+        "dependencies": {
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "compile": {
+          "lib/net45/Npgsql.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Npgsql.dll": {}
+        }
+      },
+      "Oracle.ManagedDataAccess/12.2.1100": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Extensions/4.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5/win": {
+      "MySql.Data/6.9.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MySql.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MySql.Data.dll": {}
+        }
+      },
+      "Npgsql/3.2.6": {
+        "type": "package",
+        "dependencies": {
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "compile": {
+          "lib/net45/Npgsql.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Npgsql.dll": {}
+        }
+      },
+      "Oracle.ManagedDataAccess/12.2.1100": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Extensions/4.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5/win-x64": {
+      "MySql.Data/6.9.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MySql.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MySql.Data.dll": {}
+        }
+      },
+      "Npgsql/3.2.6": {
+        "type": "package",
+        "dependencies": {
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "compile": {
+          "lib/net45/Npgsql.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Npgsql.dll": {}
+        }
+      },
+      "Oracle.ManagedDataAccess/12.2.1100": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Extensions/4.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5/win-x86": {
+      "MySql.Data/6.9.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MySql.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MySql.Data.dll": {}
+        }
+      },
+      "Npgsql/3.2.6": {
+        "type": "package",
+        "dependencies": {
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "compile": {
+          "lib/net45/Npgsql.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Npgsql.dll": {}
+        }
+      },
+      "Oracle.ManagedDataAccess/12.2.1100": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
+      "System.Threading.Tasks.Extensions/4.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MySql.Data/6.9.11": {
+      "sha512": "GS3hqyiSqw0bZmkRkDS1BhFfHV+Fr3LiuNIPc52n3H7aBrd5vhbiWqIUeEPkQVtPO8UYs0apZ218ecs5nF39XA==",
+      "type": "package",
+      "path": "mysql.data/6.9.11",
+      "files": [
+        "CHANGES",
+        "Readme.txt",
+        "content/app.config.transform",
+        "content/web.config.transform",
+        "lib/net40/MySql.Data.dll",
+        "lib/net45/MySql.Data.dll",
+        "mysql.data.6.9.11.nupkg.sha512",
+        "mysql.data.nuspec"
+      ]
+    },
+    "Npgsql/3.2.6": {
+      "sha512": "GMjVKgbNLKne/rGSvCQqZHt2aZfBByuw7jUD55V+svkdlG8jKoVCGjUyfPpET3XSoneqrJlf6E578mCh4H5aeg==",
+      "type": "package",
+      "path": "npgsql/3.2.6",
+      "files": [
+        "lib/net45/Npgsql.dll",
+        "lib/net45/Npgsql.xml",
+        "lib/net451/Npgsql.dll",
+        "lib/net451/Npgsql.xml",
+        "lib/netstandard1.3/Npgsql.dll",
+        "lib/netstandard1.3/Npgsql.xml",
+        "lib/netstandard2.0/Npgsql.dll",
+        "lib/netstandard2.0/Npgsql.xml",
+        "npgsql.3.2.6.nupkg.sha512",
+        "npgsql.nuspec"
+      ]
+    },
+    "Oracle.ManagedDataAccess/12.2.1100": {
+      "sha512": "PEiPi7VrQyJmcZm0TtiIBNATR13JcuLUAncpdCrCY5us9KjIdwjbgbdb6lwsc9/EHETfUFiYlYCdSRY+qkcdzQ==",
+      "type": "package",
+      "path": "oracle.manageddataaccess/12.2.1100",
+      "files": [
+        "bin/x64/Oracle.ManagedDataAccessDTC.dll",
+        "bin/x64/Oracle.ManagedDataAccessIOP.dll",
+        "bin/x86/Oracle.ManagedDataAccessDTC.dll",
+        "bin/x86/Oracle.ManagedDataAccessIOP.dll",
+        "content/net40/App.config.install.xdt",
+        "content/net40/App.config.transform",
+        "content/net40/App.config.uninstall.xdt",
+        "content/net40/Web.config.install.xdt",
+        "content/net40/Web.config.transform",
+        "content/net40/Web.config.uninstall.xdt",
+        "info.txt",
+        "lib/net40/Oracle.ManagedDataAccess.dll",
+        "oracle.manageddataaccess.12.2.1100.nupkg.sha512",
+        "oracle.manageddataaccess.nuspec",
+        "readme.txt"
+      ]
+    },
+    "System.Threading.Tasks.Extensions/4.3.0": {
+      "sha512": "npvJkVKl5rKXrtl1Kkm6OhOUaYGEiF9wFbppFRWSMoApKzt2PiPHT2Bb8a5sAWxprvdOAtvaARS9QYMznEUtug==",
+      "type": "package",
+      "path": "system.threading.tasks.extensions/4.3.0",
+      "files": [
+        "System.Threading.Tasks.Extensions.4.3.0.nupkg.sha512",
+        "System.Threading.Tasks.Extensions.nuspec",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll",
+        "lib/netstandard1.0/System.Threading.Tasks.Extensions.xml",
+        "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll",
+        "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.xml"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "MySql.Data >= 6.9.11",
+      "Npgsql >= 3.2.6",
+      "Oracle.ManagedDataAccess >= 12.2.1100"
+    ],
+    ".NETFramework,Version=v4.5": []
+  },
+  "packageFolders": {
+    "C:\\Users\\user\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "restore": {
+      "projectUniqueName": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
+      "projectName": "FullFeaturedDemo",
+      "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
+      "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\project.json",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\obj\\",
+      "projectStyle": "ProjectJson",
+      "validateRuntimeAssets": true,
+      "configFilePaths": [
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net45": {
+          "projectReferences": {}
+        }
+      }
+    },
+    "dependencies": {
+      "MySql.Data": "[6.9.11, )",
+      "Npgsql": "[3.2.6, )",
+      "Oracle.ManagedDataAccess": "[12.2.1100, )"
+    },
+    "frameworks": {
+      "net45": {}
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

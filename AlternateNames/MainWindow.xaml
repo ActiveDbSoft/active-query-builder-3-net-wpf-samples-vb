@@ -1,0 +1,46 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlternateNames"
+        xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        mc:Ignorable="d"
+        Title="AlternateNames" Height="800" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="About" Click="MenuItemAbout_OnClick"/>
+        </Menu>
+
+        <Grid Margin="3" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <wpf:QueryBuilder x:Name="QueryBuilder1" Grid.Row="0" SQLUpdated="QueryBuilder1_OnSQLUpdated"/>
+
+            <TabControl Grid.Row="1" Height="144" FontFamily="Tahoma" FontSize="11" FontWeight="Bold" SelectionChanged="Selector_OnSelectionChanged">
+                <TabItem Header="Query text with alternate object names">
+                    <Grid>
+                        <TextBox x:Name="TextBox1" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" FontWeight="Normal" 
+                                 FontFamily="Courier New" FontSize="9pt" Padding="3" LostKeyboardFocus="TextBox1_OnLostKeyboardFocus" TextChanged="TextBox1_OnTextChanged"/>
+                        <local:ErrorBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox1"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Query text with real object names">
+                    <Grid>
+                        <TextBox x:Name="TextBox2" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" FontWeight="Normal"  
+                                 FontFamily="Courier New" FontSize="9pt" Padding="3" LostKeyboardFocus="TextBox2_OnLostKeyboardFocus" TextChanged="TextBox2_OnTextChanged"/>
+                        <local:ErrorBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox2"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,213 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QueryTransformerDemo"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="QueryTransformerDemo" Height="558" Width="665">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Source sql:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox x:Name="BoxSourceSql" Height="100" VerticalScrollBarVisibility="Visible" Margin="0,0,0,5"  TextWrapping="Wrap"/>
+            </StackPanel>
+            <Button Grid.Column="1" Content="Load" VerticalContentAlignment="Center" Width="75" Height="30" VerticalAlignment="Top" 
+                    Margin="5,22,0,0" x:Name="ButtonLoad" Click="ButtonLoad_OnClick"/>
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="0,0,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Visible Columns:" Margin="0,0,0,3"/>
+                <Border BorderThickness="1" BorderBrush="Gray" Grid.Row="1" Margin="0,0,0,5">
+                    <ListBox x:Name="ListBoxVisibleColumns">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                        Color="Transparent" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                        Color="Transparent" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                        Color="Black" />
+                                </Style.Resources>
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            </Style>
+                        </ListBox.Resources>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="local:VisibleColumn">
+                                <CheckBox Content="{Binding Name}" IsChecked="{Binding Visible, Mode=TwoWay,NotifyOnSourceUpdated=True}" VerticalContentAlignment="Center"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+                <StackPanel Grid.Row="2">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Visible count :" FontStyle="Italic"/>
+                            <TextBlock Text="0" Margin="5,0,0,0" FontWeight="Bold" x:Name="CounterVisibleColumn"/>
+                        </StackPanel>
+                        <Button Content="Clear" Width="75" HorizontalAlignment="Right" x:Name="ButtonClearVisibleColumn" Click="ButtonClearVisibleColumn_OnClick"/>
+                    </Grid>
+                </StackPanel>
+                
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                <GroupBox Header="Sorting" Margin="0,0,0,5">
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Columns:"/>
+                        <ComboBox x:Name="ComboBoxColumnsSorting" Grid.Row="1" Grid.Column="0" Height="20" VerticalContentAlignment="Center" Padding="3,0,0,0"
+                                  DisplayMemberPath="Column.Expression"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Sort:" Margin="5,0,0,0"/>
+                        <ComboBox x:Name="ComboBoxSorting" Grid.Row="1" Grid.Column="1" Height="20" Margin="5,0,0,0" 
+                                  VerticalContentAlignment="Center" Padding="3,0,0,0">
+                            <ComboBox.Items>
+                                <system:String>Asc</system:String>
+                                <system:String>Desc</system:String>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="5,0,0,0" HorizontalAlignment="Right">
+                            <TextBlock Text="Sortings active:" FontSize="11" Margin="0,0,3,0" />
+                            <TextBlock Text="0" Margin="0,0,3,0" FontWeight="Bold" x:Name="CounterSortingActive"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="5,0,0,0">
+                            <Button Content="Add" Width="50" x:Name="ButtonAddSorting" Click="ButtonAddSorting_OnClick"/>
+                            <Button Content="Clear" Width="50" Margin="5,0,0,0" x:Name="ButtonClearSorting" Click="ButtonClearSorting_OnClick"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Aggregate" Margin="0,0,0,5">
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Columns:"/>
+                        <ComboBox Grid.Row="1" Grid.Column="0" Height="20" VerticalContentAlignment="Center" Padding="3,0,0,0" x:Name="ComboBoxColumnAggregate"
+                                  DisplayMemberPath="Column.Expression"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Functions:" Margin="5,0,0,0"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" Height="20" Margin="5,0,0,0" VerticalContentAlignment="Center" Padding="3,0,0,0"
+                                  x:Name="ComboBoxFunction">
+                            <ComboBox.Items>
+                                <system:String>Count</system:String>
+                                <system:String>Avg</system:String>
+                                <system:String>Sum</system:String>
+                                <system:String>Min</system:String>
+                                <system:String>Max</system:String>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="5,0,0,0" HorizontalAlignment="Right">
+                            <TextBlock Text="Aggregations active:" FontSize="11" Margin="0,0,3,0" />
+                            <TextBlock Text="0" Margin="0,0,3,0" FontWeight="Bold" x:Name="CounterAggregations"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="5,0,0,0">
+                            <Button Content="Add" Width="50" x:Name="ButtonAddAggregate" Click="ButtonAddAggregate_OnClick" Height="20" VerticalAlignment="Bottom"/>
+                            <Button Content="Clear" Width="50" Margin="5,0,0,0" x:Name="ButtonClearAggregate" Click="ButtonClearAggregate_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Where">
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Columns:"/>
+                        <ComboBox Grid.Row="1" Grid.Column="0" Height="20" VerticalContentAlignment="Center" Padding="3,0,0,0" x:Name="ComboBoxColumnWhere"
+                                  DisplayMemberPath="Column.Expression"/>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Conditions:" Margin="3,0,0,0"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="3,0,0,0" x:Name="ComboBoxConditions" Height="20" Padding="3,0,0,0" VerticalContentAlignment="Center">
+                            <ComboBox.Items>
+                                <system:String>Equal</system:String>
+                                <system:String>Not Equal</system:String>
+                                <system:String>Greater</system:String>
+                                <system:String>GreaterEqual</system:String>
+                                <system:String>Not Grater</system:String>
+                                <system:String>Not GreaterEqual</system:String>
+                                <system:String>IsNull</system:String>
+                                <system:String>Not IsNull</system:String>
+                                <system:String>IsNotNull</system:String>
+                                <system:String>Less</system:String>
+                                <system:String>LessEqual</system:String>
+                                <system:String>Not Less</system:String>
+                                <system:String>Not LessEqual</system:String>
+                                <system:String>In</system:String>
+                                <system:String>Not In</system:String>
+                                <system:String>Like</system:String>
+                                <system:String>Not Like</system:String>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Value:" Margin="5,0,0,0"/>
+                        <TextBox Grid.Row="1" Grid.Column="2" Height="20" Margin="5,0,0,0" VerticalContentAlignment="Center" Padding="3,0,0,0"
+                                  x:Name="BoxWhereValue"/>
+                        
+                        <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal" Margin="5,0,0,0" HorizontalAlignment="Right">
+                            <TextBlock Text="Filters active:" FontSize="11" Margin="0,0,3,0" />
+                            <TextBlock Text="0" Margin="0,0,3,0" FontWeight="Bold" x:Name="CounterWhere"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" Margin="5,0,0,0">
+                            <Button Content="Add" Width="50" Height="20" VerticalAlignment="Bottom" x:Name="ButtonAddWhere" Click="ButtonAddWhere_OnClick"/>
+                            <Button Content="Clear" Width="50" Margin="5,0,0,0" x:Name="ButtonClearWhere" Click="ButtonClearWhere_OnClick"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="2">
+            <TextBlock Text="Result sql:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" x:Name="BoxResultSql" Height="100" VerticalScrollBarVisibility="Visible" Margin="0,0,0,5" TextWrapping="Wrap"/>
+                <Button Grid.Column="1" Content="Code behind" VerticalContentAlignment="Center" Width="75" Height="30" VerticalAlignment="Top" 
+                    Margin="5,0,0,0" x:Name="ButtonGetCode" Click="ButtonGetCode_OnClick"/>
+            </Grid>
+            
+        </StackPanel>
+    </Grid>
+</Window>

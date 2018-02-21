@@ -1,0 +1,25 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:frames="clr-namespace:CustomColumnsDemo.Frames"
+        Title="QueryColumnsListCustomColumnsDemo" Height="550" Width="725">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Text Column">
+                <frames:CustomTextColumnDemoFrame/>
+            </TabItem>
+            <TabItem Header="Combobox Column">
+                <frames:CustomComobBoxColumnDemoFrame/>
+            </TabItem>
+            <TabItem Header="Checkbox column">
+                <frames:CustomCheckBoxColumnDemoFrame/>
+            </TabItem>
+            <TabItem Header="Text With Button Column">
+                <frames:CustomTextWithButtonColumnDemoFrame/>
+            </TabItem>
+            <TabItem Header="ComboBox With Button Column">
+                <frames:CustomComobBoxWithButtonColumnDemoFrame/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

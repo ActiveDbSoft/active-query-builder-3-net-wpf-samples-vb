@@ -1,0 +1,308 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:databaseSchemaView="clr-namespace:ActiveQueryBuilder.View.WPF.DatabaseSchemaView;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:userQueries="clr-namespace:ActiveQueryBuilder.View.WPF.UserQueries;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:mdiControl="clr-namespace:FullFeaturedMdiDemo.MdiControl"
+        xmlns:fullFeaturedMdiDemo="clr-namespace:FullFeaturedMdiDemo"
+        xmlns:common="clr-namespace:FullFeaturedMdiDemo.Common"
+        Title="Active Query Builder for .NET Professional WPF Edition - Full Featured Mdi Demo (VB)" 
+        Height="680" Width="900" Icon="Resources/App.ico"  >
+
+    <Window.Resources>
+        <common:ColorEnabledConverter x:Key="ConverterColorEnabled"/>
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Command="New" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="Open" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="Save" Key="S" Modifiers="Control"/>
+
+        <KeyBinding Command="Undo" Key="Z" Modifiers="Control"/>
+        <KeyBinding Command="Redo" Key="Y" Modifiers="Control"/>
+        <KeyBinding Command="Copy" Key="C" Modifiers="Control"/>
+        <KeyBinding Command="Paste" Key="V" Modifiers="Control"/>
+        <KeyBinding Command="Cut" Key="X" Modifiers="Control"/>
+        <KeyBinding Command="SelectAll" Key="A" Modifiers="Control"/>
+    </Window.InputBindings>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="CommandNew_OnExecuted"/>
+        <CommandBinding Command="Open" Executed="CommandOpen_OnExecuted"/>
+        <CommandBinding Command="Save" Executed="CommandSave_OnExecuted"/>
+        <CommandBinding Command="Close" Executed="CommandExit_OnExecuted"/>
+
+        <CommandBinding Command="Undo" Executed="CommandUndo_OnExecuted"/>
+        <CommandBinding Command="Redo" Executed="CommandRedo_OnExecuted"/>
+        <CommandBinding Command="Copy" Executed="CommandCopy_OnExecuted"/>
+        <CommandBinding Command="Paste" Executed="CommandPaste_OnExecuted"/>
+        <CommandBinding Command="Cut" Executed="CommandCut_OnExecuted"/>
+        <CommandBinding Command="SelectAll" Executed="CommandSelectAll_OnExecuted"/>
+    </Window.CommandBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Menu BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="5,0,0,0">
+            <MenuItem Header="File">
+                <MenuItem Header="Connect..." InputGestureText="Ctrl+N" Command="New">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/connect.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="New Query" x:Name="MenuItemNewQuery" Click="MenuItemNewQuery_OnClick">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/page_white.ico" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Open" InputGestureText="Ctrl+O" Command="Open">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/folder_page.ico" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="Save" x:Name="MenuItemSave">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/disk.ico"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Exit" Command="Close"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo" InputGestureText="Ctrl+Z" Command="Undo" x:Name="MenuItemUndo"/>
+                <MenuItem Header="Redo" InputGestureText="Ctrl+Y" Command="Redo" x:Name="MenuItemRedo"/>
+                <Separator/>
+                <MenuItem Header="Cut" InputGestureText="Ctrl+X" Command="Cut" x:Name="MenuItemCut">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/cut.ico" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="Copy" x:Name="MenuItemCopy">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/page_copy.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Paste" InputGestureText="Ctrl+V" Command="Paste" x:Name="MenuItemPaste">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/page_paste.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Select All" x:Name="MenuItemSelectAll" Command="SelectAll"/>
+            </MenuItem>
+            <MenuItem Header="Query">
+                <MenuItem Header="Add derived table" x:Name="MenuItemQueryAddDerived" Click="MenuItemQueryAddDerived_OnClick" >
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/add_derived_table.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Add Object" x:Name="MenuItemAddObject"  Click="MenuItemAddObject_OnClick">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/new_object.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Add union sub-query" x:Name="MenuItemAddUnionSq"  Click="MenuItemAddUnionSq_OnClick">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/add_union_subquery.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Copy union sub-query" x:Name="MenuItemCopyUnionSq"  Click="MenuItemCopyUnionSq_OnClick">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/copy_union_subquery.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <MenuItem Header="Properties" x:Name="MenuItemProp" Click="MenuItemProp_OnClick">
+                    <MenuItem.Icon>
+                        <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/query_properties.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Query Statistics" x:Name="MenuItemQueryStatistics" Click="MenuItemQueryStatistics_OnClick"/>
+            </MenuItem>
+
+            <MenuItem Header="Metadata" FontWeight="Bold" x:Name="MetadataItemMenu">
+                <MenuItem x:Name="TsmiOfflineMode" Header="Offline Mode" IsCheckable="True" FontWeight="Normal" Checked="MenuItem_OfflineMode_OnChecked" Unchecked="MenuItem_OfflineMode_OnChecked"/>
+
+                <Separator/>
+
+                <MenuItem Header="Refresh Metadata" FontWeight="Normal" Click="MenuItem_RefreashMetadata_OnClick"/>
+                <MenuItem Header="Clear Metadata" FontWeight="Normal" Click="MenuItem_ClearMetadata_OnClick"/>
+
+                <Separator/>
+
+                <MenuItem Header="Load Metadata from XML..." FontWeight="Normal" Click="MenuItem_LoadMetadata_OnClick"/>
+                <MenuItem Header="Save Metadata to XML..." FontWeight="Normal" Click="MenuItem_SaveMetadata_OnClick"/>
+
+            </MenuItem>
+
+            <MenuItem Header="Options">
+                <MenuItem Header="Language" x:Name="MenuItemLanguage">
+                    <MenuItem.Resources>
+                        <Style TargetType="MenuItem">
+                            <EventSetter Event="Checked" Handler="LanguageMenuItemChecked"/>
+                        </Style>
+                    </MenuItem.Resources>
+                </MenuItem>
+                <MenuItem Header="Properties" x:Name="MenuItemProperties" Click="MenuItemProperties_OnClick"/>
+            </MenuItem>
+
+            <MenuItem Header="About..." Click="MenuItem_About_OnClick"/>
+        </Menu>
+
+        <Menu Grid.Row="1"  BorderBrush="LightGray" BorderThickness="0,0,0,1" Margin="0,0,0,4" Padding="5,0,0,0" VerticalContentAlignment="Center">
+            <Menu.Resources>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+                <Style TargetType="{x:Type fullFeaturedMdiDemo:AutoGreyableImage}">
+                    <Setter Property="Width" Value="16"/>
+                    <Setter Property="Height" Value="16"/>
+                    <Setter Property="Stretch" Value="None"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Width" Value="16"/>
+                    <Setter Property="Height" Value="16"/>
+                    <Setter Property="Stretch" Value="None"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </Menu.Resources>
+
+            <MenuItem Command="New" Header="" ToolTip="Establish new connection...">
+                <MenuItem.Icon>
+                    <Image Source="Resources/connect.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="" ToolTip="Open new query window" x:Name="MenuItemNewQueryToolBar"  Click="MenuItemNewQuery_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/page_white.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Command="Open" Header="" ToolTip="Load query from file...">
+                <MenuItem.Icon>
+                    <Image Source="Resources/folder_page.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="" x:Name="MenuItemSaveIco" ToolTip="Save the current query" Command="Save">
+                <MenuItem.Icon>
+                    <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/disk.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem ToolTip="Execute Query" Click="MenuItemExecuteUserQuery_OnClick" IsEnabled="False" x:Name="MenuItemExecuteUserQuery" >
+                <MenuItem.Icon>
+                    <Viewbox Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Canvas  Width="90" Height="107">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="0" Y="0"/>
+                            </Canvas.RenderTransform>
+
+                            <Polygon Points="64,42.35 101.5,63.999 64,85.65 26.5,107.301 26.5,64 26.5,20.699 " FillRule="NonZero" StrokeThickness="12" 
+                                     Stroke="{Binding (MenuItem.IsEnabled),RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MenuItem}}, 
+                                              Converter={StaticResource ConverterColorEnabled}}" StrokeMiterLimit="10">
+                                <Polygon.RenderTransform>
+                                    <TranslateTransform X="-20.5" Y="-10.306608"/>
+                                </Polygon.RenderTransform>
+                            </Polygon>
+                        </Canvas>
+                    </Viewbox>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+            <MenuItem Header="" Command="Cut" x:Name="MenuItemCutIco" ToolTip="Cut">
+                <MenuItem.Icon>
+                    <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/cut.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="" Command="Copy" x:Name="MenuItemCopyIco" ToolTip="Copy">
+                <MenuItem.Icon>
+                    <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/page_copy.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="" Command="Paste" x:Name="MenuItemPasteIco" ToolTip="Paste">
+                <MenuItem.Icon>
+                    <fullFeaturedMdiDemo:AutoGreyableImage Source="Resources/page_paste.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+            <MenuItem Header="" Click="MenuItemCascade_OnClick" ToolTip="Cascade">
+                <MenuItem.Icon>
+                    <Image Source="Resources/application_cascade.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="" Click="MenuItemVertical_OnClick" ToolTip="Tile Vertically">
+                <MenuItem.Icon>
+                    <Image Source="Resources/application_tile_vertical.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem Header="" Click="MenuItemHorizontal_OnClick" ToolTip="Tile Horzontally">
+                <MenuItem.Icon>
+                    <Image Source="Resources/application_tile_horizontal.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+            <MenuItem Header="" Click="MenuItem_About_OnClick">
+                <MenuItem.Icon>
+                    <Image Source="Resources/help.ico"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </Menu>
+        <Grid x:Name="GridRoot" Grid.Row="2"/>
+        <Grid Grid.Row="3" Margin="3,0,3,3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Column="0" Grid.Row="0" BorderBrush="Gray" BorderThickness="1,1,1,0" SnapsToDevicePixels="True">
+                <TextBlock Text="&lt;Connection Name&gt;" Margin="3" x:Name="TextBlockConnectionName" FontWeight="Bold"/>
+            </Border>
+
+            <Grid  Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="200" MinHeight="100"/>
+                </Grid.RowDefinitions>
+
+                <databaseSchemaView:DatabaseSchemaView x:Name="DatabaseSchemaView1" Grid.Row="0"
+                                                       BorderThickness="1" BorderBrush="Gray" ItemDoubleClick="DatabaseSchemaView_OnItemDoubleClick" Margin="0,0,0,3"/>
+
+                <GridSplitter Grid.Row="0" VerticalAlignment="Bottom" Height="3" Background="LightGray" HorizontalAlignment="Stretch"/>
+
+                <userQueries:UserQueriesView Grid.Row="1" x:Name="QueriesView" BorderBrush="Gray" BorderThickness="1" 
+                                             QueryEdit="QueriesView_OnEditUserQuery" QueryRemoved="QueriesView_OnUserQueryItemRemoved"
+                                             ErrorMessage="QueriesView_OnErrorMessage" QueryRenamed="QueriesView_OnUserQueryItemRenamed" DisplaySaveButtons="false" 
+                                             ValidateItemContextMenu="QueriesView_OnValidateItemContextMenu" SelectedItemChanged="QueriesView_OnSelectedItemChanged"/>
+            </Grid>
+
+            <mdiControl:MdiContainer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderThickness="0,1,1,1" BorderBrush="Gray" SnapsToDevicePixels="True"
+                                     x:Name="MdiContainer1"/>
+        </Grid>
+    </Grid>
+</Window>

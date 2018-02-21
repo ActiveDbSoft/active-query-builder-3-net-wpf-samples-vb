@@ -1,0 +1,67 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DragDropDemo"
+        xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:core="clr-namespace:ActiveQueryBuilder.Core;assembly=ActiveQueryBuilder.Core"
+        xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
+        mc:Ignorable="d"
+        Title="DragDropDemo" Height="770" Width="1035" Background="{x:Static SystemColors.ControlBrush}">
+
+    <Window.Resources>
+        <core:GenericSyntaxProvider x:Key="GenericSyntaxProvider" x:Name="GenericSyntaxProvider1" PreferredServer="MSSQL"/>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <wpf:QueryBuilder x:Name="QueryBuilder1" Margin="0" SyntaxProvider="{StaticResource GenericSyntaxProvider}" Grid.Column="0" Grid.Row="0"
+                          SQLUpdated="QueryBuilder1_OnSQLUpdated">
+            <wpf:QueryBuilder.PanesConfigurationOptions>
+                <view:PanesConfigurationOptions DatabaseSchemaViewVisible="False"/>
+            </wpf:QueryBuilder.PanesConfigurationOptions>
+            <wpf:QueryBuilder.DesignPaneOptions>
+                <wpf:DesignPaneOptions LinkStyle="MSAccess"/>
+            </wpf:QueryBuilder.DesignPaneOptions>
+            <wpf:QueryBuilder.SQLFormattingOptions>
+                <core:SQLFormattingOptions ExpandVirtualFields="False" ExpandVirtualObjects="False"/>
+            </wpf:QueryBuilder.SQLFormattingOptions>
+            <wpf:QueryBuilder.SQLGenerationOptions>
+                <core:SQLGenerationOptions ExpandVirtualFields="True" ExpandVirtualObjects="True"/>
+            </wpf:QueryBuilder.SQLGenerationOptions>
+        </wpf:QueryBuilder>
+
+        <Grid Grid.Row="0" Grid.Column="1" Width="150" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Drag an item from this custom list and drop it to the query builder's diagram pane" 
+                       TextWrapping="Wrap" FontFamily="Tahoma" FontSize="11" Foreground="Maroon" FontWeight="Bold" Margin="0,0,0,10"/>
+
+            <ListBox Grid.Row="1" x:Name="ListBox1" Margin="0,0,0,5" PreviewMouseDown="ListBox1_OnMouseDown" MouseUp="ListBox1_OnMouseUp"
+                     MouseDoubleClick="ListBox1_OnMouseDoubleClick" MouseMove="ListBox1_OnMouseMove">
+                <ListBoxItem Content="Orders"/>
+                <ListBoxItem Content="Order Details"/>
+                <ListBoxItem Content="Products"/>
+                <ListBoxItem Content="Customers"/>
+                <ListBoxItem Content="Employees"/>
+                <ListBoxItem Content="Categories"/>
+            </ListBox>
+        </Grid>
+
+        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Height="130" Margin="0,5,0,0" x:Name="TextBox1" LostKeyboardFocus="TextBox_OnLostKeyboardFocus" TextChanged="TextBox1_OnTextChanged"/>
+        <local:ErrorBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox"/>
+    </Grid>
+</Window>
