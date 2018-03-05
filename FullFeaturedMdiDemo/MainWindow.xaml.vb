@@ -851,7 +851,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub QueriesView_OnValidateItemContextMenu(sender As Object, e As MetadataStructureItemMenuEventArgs)
-        e.Menu.AddItem("Copy SQL", AddressOf Execute_SqlExpression, False, True, Nothing, DirectCast(e.MetadataItem.MetadataItem, MetadataObject).Expression)
+        e.Menu.AddItem("Copy SQL", AddressOf Execute_SqlExpression, False, True, Nothing, DirectCast(e.MetadataStructureItem.MetadataItem, MetadataObject).Expression)
     End Sub
 
     Private Shared Sub Execute_SqlExpression(sender As Object, eventArgs As EventArgs)
