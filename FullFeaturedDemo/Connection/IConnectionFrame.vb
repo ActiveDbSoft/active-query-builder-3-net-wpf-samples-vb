@@ -9,7 +9,12 @@
 '*******************************************************************'
 
 Namespace Connection
+    Public Delegate Sub SyntaxProviderDetected(syntaxType As Type)
+
     Interface IConnectionFrame
+        Event OnSyntaxProviderDetected As SyntaxProviderDetected
+        Sub SetServerType(serverType As String)
+
         Property ConnectionString() As String
         Function TestConnection() As Boolean
     End Interface

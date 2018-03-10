@@ -8,10 +8,12 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Data.Odbc
 Imports System.Data.OleDb
+Imports System.Reflection
 Imports System.Windows
 Imports System.Windows.Input
-Imports MSDASC
+Imports ActiveQueryBuilder.Core
 
 Namespace Connection.FrameConnection
 	''' <summary>
@@ -34,11 +36,17 @@ Namespace Connection.FrameConnection
 			End Set
 		End Property
 
-        Public Sub New(connectionString1 As String)
-            InitializeComponent()
+		Public Event OnSyntaxProviderDetected As SyntaxProviderDetected Implements IConnectionFrame.OnSyntaxProviderDetected
 
-            ConnectionString = connectionString1
-        End Sub
+		Public Sub SetServerType(serverType As String) Implements IConnectionFrame.SetServerType
+
+		End Sub
+
+		Public Sub New(connectionString__1 As String)
+			InitializeComponent()
+
+			ConnectionString = connectionString__1
+		End Sub
 
 		Public Function GetConnectionString() As String
 			Try
@@ -59,9 +67,9 @@ Namespace Connection.FrameConnection
 			End If
 
 			Try
-                Dim builder As OleDbConnectionStringBuilder = New OleDbConnectionStringBuilder() With {
-                    .ConnectionString = _connectionString _
-                }
+				Dim builder = New OleDbConnectionStringBuilder() With { _
+					.ConnectionString = _connectionString _
+				}
 				_connectionString = builder.ConnectionString
 				tbConnectionString.Text = _connectionString
 			Catch
@@ -72,11 +80,11 @@ Namespace Connection.FrameConnection
 			Mouse.OverrideCursor = Cursors.Wait
 
 			Try
-				Dim connection As OleDbConnection = New OleDbConnection(ConnectionString)
+				Dim connection = New OleDbConnection(ConnectionString)
 				connection.Open()
 				connection.Close()
 			Catch e As Exception
-				MessageBox.Show(e.Message, App.Name)
+				MessageBox.Show(e.Message, Assembly.GetEntryAssembly().GetName().Name)
 				Return False
 			Finally
 				Mouse.OverrideCursor = Nothing
@@ -94,10 +102,10 @@ Namespace Connection.FrameConnection
 			' from the COM tab in Visual Studio .NET's Add Reference Dialog.
 
 			Try
-				Dim dlg As DataLinks = New MSDASC.DataLinks()
-                Dim adodbConnection As ADODB.Connection = New ADODB.Connection() With {
-                    .ConnectionString = _connectionString _
-                }
+				Dim dlg = New MSDASC.DataLinks()
+				Dim adodbConnection = New ADODB.Connection() With { _
+					.ConnectionString = _connectionString _
+				}
 				Dim connection As Object = adodbConnection
 
 				If dlg.PromptEdit(connection) Then
@@ -107,6 +115,29 @@ Namespace Connection.FrameConnection
 			Catch exception As Exception
 				MessageBox.Show("Failed to show OLEDB Data Link Properties dialog box." & vbLf & "Perhaps you have no required components installed or they are outdated." & vbLf & "Try to rebuild this demo from the source code." & vbLf & vbLf & exception.Message)
 			End Try
+		End Sub
+
+		Private Sub tbConnectionString_TextChanged(sender As Object, e As System.Windows.Controls.TextChangedEventArgs)
+			btnTest.IsEnabled = tbConnectionString.Text <> String.Empty
+		End Sub
+
+		Public Sub DoSyntaxDetected(syntaxType As Type)
+			RaiseEvent OnSyntaxProviderDetected(syntaxType)
+		End Sub
+
+		Private Sub btnTest_Click(sender As Object, e As RoutedEventArgs)
+			Dim metadataProvider = New OLEDBMetadataProvider() With { _
+				.Connection = New OleDbConnection(ConnectionString) _
+			}
+			Dim syntaxProviderType As Type = Nothing
+
+			Try
+				syntaxProviderType = Helpers.AutodetectSyntaxProvider(metadataProvider)
+			Catch exception As Exception
+				MessageBox.Show(exception.Message, "Error")
+			End Try
+
+			DoSyntaxDetected(syntaxProviderType)
 		End Sub
 	End Class
 End Namespace

@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
 	xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
-	xmlns:generalDemo="clr-namespace:GeneralDemo"
-	Title="Active Query Builder for .NET WPF Edition - General Demo (C#)" Height="640" Width="800"
+	xmlns:basicDemo="clr-namespace:BasicDemo"
+	Title="Active Query Builder for .NET WPF Edition - Basic Demo (C#)" Height="640" Width="800"
     Loaded="Window_Loaded" FontSize="11" WindowStartupLocation="CenterScreen">
     <Grid x:Name="GridRoot">
         <Grid.RowDefinitions>
@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <Menu VerticalAlignment="Top" Grid.Row="0">
             <Menu.Resources>
                 <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}"
@@ -52,10 +52,10 @@
         </Menu>
 
         <Border Background="#ffffc0" BorderThickness="1" BorderBrush="Black" Padding="5" Grid.Row="2" x:Name="panel1" Visibility="Collapsed">
-            <TextBlock TextWrapping="Wrap" Text="NOTE: You may encounter various problems while using the Generic syntax provider with specific database servers due to a number of incompatibilities 
+            <TextBlock TextWrapping="Wrap" Text="NOTE: You may encounter various problems while using the Generic syntax provider with specific database servers due to a number of incompatibilities
 between different SQL dialects. Use the Properties dialog to select the right syntax provider." />
         </Border>
-        
+
         <TabControl Grid.Row="3" SelectionChanged="Selector_OnSelectionChanged">
             <TabItem Header="SQL">
                 <Grid>
@@ -74,9 +74,9 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                     </aqb:QueryBuilder>
 
                     <expressionEditor:SqlTextEditor Grid.Row="1" x:Name="sqlTextEditor1" Margin="0,4,0,0" BorderThickness="1" BorderBrush="Gray"
-                                                    LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus" LostFocus="SqlTextEditor_OnLostFocus" 
+                                                    LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus" LostFocus="SqlTextEditor_OnLostFocus"
                                                     FontFamily="Courier New" Padding="5" FontSize="14" TextChanged="SqlTextEditor1_OnTextChanged"/>
-                    <generalDemo:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox"/>
+                    <basicDemo:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Data" x:Name="tbData">

@@ -23,8 +23,8 @@ Imports System.Windows.Markup
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.WPF
-Imports GeneralDemo.ConnectionWindow
-Imports GeneralDemo.PropertiesForm
+Imports BasicDemo.ConnectionWindow
+Imports BasicDemo.PropertiesForm
 Imports Microsoft.Win32
 Imports Helpers = ActiveQueryBuilder.View.Helpers
 Imports Timer = System.Timers.Timer

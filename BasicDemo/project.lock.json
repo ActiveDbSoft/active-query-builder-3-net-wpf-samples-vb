@@ -70,12 +70,12 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\GeneralDemo_pro\\GeneralDemo.vbproj",
-      "projectName": "GeneralDemo",
-      "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\GeneralDemo_pro\\GeneralDemo.vbproj",
-      "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\GeneralDemo_pro\\project.json",
+      "projectUniqueName": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\BasicDemo.vbproj",
+      "projectName": "BasicDemo",
+      "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\BasicDemo.vbproj",
+      "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\project.json",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\GeneralDemo_pro\\obj\\",
+      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\obj\\",
       "projectStyle": "ProjectJson",
       "validateRuntimeAssets": true,
       "configFilePaths": [

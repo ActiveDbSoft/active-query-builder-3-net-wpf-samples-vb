@@ -31,6 +31,11 @@ Namespace Connection.FrameConnection
 			End Set
 		End Property
 
+		Public Event OnSyntaxProviderDetected As SyntaxProviderDetected Implements IConnectionFrame.OnSyntaxProviderDetected
+
+		Public Sub SetServerType(serverType As String) Implements IConnectionFrame.SetServerType
+		End Sub
+
 		Public Sub New(xmlFilePath As String)
 			InitializeComponent()
 

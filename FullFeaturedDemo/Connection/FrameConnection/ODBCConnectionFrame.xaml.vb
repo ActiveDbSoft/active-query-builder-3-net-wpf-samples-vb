@@ -12,6 +12,7 @@ Imports System.Data.Odbc
 Imports System.Reflection
 Imports System.Windows
 Imports System.Windows.Input
+Imports ActiveQueryBuilder.Core
 
 Namespace Connection.FrameConnection
 	''' <summary>
@@ -34,17 +35,23 @@ Namespace Connection.FrameConnection
 			End Set
 		End Property
 
-		Public Sub New(connectionString_1 As String)
+		Public Event OnSyntaxProviderDetected As SyntaxProviderDetected Implements IConnectionFrame.OnSyntaxProviderDetected
+
+		Public Sub SetServerType(serverType As String) Implements IConnectionFrame.SetServerType
+
+		End Sub
+
+		Public Sub New(connectionString__1 As String)
 			InitializeComponent()
 
-			ConnectionString = connectionString_1
+			ConnectionString = connectionString__1
 		End Sub
 
 		Public Function GetConnectionString() As String
 			Try
-                Dim builder = New OdbcConnectionStringBuilder() With { _
-                    .ConnectionString = tbConnectionString.Text _
-                }
+				Dim builder = New OdbcConnectionStringBuilder() With { _
+					.ConnectionString = tbConnectionString.Text _
+				}
 				_connectionString = builder.ConnectionString
 			Catch
 			End Try
@@ -84,5 +91,28 @@ Namespace Connection.FrameConnection
 
 			Return True
 		End Function
+
+		Public Sub DoSyntaxDetected(syntaxType As Type)
+			RaiseEvent OnSyntaxProviderDetected(syntaxType)
+		End Sub
+
+		Private Sub btnTest_Click(sender As Object, e As RoutedEventArgs)
+			Dim metadataProvider = New ODBCMetadataProvider() With { _
+				.Connection = New OdbcConnection(ConnectionString) _
+			}
+			Dim syntaxProviderType As Type = Nothing
+
+			Try
+				syntaxProviderType = Helpers.AutodetectSyntaxProvider(metadataProvider)
+			Catch exception As Exception
+				MessageBox.Show(exception.Message, "Error")
+			End Try
+
+			DoSyntaxDetected(syntaxProviderType)
+		End Sub
+
+		Private Sub tbConnectionString_TextChanged(sender As Object, e As System.Windows.Controls.TextChangedEventArgs)
+			btnTest.IsEnabled = tbConnectionString.Text <> String.Empty
+		End Sub
 	End Class
 End Namespace

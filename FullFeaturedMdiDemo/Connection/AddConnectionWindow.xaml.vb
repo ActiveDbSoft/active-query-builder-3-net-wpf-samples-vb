@@ -95,6 +95,42 @@ Namespace Connection
 			FillSyntax()
 		End Sub
 
+		Private Function SyntaxToString(syntax As BaseSyntaxProvider) As String
+			If TypeOf syntax Is SQL2003SyntaxProvider Then
+				Return "ANSI SQL-2003"
+			ElseIf TypeOf syntax Is SQL92SyntaxProvider Then
+				Return "ANSI SQL-92"
+			ElseIf TypeOf syntax Is SQL89SyntaxProvider Then
+				Return "ANSI SQL-89"
+			ElseIf TypeOf syntax Is FirebirdSyntaxProvider Then
+				Return "Firebird"
+			ElseIf TypeOf syntax Is DB2SyntaxProvider Then
+				Return "IBM DB2"
+			ElseIf TypeOf syntax Is InformixSyntaxProvider Then
+				Return "IBM Informix"
+			ElseIf TypeOf syntax Is MSAccessSyntaxProvider Then
+				Return "Microsoft Access"
+			ElseIf TypeOf syntax Is MSSQLSyntaxProvider Then
+				Return "Microsoft SQL Server"
+			ElseIf TypeOf syntax Is MySQLSyntaxProvider Then
+				Return "MySQL"
+			ElseIf TypeOf syntax Is OracleSyntaxProvider Then
+				Return "Oracle"
+			ElseIf TypeOf syntax Is PostgreSQLSyntaxProvider Then
+				Return "PostgreSQL"
+			ElseIf TypeOf syntax Is SQLiteSyntaxProvider Then
+				Return "SQLite"
+			ElseIf TypeOf syntax Is SybaseSyntaxProvider Then
+				Return "Sybase"
+			ElseIf TypeOf syntax Is VistaDBSyntaxProvider Then
+				Return "VistaDB"
+			ElseIf TypeOf syntax Is GenericSyntaxProvider Then
+				Return "Universal"
+			End If
+
+			Return String.Empty
+		End Function
+
 		Private Sub FillSyntax()
 			BoxSyntaxProvider.Items.Clear()
 			BoxServerVersion.Items.Clear()
@@ -131,9 +167,26 @@ Namespace Connection
 				End Select
 			End If
 
-			If TypeOf _connectionInfo.SyntaxProvider Is SQL2003SyntaxProvider Then
+			If _connectionInfo.ConnectionType = ConnectionTypes.ODBC OrElse _connectionInfo.ConnectionType = ConnectionTypes.OLEDB Then
 				BoxSyntaxProvider.Items.Add("ANSI SQL-2003")
-				BoxSyntaxProvider.SelectedItem = "ANSI SQL-2003"
+				BoxSyntaxProvider.Items.Add("ANSI SQL-92")
+				BoxSyntaxProvider.Items.Add("ANSI SQL-89")
+				BoxSyntaxProvider.Items.Add("Firebird")
+				BoxSyntaxProvider.Items.Add("IBM DB2")
+				BoxSyntaxProvider.Items.Add("IBM Informix")
+				BoxSyntaxProvider.Items.Add("Microsoft Access")
+				BoxSyntaxProvider.Items.Add("Microsoft SQL Server")
+				BoxSyntaxProvider.Items.Add("MySQL")
+				BoxSyntaxProvider.Items.Add("Oracle")
+				BoxSyntaxProvider.Items.Add("PostgreSQL")
+				BoxSyntaxProvider.Items.Add("SQLite")
+				BoxSyntaxProvider.Items.Add("Sybase")
+				BoxSyntaxProvider.Items.Add("VistaDB")
+				BoxSyntaxProvider.Items.Add("Universal")
+				BoxSyntaxProvider.SelectedItem = SyntaxToString(_connectionInfo.SyntaxProvider)
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL2003SyntaxProvider Then
+				BoxSyntaxProvider.Items.Add(SyntaxToString(_connectionInfo.SyntaxProvider))
+				BoxSyntaxProvider.SelectedItem = SyntaxToString(_connectionInfo.SyntaxProvider)
 
 				BoxSyntaxProvider.Items.Add("ANSI SQL-92")
 				BoxSyntaxProvider.Items.Add("ANSI SQL-89")
@@ -150,8 +203,8 @@ Namespace Connection
 				BoxSyntaxProvider.Items.Add("VistaDB")
 				BoxSyntaxProvider.Items.Add("Universal")
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL92SyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("ANSI SQL-92")
-				BoxSyntaxProvider.SelectedItem = "ANSI SQL-92"
+				BoxSyntaxProvider.Items.Add(SyntaxToString(_connectionInfo.SyntaxProvider))
+				BoxSyntaxProvider.SelectedItem = SyntaxToString(_connectionInfo.SyntaxProvider)
 
 				BoxSyntaxProvider.Items.Add("ANSI SQL-2003")
 
@@ -169,8 +222,8 @@ Namespace Connection
 				BoxSyntaxProvider.Items.Add("VistaDB")
 				BoxSyntaxProvider.Items.Add("Universal")
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL89SyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("ANSI SQL-89")
-				BoxSyntaxProvider.SelectedItem = "ANSI SQL-89"
+				BoxSyntaxProvider.Items.Add(SyntaxToString(_connectionInfo.SyntaxProvider))
+				BoxSyntaxProvider.SelectedItem = SyntaxToString(_connectionInfo.SyntaxProvider)
 
 				BoxSyntaxProvider.Items.Add("ANSI SQL-2003")
 				BoxSyntaxProvider.Items.Add("ANSI SQL-92")
@@ -186,43 +239,9 @@ Namespace Connection
 				BoxSyntaxProvider.Items.Add("Sybase")
 				BoxSyntaxProvider.Items.Add("VistaDB")
 				BoxSyntaxProvider.Items.Add("Universal")
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is FirebirdSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("Firebird")
-				BoxSyntaxProvider.SelectedItem = "Firebird"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is DB2SyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("IBM DB2")
-				BoxSyntaxProvider.SelectedItem = "IBM DB2"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is InformixSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("IBM Informix")
-				BoxSyntaxProvider.SelectedItem = "IBM Informix"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSAccessSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("Microsoft Access")
-				BoxSyntaxProvider.SelectedItem = "Microsoft Access"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSSQLSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("Microsoft SQL Server")
-				BoxSyntaxProvider.SelectedItem = "Microsoft SQL Server"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MySQLSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("MySQL")
-				BoxSyntaxProvider.SelectedItem = "MySQL"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("Oracle")
-				BoxSyntaxProvider.SelectedItem = "Oracle"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is PostgreSQLSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("PostgreSQL")
-				BoxSyntaxProvider.SelectedItem = "PostgreSQL"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQLiteSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("SQLite")
-				BoxSyntaxProvider.SelectedItem = "SQLite"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SybaseSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("Sybase")
-				BoxSyntaxProvider.SelectedItem = "Sybase"
-			ElseIf TypeOf _connectionInfo.SyntaxProvider Is VistaDBSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("VistaDB")
-				BoxSyntaxProvider.SelectedItem = "VistaDB"
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is GenericSyntaxProvider Then
-				BoxSyntaxProvider.Items.Add("Universal")
-				BoxSyntaxProvider.SelectedItem = "Universal"
-
+				BoxSyntaxProvider.Items.Add(SyntaxToString(_connectionInfo.SyntaxProvider))
+				BoxSyntaxProvider.SelectedItem = SyntaxToString(_connectionInfo.SyntaxProvider)
 
 				BoxSyntaxProvider.Items.Add("ANSI SQL-2003")
 				BoxSyntaxProvider.Items.Add("ANSI SQL-92")
@@ -239,6 +258,9 @@ Namespace Connection
 				BoxSyntaxProvider.Items.Add("Sybase")
 				BoxSyntaxProvider.Items.Add("VistaDB")
 				BoxSyntaxProvider.Items.Add("Universal")
+			Else
+				BoxSyntaxProvider.Items.Add(SyntaxToString(_connectionInfo.SyntaxProvider))
+				BoxSyntaxProvider.SelectedItem = SyntaxToString(_connectionInfo.SyntaxProvider)
 			End If
 
 
@@ -246,191 +268,185 @@ Namespace Connection
 		End Sub
 
 		Private Sub FillVersions()
-            BoxServerVersion.Items.Clear()
-            BoxServerVersion.Text = String.Empty
+			BoxServerVersion.Items.Clear()
+			BoxServerVersion.Text = String.Empty
 
-            If TypeOf _connectionInfo.SyntaxProvider Is SQL2003SyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL92SyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL89SyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is FirebirdSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("Firebird 1.0")
-                BoxServerVersion.Items.Add("Firebird 1.5")
-                BoxServerVersion.Items.Add("Firebird 2.0")
-                BoxServerVersion.Items.Add("Firebird 2.5")
+			If TypeOf _connectionInfo.SyntaxProvider Is SQL2003SyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL92SyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQL89SyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is FirebirdSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("Firebird 1.0")
+				BoxServerVersion.Items.Add("Firebird 1.5")
+				BoxServerVersion.Items.Add("Firebird 2.0")
+				BoxServerVersion.Items.Add("Firebird 2.5")
 
-                Dim firebirdSyntaxProvider As FirebirdSyntaxProvider = CType(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider)
+				Dim firebirdSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider)
 
-                Select Case firebirdSyntaxProvider.ServerVersion
-                    Case FirebirdVersion.Firebird10
-                        BoxServerVersion.SelectedItem = "Firebird 1.0"
-                        Exit Sub
-                    Case FirebirdVersion.Firebird15
-                        BoxServerVersion.SelectedItem = "Firebird 1.5"
-                        Exit Sub
-                    Case FirebirdVersion.Firebird20
-                        BoxServerVersion.SelectedItem = "Firebird 2.0"
-                        Exit Sub
-                    Case FirebirdVersion.Firebird25
-                        BoxServerVersion.SelectedItem = "Firebird 2.5"
-                        Exit Sub
-                End Select
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is DB2SyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is InformixSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("Informix 8")
-                BoxServerVersion.Items.Add("Informix 9")
-                BoxServerVersion.Items.Add("Informix 10")
-                BoxServerVersion.Items.Add("Informix 11")
+				Select Case firebirdSyntaxProvider.ServerVersion
+					Case FirebirdVersion.Firebird10
+						BoxServerVersion.SelectedItem = "Firebird 1.0"
+						Exit Select
+					Case FirebirdVersion.Firebird15
+						BoxServerVersion.SelectedItem = "Firebird 1.5"
+						Exit Select
+					Case FirebirdVersion.Firebird20
+						BoxServerVersion.SelectedItem = "Firebird 2.0"
+						Exit Select
+					Case FirebirdVersion.Firebird25
+						BoxServerVersion.SelectedItem = "Firebird 2.5"
+						Exit Select
+				End Select
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is DB2SyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is InformixSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("Informix 8")
+				BoxServerVersion.Items.Add("Informix 9")
+				BoxServerVersion.Items.Add("Informix 10")
+				BoxServerVersion.Items.Add("Informix 11")
 
-                Dim informixSyntaxProvider As InformixSyntaxProvider = CType(_connectionInfo.SyntaxProvider, InformixSyntaxProvider)
+				Dim informixSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, InformixSyntaxProvider)
 
-                Select Case informixSyntaxProvider.ServerVersion
-                    Case InformixVersion.DS8
-                        BoxServerVersion.SelectedItem = "Informix 8"
-                        Exit Sub
-                    Case InformixVersion.DS9
-                        BoxServerVersion.SelectedItem = "Informix 9"
-                        Exit Sub
-                    Case InformixVersion.DS10
-                        BoxServerVersion.SelectedItem = "Informix 10"
-                        Exit Sub
-                    Case Else
-                        BoxServerVersion.SelectedItem = "Informix 11"
-                        Exit Sub
-                End Select
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSAccessSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("MS Jet 3")
-                BoxServerVersion.Items.Add("MS Jet 4")
+				Select Case informixSyntaxProvider.ServerVersion
+					Case InformixVersion.DS8
+						BoxServerVersion.SelectedItem = "Informix 8"
+						Exit Select
+					Case InformixVersion.DS9
+						BoxServerVersion.SelectedItem = "Informix 9"
+						Exit Select
+					Case InformixVersion.DS10
+						BoxServerVersion.SelectedItem = "Informix 10"
+						Exit Select
+					Case Else
+						BoxServerVersion.SelectedItem = "Informix 11"
+						Exit Select
+				End Select
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSAccessSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("Access 97")
+				BoxServerVersion.Items.Add("Access 2000 and newer")
 
-                Dim accessSyntaxProvider As MSAccessSyntaxProvider = CType(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider)
+				Dim accessSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider)
 
-                If (Equals(accessSyntaxProvider.ServerVersion, MSAccessServerVersion.MSJET3)) Then
-                    BoxServerVersion.SelectedItem = "MS Jet 3"
-                Else
-                    BoxServerVersion.SelectedItem = "MS Jet 4"
-                End If
+				BoxServerVersion.SelectedItem = If(accessSyntaxProvider.ServerVersion = MSAccessServerVersion.MSJET3, "Access 97", "Access 2000 and newer")
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSSQLSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("Auto")
+				BoxServerVersion.Items.Add("SQL Server 7")
+				BoxServerVersion.Items.Add("SQL Server 2000")
+				BoxServerVersion.Items.Add("SQL Server 2005")
+				BoxServerVersion.Items.Add("SQL Server 2012")
+				BoxServerVersion.Items.Add("SQL Server 2014")
 
+				Dim mssqlSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider)
 
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSSQLSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("Auto")
-                BoxServerVersion.Items.Add("SQL Server 7")
-                BoxServerVersion.Items.Add("SQL Server 2000")
-                BoxServerVersion.Items.Add("SQL Server 2005")
-                BoxServerVersion.Items.Add("SQL Server 2012")
-                BoxServerVersion.Items.Add("SQL Server 2014")
+				Select Case mssqlSyntaxProvider.ServerVersion
+					Case MSSQLServerVersion.MSSQL7
+						BoxServerVersion.SelectedItem = "SQL Server 7"
+						Exit Select
+					Case MSSQLServerVersion.MSSQL2000
+						BoxServerVersion.SelectedItem = "SQL Server 2000"
+						Exit Select
+					Case MSSQLServerVersion.MSSQL2005
+						BoxServerVersion.SelectedItem = "SQL Server 2005"
+						Exit Select
+					Case MSSQLServerVersion.MSSQL2012
+						BoxServerVersion.SelectedItem = "SQL Server 2012"
+						Exit Select
+					Case MSSQLServerVersion.MSSQL2014
+						BoxServerVersion.SelectedItem = "SQL Server 2014"
+						Exit Select
+					Case Else
+						BoxServerVersion.SelectedItem = "Auto"
+						Exit Select
+				End Select
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MySQLSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("3.0")
+				BoxServerVersion.Items.Add("4.0")
+				BoxServerVersion.Items.Add("5.0+")
 
-                Dim mssqlSyntaxProvider As MSSQLSyntaxProvider = CType(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider)
+				Dim mySqlSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider)
 
-                Select Case mssqlSyntaxProvider.ServerVersion
-                    Case MSSQLServerVersion.MSSQL7
-                        BoxServerVersion.SelectedItem = "SQL Server 7"
-                        Exit Sub
-                    Case MSSQLServerVersion.MSSQL2000
-                        BoxServerVersion.SelectedItem = "SQL Server 2000"
-                        Exit Sub
-                    Case MSSQLServerVersion.MSSQL2005
-                        BoxServerVersion.SelectedItem = "SQL Server 2005"
-                        Exit Sub
-                    Case MSSQLServerVersion.MSSQL2012
-                        BoxServerVersion.SelectedItem = "SQL Server 2012"
-                        Exit Sub
-                    Case MSSQLServerVersion.MSSQL2014
-                        BoxServerVersion.SelectedItem = "SQL Server 2014"
-                        Exit Sub
-                    Case Else
-                        BoxServerVersion.SelectedItem = "Auto"
-                        Exit Sub
-                End Select
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is MySQLSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("3.0")
-                BoxServerVersion.Items.Add("4.0")
-                BoxServerVersion.Items.Add("5.0+")
+				If mySqlSyntaxProvider.ServerVersionInt < 40000 Then
+					BoxServerVersion.SelectedItem = "3.0"
+				ElseIf mySqlSyntaxProvider.ServerVersionInt < 50000 Then
+					BoxServerVersion.SelectedItem = "4.0"
+				Else
+					BoxServerVersion.SelectedItem = "5.0+"
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("Oracle 7")
+				BoxServerVersion.Items.Add("Oracle 8")
+				BoxServerVersion.Items.Add("Oracle 9")
+				BoxServerVersion.Items.Add("Oracle 10")
+				BoxServerVersion.Items.Add("Oracle 11")
+				BoxServerVersion.Items.Add("Oracle 12")
 
-                Dim mySqlSyntaxProvider As MySQLSyntaxProvider = CType(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider)
+				Dim oracleSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider)
 
-                If mySqlSyntaxProvider.ServerVersionInt < 40000 Then
-                    BoxServerVersion.SelectedItem = "3.0"
-                ElseIf mySqlSyntaxProvider.ServerVersionInt < 50000 Then
-                    BoxServerVersion.SelectedItem = "4.0"
-                Else
-                    BoxServerVersion.SelectedItem = "5.0+"
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("Oracle 7")
-                BoxServerVersion.Items.Add("Oracle 8")
-                BoxServerVersion.Items.Add("Oracle 9")
-                BoxServerVersion.Items.Add("Oracle 10")
-                BoxServerVersion.Items.Add("Oracle 11")
-                BoxServerVersion.Items.Add("Oracle 12")
+				Select Case oracleSyntaxProvider.ServerVersion
+					Case OracleServerVersion.Oracle7
+						BoxServerVersion.SelectedItem = "Oracle 7"
+						Exit Select
+					Case OracleServerVersion.Oracle8
+						BoxServerVersion.SelectedItem = "Oracle 8"
+						Exit Select
+					Case OracleServerVersion.Oracle9
+						BoxServerVersion.SelectedItem = "Oracle 9"
+						Exit Select
+					Case OracleServerVersion.Oracle10
+						BoxServerVersion.SelectedItem = "Oracle 10"
+						Exit Select
+					Case OracleServerVersion.Oracle11
+						BoxServerVersion.SelectedItem = "Oracle 11"
+						Exit Select
+					Case Else
+						BoxServerVersion.SelectedItem = "Oracle 12"
+						Exit Select
+				End Select
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is PostgreSQLSyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+				BoxServerVersion.Text = "Auto"
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQLiteSyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SybaseSyntaxProvider Then
+				BoxServerVersion.IsEnabled = True
+				BoxServerVersion.Items.Add("ASE")
+				BoxServerVersion.Items.Add("SQL Anywhere")
+				BoxServerVersion.Items.Add("SAP IQ")
 
-                Dim oracleSyntaxProvider As OracleSyntaxProvider = CType(_connectionInfo.SyntaxProvider, OracleSyntaxProvider)
+				Dim sybaseSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider)
 
-                Select Case oracleSyntaxProvider.ServerVersion
-                    Case OracleServerVersion.Oracle7
-                        BoxServerVersion.SelectedItem = "Oracle 7"
-                        Exit Sub
-                    Case OracleServerVersion.Oracle8
-                        BoxServerVersion.SelectedItem = "Oracle 8"
-                        Exit Sub
-                    Case OracleServerVersion.Oracle9
-                        BoxServerVersion.SelectedItem = "Oracle 9"
-                        Exit Sub
-                    Case OracleServerVersion.Oracle10
-                        BoxServerVersion.SelectedItem = "Oracle 10"
-                        Exit Sub
-                    Case OracleServerVersion.Oracle11
-                        BoxServerVersion.SelectedItem = "Oracle 11"
-                        Exit Sub
-                    Case Else
-                        BoxServerVersion.SelectedItem = "Oracle 12"
-                        Exit Sub
-                End Select
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is PostgreSQLSyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-                BoxServerVersion.Text = "Auto"
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is SQLiteSyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is SybaseSyntaxProvider Then
-                BoxServerVersion.IsEnabled = True
-                BoxServerVersion.Items.Add("ASE")
-                BoxServerVersion.Items.Add("SQL Anywhere")
-                BoxServerVersion.Items.Add("SAP IQ")
-
-                Dim sybaseSyntaxProvider As SybaseSyntaxProvider = CType(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider)
-
-                Select Case sybaseSyntaxProvider.ServerVersion
-                    Case SybaseServerVersion.SybaseASE
-                        BoxServerVersion.SelectedItem = "ASE"
-                        Exit Sub
-                    Case SybaseServerVersion.SybaseASA
-                        BoxServerVersion.SelectedItem = "SQL Anywhere"
-                        Exit Sub
-                    Case SybaseServerVersion.SybaseIQ
-                        BoxServerVersion.SelectedItem = "SAP IQ"
-                        Exit Sub
-                End Select
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is VistaDBSyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is GenericSyntaxProvider Then
-                BoxServerVersion.IsEnabled = False
-            End If
-        End Sub
+				Select Case sybaseSyntaxProvider.ServerVersion
+					Case SybaseServerVersion.SybaseASE
+						BoxServerVersion.SelectedItem = "ASE"
+						Exit Select
+					Case SybaseServerVersion.SybaseASA
+						BoxServerVersion.SelectedItem = "SQL Anywhere"
+						Exit Select
+					Case SybaseServerVersion.SybaseIQ
+						BoxServerVersion.SelectedItem = "SAP IQ"
+						Exit Select
+				End Select
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is VistaDBSyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is GenericSyntaxProvider Then
+				BoxServerVersion.IsEnabled = False
+			End If
+		End Sub
 
 		Private Sub ConnectionTypeChanged(sender As Object, e As RoutedEventArgs)
 			If DirectCast(sender, RadioButton).IsChecked <> True Then
 				Return
 			End If
 
-			Dim connectionType as ConnectionTypes = ConnectionTypes.MSSQL
+			Dim connectionType = ConnectionTypes.MSSQL
 
 			If Equals(sender, rbMSSQL) Then
 				connectionType = ConnectionTypes.MSSQL
@@ -485,6 +501,7 @@ Namespace Connection
 
 		Private Sub SetActiveConnectionTypeFrame()
 			If GridFrames.Children.Contains(DirectCast(_currentConnectionFrame, FrameworkElement)) Then
+				RemoveHandler _currentConnectionFrame.OnSyntaxProviderDetected, AddressOf CurrentConnectionFrame_SyntaxProviderDetected
 				GridFrames.Children.Remove(DirectCast(_currentConnectionFrame, FrameworkElement))
 				_currentConnectionFrame = Nothing
 			End If
@@ -519,7 +536,14 @@ Namespace Connection
 
 			If _currentConnectionFrame IsNot Nothing Then
 				GridFrames.Children.Add(DirectCast(_currentConnectionFrame, FrameworkElement))
+				AddHandler _currentConnectionFrame.OnSyntaxProviderDetected, AddressOf CurrentConnectionFrame_SyntaxProviderDetected
 			End If
+		End Sub
+
+		Private Sub CurrentConnectionFrame_SyntaxProviderDetected(syntaxType As Type)
+			Dim syntaxProvider = TryCast(Activator.CreateInstance(syntaxType), BaseSyntaxProvider)
+			BoxSyntaxProvider.SelectedItem = SyntaxToString(syntaxProvider)
+			FillVersions()
 		End Sub
 
 		Private Sub ButtonBaseOK_OnClick(sender As Object, e As RoutedEventArgs)
@@ -583,71 +607,74 @@ Namespace Connection
 		End Sub
 
 		Private Sub BoxServerVersion_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-            If TypeOf _connectionInfo.SyntaxProvider Is FirebirdSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "Firebird 1.0" Then
-                    CType(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird10
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "Firebird 1.5" Then
-                    CType(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird15
-                End If
+			If BoxServerVersion.SelectedItem Is Nothing Then
+				Return
+			End If
 
-                If CStr(BoxServerVersion.SelectedItem) = "Firebird 2.0" Then
-                    CType(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird20
-                End If
+			If TypeOf _connectionInfo.SyntaxProvider Is FirebirdSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Firebird 1.0" Then
+					DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird10
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Firebird 1.5" Then
+					DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird15
+				End If
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Firebird 2.0" Then
+					DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird20
+				End If
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Firebird 2.5" Then
+					DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird25
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is InformixSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Informix 8" Then
+					DirectCast(_connectionInfo.SyntaxProvider, InformixSyntaxProvider).ServerVersion = InformixVersion.DS8
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Informix 9" Then
+					DirectCast(_connectionInfo.SyntaxProvider, InformixSyntaxProvider).ServerVersion = InformixVersion.DS9
+				End If
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Informix 10" Then
+					DirectCast(_connectionInfo.SyntaxProvider, InformixSyntaxProvider).ServerVersion = InformixVersion.DS10
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSAccessSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Access 97" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider).ServerVersion = MSAccessServerVersion.MSJET3
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Access 2000 and newer" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider).ServerVersion = MSAccessServerVersion.MSJET4
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSSQLSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Auto" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.Auto
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 7" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL7
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2000" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2000
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2005" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2005
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MySQLSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "3.0" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 39999
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "4.0" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 49999
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "5.0" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 50000
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 7" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle7
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 8" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle8
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 9" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle9
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 10" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle10
+				End If
+			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SybaseSyntaxProvider Then
+				If DirectCast(BoxServerVersion.SelectedItem, String) = "ASE" Then
+					DirectCast(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider).ServerVersion = SybaseServerVersion.SybaseASE
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Anywhere" Then
+					DirectCast(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider).ServerVersion = SybaseServerVersion.SybaseASA
+				End If
+			End If
 
-                If CStr(BoxServerVersion.SelectedItem) = "Firebird 2.5" Then
-                    CType(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion = FirebirdVersion.Firebird25
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is InformixSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "Informix 8" Then
-                    CType(_connectionInfo.SyntaxProvider, InformixSyntaxProvider).ServerVersion = InformixVersion.DS8
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "Informix 9" Then
-                    CType(_connectionInfo.SyntaxProvider, InformixSyntaxProvider).ServerVersion = InformixVersion.DS9
-                End If
-
-                If CStr(BoxServerVersion.SelectedItem) = "Informix 10" Then
-                    CType(_connectionInfo.SyntaxProvider, InformixSyntaxProvider).ServerVersion = InformixVersion.DS10
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSAccessSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "MS Jet 3" Then
-                    CType(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider).ServerVersion = MSAccessServerVersion.MSJET3
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "MS Jet 4" Then
-                    CType(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider).ServerVersion = MSAccessServerVersion.MSJET4
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSSQLSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "Auto" Then
-                    CType(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.Auto
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "SQL Server 7" Then
-                    CType(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL7
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "SQL Server 2000" Then
-                    CType(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2000
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "SQL Server 2005" Then
-                    CType(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2005
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is MySQLSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "3.0" Then
-                    CType(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 39999
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "4.0" Then
-                    CType(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 49999
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "5.0" Then
-                    CType(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 50000
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "Oracle 7" Then
-                    CType(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle7
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "Oracle 8" Then
-                    CType(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle8
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "Oracle 9" Then
-                    CType(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle9
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "Oracle 10" Then
-                    CType(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle10
-                End If
-            ElseIf TypeOf _connectionInfo.SyntaxProvider Is SybaseSyntaxProvider Then
-                If CStr(BoxServerVersion.SelectedItem) = "ASE" Then
-                    CType(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider).ServerVersion = SybaseServerVersion.SybaseASE
-                ElseIf CStr(BoxServerVersion.SelectedItem) = "SQL Anywhere" Then
-                    CType(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider).ServerVersion = SybaseServerVersion.SybaseASA
-                End If
-            End If
-        End Sub
+			_currentConnectionFrame.SetServerType(TryCast(BoxServerVersion.SelectedItem, String))
+		End Sub
 	End Class
 End Namespace
