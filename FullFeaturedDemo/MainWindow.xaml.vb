@@ -89,7 +89,7 @@ Partial Public Class MainWindow
         Dim trialNoticePanel As Border = New Border() With {
             .BorderBrush = Brushes.Black,
             .BorderThickness = New Thickness(1),
-            .Background = Brushes.LightPink,
+            .Background = Brushes.LightGreen,
             .Padding = New Thickness(5),
             .Margin = New Thickness(0, 0, 0, 2)
         }
@@ -719,13 +719,12 @@ Partial Public Class MainWindow
             Return
         End If
 
-        'var sql =  QBuilder.ActiveUnionSubQuery.GetResultSQL(_sqlFormattingOptions);
-        Dim sql As String = QBuilder.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(_sqlFormattingOptions)
 
         _transformerSql.Query = New SQLQuery(QBuilder.ActiveUnionSubQuery.SQLContext) With {
-            .SQL = sql
+            .SQL = QBuilder.ActiveUnionSubQuery.ParentSubQuery.GetSqlForDataPreview()
         }
 
+        Dim sql As String = QBuilder.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(_sqlFormattingOptions)
         SetTextRichTextBox(sql, BoxSqlCurrentSubQuery)
     End Sub
 

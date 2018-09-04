@@ -13,7 +13,6 @@
     <Grid Margin="3">
         <StackPanel>
             <CheckBox Content="Enable Offline Mode" Margin="0,0,0,8" x:Name="cbOfflineMode"/>
-            <Button Content="Load metadata to work in Offline mode..." Margin="0,0,0,8" x:Name="bLoadMetadata"/>
             <TextBlock Height="40" TextWrapping="Wrap" Text="Loaded Metadata: {0} tables, {1} views, {2} procedures." Margin="0,0,0,8" x:Name="lMetadataObjectCount"/>
             <Grid Margin="0,0,0,8">
                 <Button Content="Load from XML..." Width="165" HorizontalAlignment="Left" x:Name="bLoadFromXML"/>

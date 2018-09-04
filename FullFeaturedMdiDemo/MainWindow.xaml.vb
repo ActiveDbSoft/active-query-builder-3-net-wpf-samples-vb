@@ -83,7 +83,7 @@ Partial Public Class MainWindow
         Dim trialNoticePanel As Border = New Border() With {
             .BorderBrush = Brushes.Black,
             .BorderThickness = New Thickness(1),
-            .Background = Brushes.LightPink,
+            .Background = Brushes.LightGreen,
             .Padding = New Thickness(5),
             .Margin = New Thickness(0, 0, 0, 2)
         }

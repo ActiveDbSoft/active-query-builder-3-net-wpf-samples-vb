@@ -136,7 +136,7 @@ Class MainWindow
         End Try
     End Sub
 
-    Private Sub TextBox1_OnTextChanged(sender As Object, e As TextChangedEventArgs)
+    Private Sub TextBox1_OnTextChanged(sender As Object, e As EventArgs)
         If Equals(ErrorBox , Nothing) Then Return
         ErrorBox.Message = string.Empty
     End Sub

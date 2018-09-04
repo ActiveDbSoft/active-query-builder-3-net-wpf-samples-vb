@@ -152,7 +152,6 @@
                                          Foreground="White" 
                                          TextPadding="5,5,0,0"
                                          FontFamily="Courier New"
-                                         KeywordColor="#FFFF9700"
                                          LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
                                          TextChanged="BoxSql_OnTextChanged"/>
 
@@ -178,7 +177,6 @@
                                         Foreground="White" 
                                         TextPadding="5,5,0,0"
                                         FontFamily="Courier New"
-                                        KeywordColor="#FFFF9700"
                                         TextChanged="BoxSql_OnTextChanged">
                                         </expressionEditor:SqlTextEditor>
 

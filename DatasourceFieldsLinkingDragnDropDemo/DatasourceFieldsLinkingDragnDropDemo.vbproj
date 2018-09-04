@@ -50,13 +50,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ActiveQueryBuilder.Core">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.4.8.1085\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.1.1104\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.4.8.1085\lib\net\ActiveQueryBuilder.View.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.1.1104\lib\net\ActiveQueryBuilder.View.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View.WPF">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.4.8.1085\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.1.1104\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
 	</Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

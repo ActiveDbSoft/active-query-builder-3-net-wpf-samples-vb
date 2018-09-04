@@ -64,7 +64,6 @@ Namespace PropertiesForm
 			AddHandler bEditMetadata.Click, AddressOf buttonEditMetadata_Click
 			AddHandler bSaveToXML.Click, AddressOf buttonSaveToXML_Click
 			AddHandler bLoadFromXML.Click, AddressOf buttonLoadFromXML_Click
-			AddHandler bLoadMetadata.Click, AddressOf buttonLoadMetadata_Click
 		End Sub
 
 		Public Sub ApplyChanges()
@@ -86,22 +85,6 @@ Namespace PropertiesForm
 		Private Sub checkOfflineMode_CheckedChanged(sender As Object, e As EventArgs)
 			Modified = True
 			UpdateMode()
-		End Sub
-
-		Private Sub buttonLoadMetadata_Click(sender As Object, e As EventArgs)
-			_metadataContainerCopy.BeginUpdate()
-
-			Try
-				Dim f As New MetadataContainerLoadForm(_metadataContainerCopy, False)
-
-				If f.ShowDialog() = True Then
-					Modified = True
-					cbOfflineMode.IsChecked = True
-
-				End If
-			Finally
-				_metadataContainerCopy.EndUpdate()
-			End Try
 		End Sub
 
 		Private Sub UpdateMode()

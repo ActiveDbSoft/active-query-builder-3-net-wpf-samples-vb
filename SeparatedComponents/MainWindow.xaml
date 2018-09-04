@@ -63,7 +63,7 @@
                                                    BorderBrush="Gray" x:Name="databaseSchemaView1" Focusable="True"/>
         </Grid>
         <expressionEditor:SqlTextEditor Grid.Row="2"  Margin="4" Background="#404040" Foreground="White" Text="sqlTextEditor"
-                                        KeywordColor="Chartreuse"  NumberColor="Aqua" x:Name="sqlTextEditor" LostKeyboardFocus="SqlTextEditor_OnLostFocus" TextChanged="TextBox1_OnTextChanged" Height="150"/>
+                                        x:Name="sqlTextEditor" LostKeyboardFocus="SqlTextEditor_OnLostFocus" TextChanged="TextBox1_OnTextChanged" Height="150"/>
         <local:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"/>
     </Grid>
 </Window>

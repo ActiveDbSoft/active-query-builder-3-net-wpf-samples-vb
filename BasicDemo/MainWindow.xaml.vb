@@ -23,6 +23,7 @@ Imports System.Windows.Markup
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.WPF
+Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports BasicDemo.ConnectionWindow
 Imports BasicDemo.PropertiesForm
 Imports Microsoft.Win32
@@ -65,13 +66,15 @@ Partial Public Class MainWindow
         _saveFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
 
         sqlTextEditor1.QueryProvider = queryBuilder
+        sqlTextEditor1.ActiveUnionSubQuery = queryBuilder.ActiveUnionSubQuery
+        AddHandler queryBuilder.ActiveUnionSubQueryChanged, AddressOf ActiveUnionSubQueryChanged
 
         ' DEMO WARNING
         Dim trialNoticePanel As Border = New Border() With {
             .SnapsToDevicePixels = True,
             .BorderBrush = Brushes.Black,
             .BorderThickness = New Thickness(1),
-            .Background = Brushes.LightPink,
+            .Background = Brushes.LightGreen,
             .Padding = New Thickness(5),
             .Margin = New Thickness(0, 0, 0, 2)
         }
@@ -85,6 +88,10 @@ Partial Public Class MainWindow
 
         trialNoticePanel.Child = label
         GridRoot.Children.Add(trialNoticePanel)
+    End Sub
+
+    Private Sub ActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
+        sqlTextEditor1.ActiveUnionSubQuery = queryBuilder.ActiveUnionSubQuery
     End Sub
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)

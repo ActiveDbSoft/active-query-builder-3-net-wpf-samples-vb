@@ -79,6 +79,7 @@
       "projectStyle": "ProjectJson",
       "validateRuntimeAssets": true,
       "configFilePaths": [
+        "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\NuGet.Config",
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "sources": {

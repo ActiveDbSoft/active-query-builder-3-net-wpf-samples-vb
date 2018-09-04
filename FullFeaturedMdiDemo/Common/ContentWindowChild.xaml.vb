@@ -43,7 +43,6 @@ Namespace Common
 
         Public Property SqlContext As SQLContext
 
-
         Public Property QueryText() As String
             Get
                 Return SqlQuery.SQL
@@ -97,6 +96,11 @@ Namespace Common
             BoxSql.Query = SqlQuery
             BoxSqlCurrentSubQuery.Query = SqlQuery
 
+            BoxSql.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
+            BoxSqlCurrentSubQuery.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
+
+            AddHandler QueryView.ActiveUnionSubQueryChanged, ActiveUnionSubQueryChanged
+
             _transformerSql = New QueryTransformer()
 
             _timerStartingExecuteSql = New Timer(AddressOf TimerStartingExecuteSql_Elapsed)
@@ -136,6 +140,11 @@ Namespace Common
             UpdateStateButtons()
         End Sub
 
+        Private Function ActiveUnionSubQueryChanged() As EventHandler
+            BoxSql.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
+            BoxSqlCurrentSubQuery.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
+        End Function
+       
         Private Sub SqlQuery_SQLUpdated(sender As Object, e As EventArgs)
             IsModified = _sql <> QueryText
 
@@ -488,13 +497,11 @@ Namespace Common
                 Return
             End If
 
-            'var sql =  QBuilder.ActiveUnionSubQuery.GetResultSQL(_sqlFormattingOptions);
-            Dim sql As String = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(SqlFormattingOptions)
-
             _transformerSql.Query = New SQLQuery(QueryView.ActiveUnionSubQuery.SQLContext) With {
-                .SQL = sql
+                .SQL = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetSqlForDataPreview()
             }
 
+            Dim sql As String = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(SqlFormattingOptions)
             BoxSqlCurrentSubQuery.Text = sql
         End Sub
 
