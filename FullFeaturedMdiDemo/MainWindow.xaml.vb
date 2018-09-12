@@ -80,40 +80,42 @@ Partial Public Class MainWindow
         menuItem.IsChecked = True
 
         ' DEMO WARNING
-        Dim trialNoticePanel As Border = New Border() With {
-            .BorderBrush = Brushes.Black,
-            .BorderThickness = New Thickness(1),
-            .Background = Brushes.LightGreen,
-            .Padding = New Thickness(5),
-            .Margin = New Thickness(0, 0, 0, 2)
-        }
-        trialNoticePanel.SetValue(Grid.RowProperty, 1)
-
-        Dim label As TextBlock = New TextBlock() With {
-            .Text = "Generation of random aliases for the query output columns is the limitation of the trial version. The full version is free from this behavior.",
-            .HorizontalAlignment = HorizontalAlignment.Left,
-            .VerticalAlignment = VerticalAlignment.Top
-        }
-
-        Dim button As Button = New Button() With {
-            .Background = Brushes.Transparent,
-            .Padding = New Thickness(0),
-            .BorderThickness = New Thickness(0),
-            .Cursor = Cursors.Hand,
-            .Margin = New Thickness(0, 0, 5, 0),
-            .HorizontalAlignment = HorizontalAlignment.Right,
-            .VerticalAlignment = VerticalAlignment.Center,
-            .Content = New Image() With {
-                .Source = WPF.Helpers.GetImageSource(cancel),
-                .Stretch = Stretch.None
+        If ActiveQueryBuilder.Core.BuildInfo.GetEdition() = ActiveQueryBuilder.Core.BuildInfo.Edition.Trial Then
+            Dim trialNoticePanel As Border = New Border() With {
+                .BorderBrush = Brushes.Black,
+                .BorderThickness = New Thickness(1),
+                .Background = Brushes.LightGreen,
+                .Padding = New Thickness(5),
+                .Margin = New Thickness(0, 0, 0, 2)
             }
-        }
+            trialNoticePanel.SetValue(Grid.RowProperty, 1)
 
-        AddHandler button.Click, Sub() GridRoot.Visibility = Visibility.Collapsed
+            Dim label As TextBlock = New TextBlock() With {
+                .Text = "Generation of random aliases for the query output columns is the limitation of the trial version. The full version is free from this behavior.",
+                .HorizontalAlignment = HorizontalAlignment.Left,
+                .VerticalAlignment = VerticalAlignment.Top
+            }
 
-        trialNoticePanel.Child = label
-        GridRoot.Children.Add(trialNoticePanel)
-        GridRoot.Children.Add(button)
+            Dim button As Button = New Button() With {
+                .Background = Brushes.Transparent,
+                .Padding = New Thickness(0),
+                .BorderThickness = New Thickness(0),
+                .Cursor = Cursors.Hand,
+                .Margin = New Thickness(0, 0, 5, 0),
+                .HorizontalAlignment = HorizontalAlignment.Right,
+                .VerticalAlignment = VerticalAlignment.Center,
+                .Content = New Image() With {
+                    .Source = WPF.Helpers.GetImageSource(cancel),
+                    .Stretch = Stretch.None
+                }
+            }
+
+            AddHandler button.Click, Sub() GridRoot.Visibility = Visibility.Collapsed
+
+            trialNoticePanel.Child = label
+            GridRoot.Children.Add(trialNoticePanel)
+            GridRoot.Children.Add(button)
+        End If
     End Sub
 
     Private Sub MdiContainer1_ActiveWindowChanged(sender As Object, args As EventArgs)
