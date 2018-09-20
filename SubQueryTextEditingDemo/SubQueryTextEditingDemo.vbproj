@@ -40,16 +40,16 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ActiveQueryBuilder.Core">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.2.1105\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.3.1106\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.MSSQLMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.MSSQLMetadataProvider.3.5.2.1105\lib\net\ActiveQueryBuilder.MSSQLMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.MSSQLMetadataProvider.3.5.3.1106\lib\net\ActiveQueryBuilder.MSSQLMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.2.1105\lib\net\ActiveQueryBuilder.View.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.3.1106\lib\net\ActiveQueryBuilder.View.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View.WPF">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.2.1105\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.3.1106\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
 	</Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
