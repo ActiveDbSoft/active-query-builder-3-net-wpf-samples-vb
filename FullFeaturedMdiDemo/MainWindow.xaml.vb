@@ -302,6 +302,7 @@ Partial Public Class MainWindow
 
             QueriesView.SQLContext = _sqlContext
             QueriesView.SQLQuery = New SQLQuery(_sqlContext)
+            QueriesView.Initialize()
 
             If MdiContainer1.Children.Count > 0 Then
                 For Each mdiChildWindow As ChildWindow In MdiContainer1.Children.ToList()
