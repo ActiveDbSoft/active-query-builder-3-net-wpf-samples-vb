@@ -1,7 +1,7 @@
 ﻿'*******************************************************************'
 '       Active Query Builder Component Suite                        '
 '                                                                   '
-'       Copyright © 2006-2018 Active Database Software              '
+'       Copyright © 2006-2019 Active Database Software              '
 '       ALL RIGHTS RESERVED                                         '
 '                                                                   '
 '       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
@@ -12,10 +12,8 @@ Imports System.Data
 Imports System.Data.Common
 Imports System.Data.SqlClient
 Imports System.Linq
-Imports System.Reflection
 Imports System.Windows
 Imports System.Windows.Controls
-Imports System.Windows.Markup
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
 
@@ -89,24 +87,6 @@ Namespace Common
 
                 Return table.DefaultView
             End Using
-        End Function
-
-        Public Shared Function GetLocalizedText(text As String, lang As XmlLanguage) As String
-            If String.IsNullOrWhiteSpace(text) Then
-                Return text
-            End If
-
-            Dim properties As FieldInfo() = GetType(Constants).GetFields()
-
-            Dim [property] As FieldInfo = properties.FirstOrDefault(Function(prop) prop.Name = text)
-
-            If [property] Is Nothing Then
-                Return text
-            End If
-
-            Dim constValue As String = [property].GetValue(Nothing).ToString()
-
-            Return ActiveQueryBuilder.Core.Helpers.Localizer.GetString([property].Name, ActiveQueryBuilder.View.WPF.Helpers.ConvertLanguageFromNative(lang), constValue)
         End Function
     End Class
 

@@ -47,8 +47,8 @@
                     <TextBlock Text="SQL Builder Options" Style="{StaticResource StyleHeaderCaptionTree}"/>
                     <TextBlock Style="{StaticResource StyleItemTree}" Text="General" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkGeneral"/>
                     <TextBlock Style="{StaticResource StyleItemTree}" Text="Main Query" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkMainQuery"/>
-                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Derieved Queries" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkDerievedQueries"/>
-                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Expression Subqeries" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkExpressionSubqueries"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Derived Queries" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkDerievedQueries"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Expression Subqueries" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkExpressionSubqueries"/>
                 </StackPanel>
                 <Border Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" BorderThickness="0,0,1,0" BorderBrush="Gray" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" Margin="0,10"/>
                 <Grid Grid.Column="1" x:Name="panelPages"/>

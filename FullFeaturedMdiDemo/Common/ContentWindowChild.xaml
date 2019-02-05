@@ -102,19 +102,21 @@
                             </queryView:QueryView.ExpressionEditor>
 
                             <dockManager:DockManager Grid.Row="0">
-                                <dockManager:DockPanel Title="strPropertiesBarCaption" x:Name="DockPanelPropertiesBar" Position="Right">
-                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                        <queryView:PropertiesBar/>
-                                    </ScrollViewer>
-                                </dockManager:DockPanel>
+                                <dockManager:DockManager.DockPanels>
+                                    <dockManager:DockPanel Title="Properties" x:Name="DockPanelPropertiesBar" Position="Right">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                            <queryView:PropertiesBar/>
+                                        </ScrollViewer>
+                                    </dockManager:DockPanel>
+
+                                    <dockManager:DockPanel Title="SubQuery Structure" x:Name="DockPanelSubQueryNavBar" Position="Left">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                            <navigationBar:SubQueryNavBar/>
+                                        </ScrollViewer>
+                                    </dockManager:DockPanel>
+                                </dockManager:DockManager.DockPanels>
 
                                 <queryView:DesignPaneControl x:Name="DPaneControl"/>
-
-                                <dockManager:DockPanel Title="strSubQueryStructureBarCaption" x:Name="DockPanelSubQueryNavBar" Position="Left">
-                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                        <navigationBar:SubQueryNavBar/>
-                                    </ScrollViewer>
-                                </dockManager:DockPanel>
                             </dockManager:DockManager>
 
                             <GridSplitter Grid.Row="1" VerticalAlignment="Top" Margin="0,0,0,0" Height="2"  HorizontalAlignment="Stretch"  Background="Transparent" Style="{x:Null}" Panel.ZIndex="9999"/>
@@ -150,7 +152,7 @@
                                          x:Name="BoxSql" 
                                          Background="#535353" 
                                          Foreground="White" 
-                                         TextPadding="5,5,0,0"
+                                         Padding="5"
                                          FontFamily="Courier New"
                                          LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
                                          TextChanged="BoxSql_OnTextChanged"/>
@@ -175,7 +177,7 @@
                                         LostKeyboardFocus="BoxSqlCurrentSubQuery_OnLostKeyboardFocus" 
                                         Background="#535353" 
                                         Foreground="White" 
-                                        TextPadding="5,5,0,0"
+                                        Padding="5"
                                         FontFamily="Courier New"
                                         TextChanged="BoxSql_OnTextChanged">
                                         </expressionEditor:SqlTextEditor>

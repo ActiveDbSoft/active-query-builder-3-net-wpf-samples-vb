@@ -38,16 +38,16 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ActiveQueryBuilder.Core">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.8.1115\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.12.1119\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.EventMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.8.1115\lib\net\ActiveQueryBuilder.EventMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.12.1119\lib\net\ActiveQueryBuilder.EventMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.8.1115\lib\net\ActiveQueryBuilder.View.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.12.1119\lib\net\ActiveQueryBuilder.View.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View.WPF">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.8.1115\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.12.1119\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
 	</Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />

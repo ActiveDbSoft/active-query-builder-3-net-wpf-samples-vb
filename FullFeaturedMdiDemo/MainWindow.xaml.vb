@@ -1,7 +1,7 @@
 ﻿'*******************************************************************'
 '       Active Query Builder Component Suite                        '
 '                                                                   '
-'       Copyright © 2006-2018 Active Database Software              '
+'       Copyright © 2006-2019 Active Database Software              '
 '       ALL RIGHTS RESERVED                                         '
 '                                                                   '
 '       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
@@ -650,7 +650,7 @@ Partial Public Class MainWindow
         MdiContainer1.Children.Add(window)
         MdiContainer1.ActiveChild = window
 
-        window.QueryText = DirectCast(e.MetadataStructureItem.MetadataItem, MetadataObject).Expression.Trim("("c, ")"c)
+        window.QueryText = DirectCast(e.MetadataStructureItem.MetadataItem, MetadataObject).Expression
     End Sub
 
     Private Sub Window_SaveQueryEvent(sender As Object, e As EventArgs)
@@ -745,7 +745,7 @@ Partial Public Class MainWindow
             Return
         End If
 
-        UserQueries.SaveUserQuery(childWindow.SqlQuery.SQLContext.MetadataContainer, childWindow.UserMetadataStructureItem, "(" & childWindow.QueryText & ")", ActiveQueryBuilder.View.Helpers.GetLayout(childWindow.SqlQuery.QueryRoot))
+        UserQueries.SaveUserQuery(childWindow.SqlQuery.SQLContext.MetadataContainer, childWindow.UserMetadataStructureItem, childWindow.FormattedQueryText, ActiveQueryBuilder.View.Helpers.GetLayout(childWindow.SqlQuery.QueryRoot))
 
         childWindow.IsModified = False
         SaveSettings()
@@ -783,7 +783,7 @@ Partial Public Class MainWindow
                 atItem = atItem.Parent
             End If
 
-            newItem = UserQueries.AddUserQuery(childWindow.SqlQuery.SQLContext.MetadataContainer, atItem, title, "(" & childWindow.SqlQuery.SQL & ")", CInt(DefaultImageListImageIndices.VirtualObject), ActiveQueryBuilder.View.Helpers.GetLayout(childWindow.SqlQuery.QueryRoot))
+            newItem = UserQueries.AddUserQuery(childWindow.SqlQuery.SQLContext.MetadataContainer, atItem, title, childWindow.FormattedQueryText, CInt(DefaultImageListImageIndices.VirtualObject), ActiveQueryBuilder.View.Helpers.GetLayout(childWindow.SqlQuery.QueryRoot))
 
 
             Exit Do
@@ -877,7 +877,7 @@ Partial Public Class MainWindow
         MdiContainer1.Children.Add(window)
         MdiContainer1.ActiveChild = window
 
-        window.QueryText = DirectCast(QueriesView.SelectedItem.MetadataItem, MetadataObject).Expression.Trim("("c, ")"c)
+        window.QueryText = DirectCast(QueriesView.SelectedItem.MetadataItem, MetadataObject).Expression
         window.OpenExecuteTab()
     End Sub
 
