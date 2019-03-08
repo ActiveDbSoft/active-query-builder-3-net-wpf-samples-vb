@@ -258,8 +258,6 @@ Partial Public Class MainWindow
         queryBuilder.MetadataProvider = _mssqlMetadataProvider1
         queryBuilder.SyntaxProvider = _mssqlSyntaxProvider1
 
-        queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = 1
-
         ' kick the query builder to fill metadata tree
         queryBuilder.InitializeDatabaseSchemaTree()
     End Sub
@@ -284,8 +282,6 @@ Partial Public Class MainWindow
         ' setup the query builder with metadata and syntax providers
         queryBuilder.MetadataProvider = _oledbMetadataProvider1
         queryBuilder.SyntaxProvider = _msaccessSyntaxProvider1
-
-        queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = 0
 
         ' kick the query builder to fill metadata tree
         queryBuilder.InitializeDatabaseSchemaTree()
@@ -313,8 +309,6 @@ Partial Public Class MainWindow
         queryBuilder.MetadataProvider = _oracleMetadataProvider1
         queryBuilder.SyntaxProvider = _oracleSyntaxProvider1
 
-        queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = 1
-
         ' kick the query builder to fill metadata tree
         queryBuilder.InitializeDatabaseSchemaTree()
     End Sub
@@ -339,8 +333,6 @@ Partial Public Class MainWindow
         ' setup the query builder with metadata and syntax providers
         queryBuilder.MetadataProvider = _oledbMetadataProvider1
         queryBuilder.SyntaxProvider = _genericSyntaxProvider1
-
-        queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = 1
 
         ' kick the query builder to fill metadata tree
         queryBuilder.InitializeDatabaseSchemaTree()
@@ -369,8 +361,6 @@ Partial Public Class MainWindow
         ' setup the query builder with metadata and syntax providers
         queryBuilder.MetadataProvider = _odbcMetadataProvider1
         queryBuilder.SyntaxProvider = _genericSyntaxProvider1
-
-        queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = 1
 
         ' kick the query builder to fill metadata tree
         queryBuilder.InitializeDatabaseSchemaTree()
@@ -417,8 +407,6 @@ Partial Public Class MainWindow
         Dim viewResellers As MetadataObject = schema.AddView("Resellers")
         viewResellers.AddField("ResellerID")
         viewResellers.AddField("ResellerName")
-
-        queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = 1
 
         ' kick the query builder to fill metadata tree
         queryBuilder.InitializeDatabaseSchemaTree()

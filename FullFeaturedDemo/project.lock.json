@@ -172,6 +172,7 @@
       "type": "package",
       "path": "mysql.data/6.9.12",
       "files": [
+        ".nupkg.metadata",
         "CHANGES",
         "Readme.txt",
         "content/app.config.transform",
@@ -187,6 +188,7 @@
       "type": "package",
       "path": "npgsql/3.2.6",
       "files": [
+        ".nupkg.metadata",
         "lib/net45/Npgsql.dll",
         "lib/net45/Npgsql.xml",
         "lib/net451/Npgsql.dll",
@@ -204,6 +206,7 @@
       "type": "package",
       "path": "oracle.manageddataaccess/12.2.1100",
       "files": [
+        ".nupkg.metadata",
         "bin/x64/Oracle.ManagedDataAccessDTC.dll",
         "bin/x64/Oracle.ManagedDataAccessIOP.dll",
         "bin/x86/Oracle.ManagedDataAccessDTC.dll",
@@ -226,6 +229,7 @@
       "type": "package",
       "path": "system.threading.tasks.extensions/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "System.Threading.Tasks.Extensions.4.3.0.nupkg.sha512",
         "System.Threading.Tasks.Extensions.nuspec",
         "ThirdPartyNotices.txt",
@@ -255,7 +259,6 @@
       "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
       "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\project.json",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\obj\\",
       "projectStyle": "ProjectJson",
       "validateRuntimeAssets": true,
       "configFilePaths": [

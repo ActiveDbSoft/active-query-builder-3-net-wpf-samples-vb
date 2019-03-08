@@ -41,6 +41,7 @@
       "type": "package",
       "path": "oracle.manageddataaccess/12.2.1100",
       "files": [
+        ".nupkg.metadata",
         "bin/x64/Oracle.ManagedDataAccessDTC.dll",
         "bin/x64/Oracle.ManagedDataAccessIOP.dll",
         "bin/x86/Oracle.ManagedDataAccessDTC.dll",
@@ -75,7 +76,6 @@
       "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\BasicDemo.vbproj",
       "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\project.json",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\BasicDemo_pro\\obj\\",
       "projectStyle": "ProjectJson",
       "validateRuntimeAssets": true,
       "configFilePaths": [

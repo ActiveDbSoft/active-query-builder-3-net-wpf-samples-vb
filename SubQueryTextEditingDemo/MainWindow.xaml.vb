@@ -59,7 +59,6 @@ End Sub, Action))
 			Builder.MetadataContainer.LoadingOptions.OfflineMode = True
 			Builder.MetadataContainer.ImportFromXML("Northwind.xml")
 
-			Builder.DatabaseSchemaViewOptions.DefaultExpandLevel = 2
 			Builder.InitializeDatabaseSchemaTree()
 
 			TextEditor.QueryProvider = Builder
