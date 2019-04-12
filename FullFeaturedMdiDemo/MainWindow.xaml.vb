@@ -35,6 +35,7 @@ Imports Helpers = ActiveQueryBuilder.Core.Helpers
 Imports ActiveQueryBuilder.View.EventHandlers.MetadataStructureItems
 Imports System.Text.RegularExpressions
 Imports System.Windows.Media
+Imports ActiveQueryBuilder.View.WPF
 
 ''' <summary>
 ''' Interaction logic for MainWindow.xaml
@@ -538,18 +539,6 @@ Partial Public Class MainWindow
 
     End Sub
 
-    Private Sub MenuItem_RefreashMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        If _sqlContext.MetadataProvider IsNot Nothing AndAlso _sqlContext.MetadataProvider.Connected Then
-            ' to refresh metadata, just clear already loaded items
-            _sqlContext.MetadataContainer.Clear()
-        End If
-    End Sub
-
-    Private Sub MenuItem_ClearMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        ' to refresh metadata, just clear already loaded items
-        _sqlContext.MetadataContainer.Clear()
-    End Sub
-
     Private Sub MenuItem_LoadMetadata_OnClick(sender As Object, e As RoutedEventArgs)
         Dim fileDialog As OpenFileDialog = New OpenFileDialog() With {
             .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
@@ -888,4 +877,27 @@ Partial Public Class MainWindow
         target = value
         Return value
     End Function
+
+    Private Sub MenuItemEditMetadata_OnClick(sender As Object, e As RoutedEventArgs)
+        If _sqlContext Is Nothing Then Return
+
+        QueryBuilder.EditMetadataContainer(_sqlContext)
+    End Sub
+
+    Private Sub MenuItem_RefreshMetadata_OnClick(sender As Object, e As RoutedEventArgs)
+        If _sqlContext.MetadataProvider Is Nothing OrElse Not _sqlContext.MetadataProvider.Connected OrElse _sqlContext Is Nothing Then
+            Return
+        End If
+
+        ' to refresh metadata, just clear already loaded items
+        _sqlContext.MetadataContainer.Clear()
+        _sqlContext.MetadataContainer.LoadAll(True)
+        DatabaseSchemaView1.InitializeDatabaseSchemaTree()
+    End Sub
+
+    Private Sub MenuItem_ClearMetadata_OnClick(sender As Object, e As RoutedEventArgs)
+        If _sqlContext Is Nothing Then Return
+
+        _sqlContext.MetadataContainer.Clear()
+    End Sub
 End Class

@@ -133,7 +133,8 @@
 
                 <Separator/>
 
-                <MenuItem Header="Refresh Metadata" FontWeight="Normal" Click="MenuItem_RefreashMetadata_OnClick"/>
+                <MenuItem Header="Refresh Metadata" FontWeight="Normal" Click="MenuItem_RefreshMetadata_OnClick"/>
+                <MenuItem Header="Edit Metadata" x:Name="MenuItemEditMetadata"  FontWeight="Normal" Click="MenuItemEditMetadata_OnClick"/>
                 <MenuItem Header="Clear Metadata" FontWeight="Normal" Click="MenuItem_ClearMetadata_OnClick"/>
 
                 <Separator/>

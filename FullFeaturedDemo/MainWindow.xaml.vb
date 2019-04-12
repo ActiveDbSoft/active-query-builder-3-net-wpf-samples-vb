@@ -33,6 +33,7 @@ Imports Microsoft.Win32
 
 Imports System.Text.RegularExpressions
 Imports System.Windows.Media
+Imports ActiveQueryBuilder.View.WPF
 Imports MySql.Data.MySqlClient
 Imports Npgsql
 
@@ -71,7 +72,7 @@ Partial Public Class MainWindow
 
         Dim defLang As String = "en"
 
-        If Helpers.Localizer.Languages.Contains(currentLang.ToLower()) Then
+        If ActiveQueryBuilder.Core.Helpers.Localizer.Languages.Contains(currentLang.ToLower()) Then
             Language = XmlLanguage.GetLanguage(currentLang)
             defLang = currentLang.ToLower()
         End If
@@ -140,7 +141,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub LoadLanguage()
-        For Each language As String In Helpers.Localizer.Languages
+        For Each language As String In ActiveQueryBuilder.Core.Helpers.Localizer.Languages
             If language.ToLower() = "auto" OrElse language.ToLower() = "default" Then
                 Continue For
             End If
@@ -236,18 +237,18 @@ Partial Public Class MainWindow
         Try
             QBuilder.Clear()
 
-            Dim metadataProvaider As BaseMetadataProvider = Nothing
+            Dim metadataProvider As BaseMetadataProvider = Nothing
 
             ' create new SqlConnection object using the connections string from the connection form
             If Not _selectedConnection.IsXmlFile Then
                 Select Case _selectedConnection.ConnectionType
                     Case ConnectionTypes.MSSQL
-                        metadataProvaider = New MSSQLMetadataProvider() With {
+                        metadataProvider = New MSSQLMetadataProvider() With {
                             .Connection = New SqlConnection(_selectedConnection.ConnectionString)
                         }
                         Exit Select
                     Case ConnectionTypes.MSAccess
-                        metadataProvaider = New OLEDBMetadataProvider() With {
+                        metadataProvider = New OLEDBMetadataProvider() With {
                             .Connection = New OleDbConnection(_selectedConnection.ConnectionString)
                         }
                         Exit Select
@@ -256,27 +257,27 @@ Partial Public Class MainWindow
                         ' current version uses Oracle.ManagedDataAccess.Client which doesn't support "Integrated Security" setting
                         Dim updatedConnectionString As String = Regex.Replace(_selectedConnection.ConnectionString, "Integrated Security=.*?;", "")
 
-                        metadataProvaider = New OracleNativeMetadataProvider() With {
+                        metadataProvider = New OracleNativeMetadataProvider() With {
                             .Connection = New OracleConnection(updatedConnectionString)
                         }
                         Exit Select
                     Case ConnectionTypes.MySQL
-                        metadataProvaider = New MySQLMetadataProvider() With {
+                        metadataProvider = New MySQLMetadataProvider() With {
                             .Connection = New MySqlConnection(_selectedConnection.ConnectionString)
                         }
                         Exit Select
                     Case ConnectionTypes.PostgreSQL
-                        metadataProvaider = New PostgreSQLMetadataProvider() With {
+                        metadataProvider = New PostgreSQLMetadataProvider() With {
                             .Connection = New NpgsqlConnection(_selectedConnection.ConnectionString)
                         }
                         Exit Select
                     Case ConnectionTypes.OLEDB
-                        metadataProvaider = New OLEDBMetadataProvider() With {
+                        metadataProvider = New OLEDBMetadataProvider() With {
                             .Connection = New OleDbConnection(_selectedConnection.ConnectionString)
                         }
                         Exit Select
                         Case ConnectionTypes.ODBC
-                        metadataProvaider = New ODBCMetadataProvider() With {
+                        metadataProvider = New ODBCMetadataProvider() With {
                             .Connection = New OdbcConnection(_selectedConnection.ConnectionString)
                         }
                         Exit Select
@@ -288,11 +289,11 @@ Partial Public Class MainWindow
 
             ' setup the query builder with metadata and syntax providers
             QBuilder.SQLContext.MetadataContainer.Clear()
-            QBuilder.MetadataProvider = metadataProvaider
+            QBuilder.MetadataProvider = metadataProvider
             QBuilder.SyntaxProvider = _selectedConnection.SyntaxProvider
-            QBuilder.MetadataLoadingOptions.OfflineMode = metadataProvaider Is Nothing
+            QBuilder.MetadataLoadingOptions.OfflineMode = metadataProvider Is Nothing
 
-            If metadataProvaider Is Nothing Then
+            If metadataProvider Is Nothing Then
                 QBuilder.MetadataContainer.ImportFromXML(_selectedConnection.ConnectionString)
             End If
 
@@ -542,7 +543,7 @@ Partial Public Class MainWindow
         QBuilder.MetadataContainer.LoadingOptions.OfflineMode = menuItem.IsChecked
     End Sub
 
-    Private Sub MenuItem_RefreashMetadata_OnClick(sender As Object, e As RoutedEventArgs)
+    Private Sub MenuItem_RefreshMetadata_OnClick(sender As Object, e As RoutedEventArgs)
         If QBuilder.SQLContext.MetadataProvider IsNot Nothing AndAlso QBuilder.SQLContext.MetadataProvider.Connected Then
             ' Force the query builder to refresh metadata from current connection
             ' to refresh metadata, just clear MetadataContainer and reinitialize metadata tree
@@ -556,7 +557,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub MenuItem_LoadMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim fileDialog = New OpenFileDialog() With {
+        Dim fileDialog As OpenFileDialog = New OpenFileDialog() With {
             .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
         }
 
@@ -632,7 +633,7 @@ Partial Public Class MainWindow
 
         SetSqlTextCurrentSubQuery()
 
-        If Not TabItemFastResult.IsSelected OrElse CheckBoxAutoRefreash.IsChecked = False Then
+        If Not TabItemFastResult.IsSelected OrElse CheckBoxAutoRefresh.IsChecked = False Then
             Return
         End If
 
@@ -750,22 +751,22 @@ Partial Public Class MainWindow
         If ErrorBox.Visibility = Visibility.Visible Then
             ErrorBox.Visibility = Visibility.Collapsed
         End If
-        If Not e.AddedItems.Contains(TabItemFastResult) OrElse _transformerSql.Query Is Nothing OrElse CheckBoxAutoRefreash.IsChecked = False Then
+        If Not e.AddedItems.Contains(TabItemFastResult) OrElse _transformerSql.Query Is Nothing OrElse CheckBoxAutoRefresh.IsChecked = False Then
             Return
         End If
 
         FillFastResult()
     End Sub
 
-    Private Sub ButtonRefreashFastResult_OnClick(sender As Object, e As RoutedEventArgs)
+    Private Sub ButtonRefreshFastResult_OnClick(sender As Object, e As RoutedEventArgs)
         FillFastResult()
     End Sub
 
-    Private Sub CheckBoxAutoRefreash_OnChecked(sender As Object, e As RoutedEventArgs)
-        If ButtonRefreashFastResult Is Nothing OrElse CheckBoxAutoRefreash Is Nothing Then
+    Private Sub CheckBoxAutoRefresh_OnChecked(sender As Object, e As RoutedEventArgs)
+        If ButtonRefreshFastResult Is Nothing OrElse CheckBoxAutoRefresh Is Nothing Then
             Return
         End If
-        ButtonRefreashFastResult.IsEnabled = CheckBoxAutoRefreash.IsChecked = False
+        ButtonRefreshFastResult.IsEnabled = CheckBoxAutoRefresh.IsChecked = False
     End Sub
 
     Private Sub CloseImage_OnMouseUp(sender As Object, e As MouseButtonEventArgs)
@@ -802,4 +803,8 @@ Partial Public Class MainWindow
         target = value
         Return value
     End Function
+
+    Private Sub MenuItemEditMetadata_OnClick(sender As Object, e As RoutedEventArgs)
+        QueryBuilder.EditMetadataContainer(QBuilder.SQLContext)
+    End Sub
 End Class

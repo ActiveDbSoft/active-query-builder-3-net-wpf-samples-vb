@@ -8,10 +8,10 @@
         xmlns:common="clr-namespace:FullFeaturedDemo.Common"
         xmlns:fullFeaturedDemo="clr-namespace:FullFeaturedDemo"
         mc:Ignorable="d"
-        Title="Active Query Builder for .NET Standart WPF Edition - Full Featured Demo (VB)" Height="680" Width="840" Icon="Resources/App.ico">
+        Title="Active Query Builder for .NET Standard WPF Edition - Full Featured Demo (VB)" Height="680" Width="840" Icon="Resources/App.ico">
 
     <Window.Resources>
-        <Style TargetType="MenuItem" x:Key="MenuItemSyleCustom">
+        <Style TargetType="MenuItem" x:Key="MenuItemStyleCustom">
             <Setter Property="Padding" Value="0"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
@@ -80,20 +80,20 @@
                 <MenuItem Header="Exit" Command="Close"/>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="Undo" InputGestureText="Ctrl+Z" Command="Undo" x:Name="MenuItemUndo" Style="{StaticResource MenuItemSyleCustom}"/>
-                <MenuItem Header="Redo" InputGestureText="Ctrl+Y" Command="Redo" x:Name="MenuItemRedo" Style="{StaticResource MenuItemSyleCustom}"/>
+                <MenuItem Header="Undo" InputGestureText="Ctrl+Z" Command="Undo" x:Name="MenuItemUndo" Style="{StaticResource MenuItemStyleCustom}"/>
+                <MenuItem Header="Redo" InputGestureText="Ctrl+Y" Command="Redo" x:Name="MenuItemRedo" Style="{StaticResource MenuItemStyleCustom}"/>
                 <Separator/>
-                <MenuItem Header="Cut" InputGestureText="Ctrl+X" Command="Cut" x:Name="MenuItemCut" Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Cut" InputGestureText="Ctrl+X" Command="Cut" x:Name="MenuItemCut" Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/cut.ico" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="Copy" x:Name="MenuItemCopy" Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="Copy" x:Name="MenuItemCopy" Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/page_copy.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Paste" InputGestureText="Ctrl+V" Command="Paste" x:Name="MenuItemPaste" Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Paste" InputGestureText="Ctrl+V" Command="Paste" x:Name="MenuItemPaste" Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/page_paste.png"/>
                     </MenuItem.Icon>
@@ -102,22 +102,22 @@
                 <MenuItem Header="Select All" x:Name="MenuItemSelectAll" Command="SelectAll"/>
             </MenuItem>
             <MenuItem Header="Query">
-                <MenuItem Header="Add derived table" x:Name="MenuItemQueryAddDerived" Click="MenuItemQueryAddDerived_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Add derived table" x:Name="MenuItemQueryAddDerived" Click="MenuItemQueryAddDerived_OnClick"  Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/add_derived_table.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Add Object" x:Name="MenuItemAddObject"  Click="MenuItemAddObject_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Add Object" x:Name="MenuItemAddObject"  Click="MenuItemAddObject_OnClick"  Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/new_object.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Add union sub-query" x:Name="MenuItemAddUnionSq"  Click="MenuItemAddUnionSq_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Add union sub-query" x:Name="MenuItemAddUnionSq"  Click="MenuItemAddUnionSq_OnClick"  Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/add_union_subquery.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Copy union sub-query" x:Name="MenuItemCopyUnionSq"  Click="MenuItemCopyUnionSq_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Copy union sub-query" x:Name="MenuItemCopyUnionSq"  Click="MenuItemCopyUnionSq_OnClick"  Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/copy_union_subquery.png"/>
                     </MenuItem.Icon>
@@ -125,7 +125,7 @@
 
                 <Separator/>
 
-                <MenuItem Header="Properties" x:Name="MenuItemProp" Click="MenuItemProp_OnClick"  Style="{StaticResource MenuItemSyleCustom}">
+                <MenuItem Header="Properties" x:Name="MenuItemProp" Click="MenuItemProp_OnClick"  Style="{StaticResource MenuItemStyleCustom}">
                     <MenuItem.Icon>
                         <Image Source="Resources/query_properties.png"/>
                     </MenuItem.Icon>
@@ -137,7 +137,8 @@
 
                 <Separator/>
 
-                <MenuItem Header="Refresh Metadata" FontWeight="Normal" Click="MenuItem_RefreashMetadata_OnClick"/>
+                <MenuItem Header="Refresh Metadata" FontWeight="Normal" Click="MenuItem_RefreshMetadata_OnClick"/>
+                <MenuItem Header="Edit Metadata" x:Name="MenuItemEditMetadata"  FontWeight="Normal" Click="MenuItemEditMetadata_OnClick"/>
                 <MenuItem Header="Clear Metadata" FontWeight="Normal" Click="MenuItem_ClearMetadata_OnClick"/>
 
                 <Separator/>
@@ -184,7 +185,7 @@
                     <Image Source="Resources/folder_page.ico" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="" x:Name="MenuItemSaveIco" ToolTip="Save the current query" Command="Save" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+            <MenuItem Header="" x:Name="MenuItemSaveIco" ToolTip="Save the current query" Command="Save" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False">
                 <MenuItem.Icon>
                     <Image Source="Resources/disk.ico"/>
                 </MenuItem.Icon>
@@ -192,29 +193,29 @@
 
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 
-            <MenuItem Header="" Command="Cut" x:Name="MenuItemCutIco" ToolTip="Cut" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+            <MenuItem Header="" Command="Cut" x:Name="MenuItemCutIco" ToolTip="Cut" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False">
                 <MenuItem.Icon>
                     <Image Source="Resources/cut.ico" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="" Command="Copy" x:Name="MenuItemCopyIco" ToolTip="Copy" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+            <MenuItem Header="" Command="Copy" x:Name="MenuItemCopyIco" ToolTip="Copy" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False">
                 <MenuItem.Icon>
                     <Image Source="Resources/page_copy.png"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="" Command="Paste" x:Name="MenuItemPasteIco" ToolTip="Paste" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False">
+            <MenuItem Header="" Command="Paste" x:Name="MenuItemPasteIco" ToolTip="Paste" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False">
                 <MenuItem.Icon>
                     <Image Source="Resources/page_paste.png"/>
                 </MenuItem.Icon>
             </MenuItem>
 
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            <MenuItem Header="" x:Name="MenuItemQueryProperties" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "Properties" Click="MenuItemProperties_OnClick">
+            <MenuItem Header="" x:Name="MenuItemQueryProperties" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False" ToolTip = "Properties" Click="MenuItemProperties_OnClick">
                 <MenuItem.Icon>
                     <Image Source="Resources/query_properties.png"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="" x:Name="MenuItemNewObject" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False"  ToolTip = "Add object" Click="MenuItemAddObject_OnClick">
+            <MenuItem Header="" x:Name="MenuItemNewObject" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False"  ToolTip = "Add object" Click="MenuItemAddObject_OnClick">
                 <MenuItem.Icon>
                     <Image Source="Resources/new_object.png"/>
                 </MenuItem.Icon>
@@ -222,17 +223,17 @@
 
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 
-            <MenuItem Header="" x:Name="MenuItemAddDerivedTable" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "Add derived table" Click="MenuItemQueryAddDerived_OnClick">
+            <MenuItem Header="" x:Name="MenuItemAddDerivedTable" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False" ToolTip = "Add derived table" Click="MenuItemQueryAddDerived_OnClick">
                 <MenuItem.Icon>
                     <Image Source="Resources/add_derived_table.png"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="" x:Name="MenuItemAddUnionSubquery" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "New union sub-query" Click="MenuItemAddUnionSq_OnClick">
+            <MenuItem Header="" x:Name="MenuItemAddUnionSubquery" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False" ToolTip = "New union sub-query" Click="MenuItemAddUnionSq_OnClick">
                 <MenuItem.Icon>
                     <Image Source="Resources/add_union_subquery.png"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="" x:Name="MenuItemCopyUnionSubquery" Style="{StaticResource MenuItemSyleCustom}" IsEnabled="False" ToolTip = "Copy union sub-query" Click="MenuItemCopyUnionSq_OnClick">
+            <MenuItem Header="" x:Name="MenuItemCopyUnionSubquery" Style="{StaticResource MenuItemStyleCustom}" IsEnabled="False" ToolTip = "Copy union sub-query" Click="MenuItemCopyUnionSq_OnClick">
                 <MenuItem.Icon>
                     <Image Source="Resources/copy_union_subquery.png"/>
                 </MenuItem.Icon>
@@ -356,9 +357,9 @@
                                     </Border>
 
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0">
-                                        <CheckBox VerticalAlignment="Center" Content="Auto-refresh preview" Margin="0,0,10,0" x:Name="CheckBoxAutoRefreash"
-                                              Checked="CheckBoxAutoRefreash_OnChecked" Unchecked="CheckBoxAutoRefreash_OnChecked" IsChecked="True"/>
-                                        <Button Content="Refresh" Padding="10,2" x:Name="ButtonRefreashFastResult" Click="ButtonRefreashFastResult_OnClick" IsEnabled="False"/>
+                                        <CheckBox VerticalAlignment="Center" Content="Auto-refresh preview" Margin="0,0,10,0" x:Name="CheckBoxAutoRefresh"
+                                              Checked="CheckBoxAutoRefresh_OnChecked" Unchecked="CheckBoxAutoRefresh_OnChecked" IsChecked="True"/>
+                                        <Button Content="Refresh" Padding="10,2" x:Name="ButtonRefreshFastResult" Click="ButtonRefreshFastResult_OnClick" IsEnabled="False"/>
                                     </StackPanel>
 
                                     <DataGrid Grid.Row="1" x:Name="ListViewFastResultSql" Margin="0,5,0,0" AutoGenerateColumns="True" 

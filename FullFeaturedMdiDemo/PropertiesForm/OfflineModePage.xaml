@@ -1,10 +1,9 @@
 ﻿<UserControl x:Class="PropertiesForm.OfflineModePage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             Width="345">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="Button">
             <Setter Property="Height" Value="23"/>
@@ -13,7 +12,6 @@
     <Grid Margin="3">
         <StackPanel>
             <CheckBox Content="Enable Offline Mode" Margin="0,0,0,8" x:Name="cbOfflineMode"/>
-            <Button Content="Load metadata to work in Offline mode..." Margin="0,0,0,8" x:Name="bLoadMetadata"/>
             <TextBlock Height="40" TextWrapping="Wrap" Text="Loaded Metadata: {0} tables, {1} views, {2} procedures." Margin="0,0,0,8" x:Name="lMetadataObjectCount"/>
             <Grid Margin="0,0,0,8">
                 <Button Content="Load from XML..." Width="165" HorizontalAlignment="Left" x:Name="bLoadFromXML"/>

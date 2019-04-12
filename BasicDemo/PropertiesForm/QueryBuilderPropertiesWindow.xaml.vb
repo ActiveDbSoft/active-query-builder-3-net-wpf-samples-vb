@@ -32,93 +32,92 @@ Namespace PropertiesForm
 		Private ReadOnly _miscellaneousPage As MiscellaneousPage
 		Private ReadOnly _generalPage As GeneralPage
 		Private ReadOnly _mainQueryPage As SqlFormattingPage
-        Private ReadOnly _derievedQueriesPage As SqlFormattingPage
-        Private ReadOnly _expressionSubqueriesPage As SqlFormattingPage
+		Private ReadOnly _derievedQueriesPage As SqlFormattingPage
+		Private ReadOnly _expressionSubqueriesPage As SqlFormattingPage
 
-        <DefaultValue(False)> _
-        <Browsable(False)> _
-        Public Property Modified() As Boolean
-            Get
-                Return _sqlSyntaxPage.Modified OrElse _offlineModePage.Modified OrElse _panesVisibilityPage.Modified OrElse _databaseSchemaViewPage.Modified OrElse _miscellaneousPage.Modified OrElse _generalPage.Modified OrElse _mainQueryPage.Modified OrElse _derievedQueriesPage.Modified OrElse _expressionSubqueriesPage.Modified
-            End Get
-            Set(value As Boolean)
-                _sqlSyntaxPage.Modified = Value
-                _offlineModePage.Modified = Value
-                _panesVisibilityPage.Modified = Value
-                _databaseSchemaViewPage.Modified = Value
-                _miscellaneousPage.Modified = Value
-                _generalPage.Modified = Value
-                _mainQueryPage.Modified = Value
-                _derievedQueriesPage.Modified = Value
-                _expressionSubqueriesPage.Modified = Value
-            End Set
-        End Property
+		<DefaultValue(False)> _
+		<Browsable(False)> _
+		Public Property Modified() As Boolean
+			Get
+				Return _sqlSyntaxPage.Modified OrElse _offlineModePage.Modified OrElse _panesVisibilityPage.Modified OrElse _databaseSchemaViewPage.Modified OrElse _miscellaneousPage.Modified OrElse _generalPage.Modified OrElse _mainQueryPage.Modified OrElse _derievedQueriesPage.Modified OrElse _expressionSubqueriesPage.Modified
+			End Get
+			Set
+				_sqlSyntaxPage.Modified = value
+				_offlineModePage.Modified = value
+				_panesVisibilityPage.Modified = value
+				_databaseSchemaViewPage.Modified = value
+				_miscellaneousPage.Modified = value
+				_generalPage.Modified = value
+				_mainQueryPage.Modified = value
+				_derievedQueriesPage.Modified = value
+				_expressionSubqueriesPage.Modified = value
+			End Set
+		End Property
 
-        Public Sub New()
-            InitializeComponent()
-        End Sub
+		Public Sub New()
+			InitializeComponent()
+		End Sub
 
-        Public Sub New(queryBuilder As QueryBuilder)
-            Debug.Assert(queryBuilder IsNot Nothing)
+		Public Sub New(queryBuilder As QueryBuilder)
+			Debug.Assert(queryBuilder IsNot Nothing)
 
-            InitializeComponent()
+			InitializeComponent()
 
-            _queryBuilder = queryBuilder
+			_queryBuilder = queryBuilder
 
-            Dim syntaxProvider As BaseSyntaxProvider = If(queryBuilder.SyntaxProvider IsNot Nothing, queryBuilder.SyntaxProvider.Clone(), New GenericSyntaxProvider())
+			Dim syntaxProvider As BaseSyntaxProvider = If(queryBuilder.SyntaxProvider IsNot Nothing, queryBuilder.SyntaxProvider.Clone(), New GenericSyntaxProvider())
 
-            _sqlSyntaxPage = New SqlSyntaxPage(_queryBuilder, syntaxProvider)
-            _offlineModePage = New OfflineModePage(_queryBuilder, syntaxProvider)
+			_sqlSyntaxPage = New SqlSyntaxPage(_queryBuilder, syntaxProvider)
+			_offlineModePage = New OfflineModePage(_queryBuilder.SQLContext)
 
-            _panesVisibilityPage = New PanesVisibilityPage(_queryBuilder)
-            _databaseSchemaViewPage = New DatabaseSchemaViewPage(_queryBuilder)
-            _miscellaneousPage = New MiscellaneousPage(_queryBuilder)
+			_panesVisibilityPage = New PanesVisibilityPage(_queryBuilder)
+			_databaseSchemaViewPage = New DatabaseSchemaViewPage(_queryBuilder)
+			_miscellaneousPage = New MiscellaneousPage(_queryBuilder)
 
-            _generalPage = New GeneralPage(_queryBuilder)
-            _mainQueryPage = New SqlFormattingPage(SqlBuilderOptionsPages.MainQuery, _queryBuilder)
-            _derievedQueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.DerievedQueries, _queryBuilder)
-            _expressionSubqueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.ExpressionSubqueries, _queryBuilder)
+			_generalPage = New GeneralPage(_queryBuilder)
+			_mainQueryPage = New SqlFormattingPage(SqlBuilderOptionsPages.MainQuery, _queryBuilder)
+			_derievedQueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.DerievedQueries, _queryBuilder)
+			_expressionSubqueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.ExpressionSubqueries, _queryBuilder)
 
-            ' Activate the first page
-            UIElement_OnMouseLeftButtonUp(linkSqlSyntax, Nothing)
-        End Sub
+			' Activate the first page
+			UIElement_OnMouseLeftButtonUp(linkSqlSyntax, Nothing)
+		End Sub
 
-        Private Sub UIElement_OnMouseLeftButtonUp(sender As Object, e As MouseButtonEventArgs)
-            If _currentSelectedLink IsNot Nothing Then
-                _currentSelectedLink.Foreground = Brushes.Black
-            End If
+		Private Sub UIElement_OnMouseLeftButtonUp(sender As Object, e As MouseButtonEventArgs)
+			If _currentSelectedLink IsNot Nothing Then
+				_currentSelectedLink.Foreground = Brushes.Black
+			End If
 
-            If Equals(sender, linkSqlSyntax) Then
-                SwitchPage(_sqlSyntaxPage)
-            ElseIf Equals(sender, linkOfflineMode) Then
-                SwitchPage(_offlineModePage)
-            ElseIf Equals(sender, linkPanesVisibility) Then
-                SwitchPage(_panesVisibilityPage)
-            ElseIf Equals(sender, linkMetadataTree) Then
-                SwitchPage(_databaseSchemaViewPage)
-            ElseIf Equals(sender, linkMiscellaneous) Then
-                SwitchPage(_miscellaneousPage)
-            ElseIf Equals(sender, linkGeneral) Then
-                SwitchPage(_generalPage)
-            ElseIf Equals(sender, linkMainQuery) Then
-                SwitchPage(_mainQueryPage)
-            ElseIf Equals(sender, linkDerievedQueries) Then
-                SwitchPage(_derievedQueriesPage)
-            ElseIf Equals(sender, linkExpressionSubqueries) Then
-                SwitchPage(_expressionSubqueriesPage)
-            End If
+			If Equals(sender, linkSqlSyntax) Then
+				SwitchPage(_sqlSyntaxPage)
+			ElseIf Equals(sender, linkOfflineMode) Then
+				SwitchPage(_offlineModePage)
+			ElseIf Equals(sender, linkPanesVisibility) Then
+				SwitchPage(_panesVisibilityPage)
+			ElseIf Equals(sender, linkMetadataTree) Then
+				SwitchPage(_databaseSchemaViewPage)
+			ElseIf Equals(sender, linkMiscellaneous) Then
+				SwitchPage(_miscellaneousPage)
+			ElseIf Equals(sender, linkGeneral) Then
+				SwitchPage(_generalPage)
+			ElseIf Equals(sender, linkMainQuery) Then
+				SwitchPage(_mainQueryPage)
+			ElseIf Equals(sender, linkDerievedQueries) Then
+				SwitchPage(_derievedQueriesPage)
+			ElseIf Equals(sender, linkExpressionSubqueries) Then
+				SwitchPage(_expressionSubqueriesPage)
+			End If
 
-            _currentSelectedLink = DirectCast(sender, TextBlock)
-            _currentSelectedLink.Foreground = Brushes.Blue
-        End Sub
+			_currentSelectedLink = DirectCast(sender, TextBlock)
+			_currentSelectedLink.Foreground = Brushes.Blue
+		End Sub
 
-        Private Sub SwitchPage(page As UserControl)
+		Private Sub SwitchPage(page As UserControl)
+			panelPages.Children.Clear()
+			page.Margin = New Thickness(10, 10, 0, 0)
+			panelPages.Children.Add(page)
 
-            panelPages.Children.Clear()
-            page.Margin = New Thickness(10, 10, 0, 0)
-            panelPages.Children.Add(page)
-
-        End Sub
+		End Sub
 
 		Public Sub ApplyChanges()
 			_queryBuilder.BeginUpdate()

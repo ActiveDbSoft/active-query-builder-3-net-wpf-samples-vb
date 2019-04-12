@@ -66,7 +66,7 @@ Partial Public Class MainWindow
         _saveFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
 
         sqlTextEditor1.QueryProvider = queryBuilder
-        sqlTextEditor1.ActiveUnionSubQuery = queryBuilder.ActiveUnionSubQuery
+        sqlTextEditor1.ExpressionContext = queryBuilder.ActiveUnionSubQuery
         AddHandler queryBuilder.ActiveUnionSubQueryChanged, AddressOf ActiveUnionSubQueryChanged
 
         ' DEMO WARNING
@@ -91,7 +91,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub ActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
-        sqlTextEditor1.ActiveUnionSubQuery = queryBuilder.ActiveUnionSubQuery
+        sqlTextEditor1.ExpressionContext = queryBuilder.ActiveUnionSubQuery
     End Sub
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
@@ -602,5 +602,9 @@ Partial Public Class MainWindow
 
     Private Sub SqlTextEditor1_OnTextChanged(sender As Object, e As EventArgs)
         ErrorBox.Message = string.Empty
+    End Sub
+
+    Private Sub MenuItemEditMetadata_OnClick(sender As Object, e As RoutedEventArgs)
+        QueryBuilder.EditMetadataContainer(queryBuilder.SQLContext)
     End Sub
 End Class

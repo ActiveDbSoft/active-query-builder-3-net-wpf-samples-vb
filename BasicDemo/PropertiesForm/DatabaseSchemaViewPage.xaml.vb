@@ -8,31 +8,25 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Collections.Generic
 Imports System.ComponentModel
-Imports System.Globalization
-Imports System.Windows.Controls
+Imports System.Linq
+Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.DatabaseSchemaView
 Imports ActiveQueryBuilder.View.WPF
+Imports BasicDemo.Common
 
 Namespace PropertiesForm
 	''' <summary>
 	''' Interaction logic for DatabaseSchemaViewPage.xaml
 	''' </summary>
 	<ToolboxItem(False)> _
-	Public Partial Class DatabaseSchemaViewPage
+	Friend Partial Class DatabaseSchemaViewPage
+		Private _expandMetadataType As MetadataType
 		Private ReadOnly _queryBuilder As QueryBuilder
-		Public Property Modified() As Boolean
-			Get
-				Return m_Modified
-			End Get
-			Set
-				m_Modified = Value
-			End Set
-		End Property
-		Private m_Modified As Boolean
+		Public Property Modified As Boolean
 
-
-		Public Sub New(queryBuilder As QueryBuilder)
+        Public Sub New(queryBuilder As QueryBuilder)
 			Modified = False
 			_queryBuilder = queryBuilder
 
@@ -49,8 +43,6 @@ Namespace PropertiesForm
 			cmbSortObjectsBy.Items.Add("No sorting")
 			cmbSortObjectsBy.SelectedIndex = CInt(queryBuilder.DatabaseSchemaViewOptions.SortingType)
 
-			cmbDefaultExpandLevel.Text = queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel.ToString(CultureInfo.InvariantCulture)
-
 			AddHandler cbGroupByServers.Checked, AddressOf Changed
 			AddHandler cbGroupByServers.Unchecked, AddressOf Changed
 			AddHandler cbGroupByDatabases.Checked, AddressOf Changed
@@ -63,7 +55,57 @@ Namespace PropertiesForm
 			AddHandler cbShowFields.Unchecked, AddressOf Changed
 			AddHandler cmbSortObjectsBy.SelectionChanged, AddressOf Changed
 			AddHandler cmbDefaultExpandLevel.SelectionChanged, AddressOf Changed
+
+			_expandMetadataType = queryBuilder.DatabaseSchemaView.Options.DefaultExpandMetadataType
+			FillComboBox(GetType(MetadataType))
+			SetExpandType(queryBuilder.DatabaseSchemaView.Options.DefaultExpandMetadataType)
 		End Sub
+		Private Sub FillComboBox(enumType As Type)
+			Dim flags = GetFlagsFromType(enumType)
+			For Each flag As Object In flags
+				cmbDefaultExpandLevel.Items.Add(New SelectableItem(flag))
+			Next
+		End Sub
+
+		Private Sub SetExpandType(value As Object)
+			cmbDefaultExpandLevel.ClearCheckedItems()
+			Dim decomposed As List(Of Integer) = DecomposeEnum(value)
+			For i As Integer = 0 To cmbDefaultExpandLevel.Items.Count - 1
+				If decomposed.Contains(CInt(cmbDefaultExpandLevel.Items(i).Content)) Then
+					cmbDefaultExpandLevel.SetItemChecked(i, True)
+				End If
+			Next
+		End Sub
+
+		Private Function DecomposeEnum(value As Object) As List(Of Integer)
+			' decomposite enum by degrees of 2
+			Dim binary As List(Of Char) = Convert.ToString(CInt(value), 2).Reverse().ToList()
+			Dim result As List(Of Integer) = New List(Of Integer)()
+			For i As Integer = 0 To binary.Count - 1
+				If binary(i) = "1"C Then
+					result.Add(CInt(Math.Truncate(Math.Pow(2, i))))
+				End If
+			Next
+
+			Return result
+		End Function
+
+		Private Function GetFlagsFromType(enumType As Type) As List(Of [Enum])
+			Dim values As Array = [Enum].GetValues(enumType)
+			Dim result As List(Of [Enum]) = New List(Of [Enum])()
+			For Each value As Object In values
+				' filter unity items
+				If IsDegreeOf2(CInt(value)) Then
+					result.Add(DirectCast(value, [Enum]))
+				End If
+			Next
+
+			Return result
+		End Function
+
+		Private Function IsDegreeOf2(n As Integer) As Boolean
+			Return n <> 0 AndAlso (n And (n - 1)) = 0
+		End Function
 
 		Public Sub New()
 			Modified = False
@@ -75,7 +117,7 @@ Namespace PropertiesForm
 				Return
 			End If
 
-			Dim metadataStructureOptions = _queryBuilder.MetadataStructure.Options
+			Dim metadataStructureOptions As MetadataStructureOptions = _queryBuilder.MetadataStructure.Options
 			metadataStructureOptions.BeginUpdate()
 
 			Try
@@ -88,27 +130,39 @@ Namespace PropertiesForm
 				metadataStructureOptions.EndUpdate()
 			End Try
 
-			Dim databaseSchemaViewOptions = _queryBuilder.DatabaseSchemaViewOptions
+			Dim databaseSchemaViewOptions As DatabaseSchemaViewOptions = _queryBuilder.DatabaseSchemaViewOptions
 			databaseSchemaViewOptions.BeginUpdate()
 
 			Try
 				_queryBuilder.DatabaseSchemaViewOptions.SortingType = CType(cmbSortObjectsBy.SelectedIndex, ObjectsSortingType)
 
-				Dim defaultExpandLevel As Integer
-				If Integer.TryParse(cmbDefaultExpandLevel.Text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, defaultExpandLevel) Then
-					_queryBuilder.DatabaseSchemaViewOptions.DefaultExpandLevel = defaultExpandLevel
-				End If
+				databaseSchemaViewOptions.DefaultExpandMetadataType = GetExpandType()
 			Finally
 				databaseSchemaViewOptions.EndUpdate()
 			End Try
 		End Sub
 
+		Private Function GetExpandType() As MetadataType
+			Dim intValue As Integer = CInt(_expandMetadataType)
+
+			For i As Integer = 0 To cmbDefaultExpandLevel.Items.Count - 1
+				If cmbDefaultExpandLevel.IsItemChecked(i) Then
+					intValue = intValue Or CInt(cmbDefaultExpandLevel.Items(i).Content)
+				Else
+					intValue = intValue And Not CInt(cmbDefaultExpandLevel.Items(i).Content)
+				End If
+			Next
+
+			Return CType(intValue, MetadataType)
+		End Function
+
 		Private Sub Changed(sender As Object, e As EventArgs)
 			Modified = True
 		End Sub
 
-		Private Sub CmbDefaultExpandLevel_OnTextChanged(sender As Object, e As TextChangedEventArgs)
-			Modified = True
+		Private Sub CmbDefaultExpandLevel_OnItemCheckStateChanged(sender As Object, e As EventArgs)
+			_expandMetadataType = GetExpandType()
+			Changed(Me, EventArgs.Empty)
 		End Sub
 	End Class
 End Namespace

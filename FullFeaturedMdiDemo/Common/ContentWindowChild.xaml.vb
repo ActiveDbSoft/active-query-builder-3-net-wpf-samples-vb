@@ -11,7 +11,6 @@
 Imports System.Collections.Generic
 Imports System.ComponentModel
 Imports System.Data
-Imports System.Drawing.Imaging
 Imports System.Linq
 Imports System.Threading
 Imports System.Windows
@@ -19,6 +18,7 @@ Imports System.Windows.Controls
 Imports System.Windows.Input
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.Core.QueryTransformer
+Imports ActiveQueryBuilder.View.WPF
 Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports ActiveQueryBuilder.View.WPF.QueryView
 
@@ -97,8 +97,8 @@ Namespace Common
             BoxSql.Query = SqlQuery
             BoxSqlCurrentSubQuery.Query = SqlQuery
 
-            BoxSql.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
-            BoxSqlCurrentSubQuery.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
+            BoxSql.ExpressionContext = QueryView.ActiveUnionSubQuery
+            BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
 
             AddHandler QueryView.ActiveUnionSubQueryChanged, ActiveUnionSubQueryChanged
 
@@ -142,8 +142,9 @@ Namespace Common
         End Sub
 
         Private Function ActiveUnionSubQueryChanged() As EventHandler
-            BoxSql.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
-            BoxSqlCurrentSubQuery.ActiveUnionSubQuery = QueryView.ActiveUnionSubQuery
+            BoxSql.ExpressionContext = QueryView.ActiveUnionSubQuery
+            BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
+' ReSharper disable once VBWarnings::BC42105,BC42106,BC42107
         End Function
        
         Private Sub SqlQuery_SQLUpdated(sender As Object, e As EventArgs)
@@ -425,7 +426,7 @@ Namespace Common
 
 #Region "Menu buttons event method"
 
-        Private Sub ButtonPropertise_OnClick(sender As Object, e As RoutedEventArgs)
+        Private Sub ButtonProperties_OnClick(sender As Object, e As RoutedEventArgs)
             PropertiesQuery()
         End Sub
 
@@ -530,11 +531,11 @@ Namespace Common
             End Try
         End Sub
 
-        Private Sub ButtonRefreashFastResult_OnClick(sender As Object, e As RoutedEventArgs)
+        Private Sub ButtonRefreshFastResult_OnClick(sender As Object, e As RoutedEventArgs)
             FillFastResult()
         End Sub
 
-        Private Sub CheckBoxAutoRefreash_OnChecked(sender As Object, e As RoutedEventArgs)
+        Private Sub CheckBoxAutoRefresh_OnChecked(sender As Object, e As RoutedEventArgs)
             If ButtonRefreashFastResult Is Nothing OrElse CheckBoxAutoRefreash Is Nothing Then
                 Return
             End If

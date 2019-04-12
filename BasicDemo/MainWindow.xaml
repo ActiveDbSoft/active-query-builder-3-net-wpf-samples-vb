@@ -41,6 +41,7 @@
             </MenuItem>
             <MenuItem Header="Metadata">
                 <MenuItem Header="Refresh Metadata" Click="RefreshMetadata_OnClick"/>
+                <MenuItem Header="Edit Metadata" x:Name="MenuItemEditMetadata"  FontWeight="Normal" Click="MenuItemEditMetadata_OnClick"/>
                 <MenuItem Header="Clear Metadata" Click="ClearMetadata_OnClick"/>
                 <Separator/>
                 <MenuItem Header="Load Metadata from XML" Click="LoadMetadata_OnClick"/>
