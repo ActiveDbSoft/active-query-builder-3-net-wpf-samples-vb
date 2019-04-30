@@ -37,7 +37,7 @@
                            CustomizeDataSourceCaption="QBuilder_OnCustomizeDataSourceCaption"
                           CustomizeDataSourceFieldList="QBuilder_OnCustomizeDataSourceFieldList"/>
 
-        <expressionEditor:SqlTextEditor Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
+        <RichTextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
                                         LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus"/>
 
         <TextBox Grid.Row="3" Margin="4" Background="{x:Static SystemColors.InfoBrush}" x:Name="BoxLogEvents" IsReadOnly="True" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"/>

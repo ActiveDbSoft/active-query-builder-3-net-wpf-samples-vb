@@ -39,17 +39,18 @@ Class MainWindow
 
     Private Sub QBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
         ' Text of SQL query has been updated by the query builder.
-        SqlEditor.Text = QBuilder.FormattedSQL
+        SqlEditor.Document.Blocks.Clear()
+        SqlEditor.Document.Blocks.Add(New Paragraph(New Run(QBuilder.FormattedSQL)))
     End Sub
 
     Private Sub SqlEditor_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
         Try
             ' Update the query builder with manually edited query text:
-            QBuilder.SQL = SqlEditor.Text
+            QBuilder.SQL = New TextRange(SqlEditor.Document.ContentStart, SqlEditor.Document.ContentEnd).Text
             ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
         Catch ex As SQLParsingException
             ' Set caret to error position
-            SqlEditor.SelectionStart = ex.ErrorPos.pos
+            SqlEditor.CaretPosition = SqlEditor.Document.ContentStart.GetPositionAtOffset(ex.ErrorPos.pos)
             ' Report error
             ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
         End Try

@@ -20,7 +20,7 @@
                           CustomExpressionBuilder="QBuilder_OnCustomExpressionBuilder">
         </wpf:QueryBuilder>
 
-        <expressionEditor:SqlTextEditor Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
+        <RichTextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
                                         LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus" TextChanged="SqlEditor_OnTextChanged"/>
         <local:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"/>
     </Grid>

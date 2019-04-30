@@ -36,20 +36,21 @@ Public Sub New()
 	End Sub
 
 	Private Sub QBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
-		' Update the text of SQL query when it's changed in the query builder.
-		SqlEditor.Text = QBuilder.FormattedSQL
-	End Sub
+        ' Update the text of SQL query when it's changed in the query builder.
+        SqlEditor.Document.Blocks.Clear()
+        SqlEditor.Document.Blocks.Add(New Paragraph(New Run(QBuilder.FormattedSQL)))
+    End Sub
 
 	Private Sub SqlEditor_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
 		Try
-			' Feed the text from text editor to the query builder when user exits the editor.
-			QBuilder.SQL = SqlEditor.Text
-			ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
+            ' Feed the text from text editor to the query builder when user exits the editor.
+            QBuilder.SQL = New TextRange(SqlEditor.Document.ContentStart, SqlEditor.Document.ContentEnd).Text
+            ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
 		Catch ex As SQLParsingException
-			' Set caret to error position
-			SqlEditor.SelectionStart = ex.ErrorPos.pos
-			' Report error
-			ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
+            ' Set caret to error position
+            SqlEditor.CaretPosition = SqlEditor.Document.ContentStart.GetPositionAtOffset(ex.ErrorPos.pos)
+            ' Report error
+            ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
 		End Try
 	End Sub
 

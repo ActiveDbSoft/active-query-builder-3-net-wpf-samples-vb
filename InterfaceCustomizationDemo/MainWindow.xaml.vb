@@ -14,6 +14,7 @@ Imports System.Threading
 Imports System.Windows
 Imports System.Windows.Controls
 Imports System.Windows.Controls.Primitives
+Imports System.Windows.Documents
 Imports System.Windows.Input
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
@@ -57,17 +58,18 @@ Partial Public Class MainWindow
 
     Private Sub QBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
         ' Update the text of SQL query when it's changed in the query builder.
-        SqlEditor.Text = QBuilder.FormattedSQL
+        SqlEditor.Document.Blocks.Clear()
+        SqlEditor.Document.Blocks.Add(New Paragraph(New Run(QBuilder.FormattedSQL)))
     End Sub
 
     Private Sub SqlEditor_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
         Try
             ' Feed the text from text editor to the query builder when user exits the editor.
-            QBuilder.SQL = SqlEditor.Text
+            QBuilder.SQL = New TextRange(SqlEditor.Document.ContentStart, SqlEditor.Document.ContentEnd).Text
             ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
         Catch ex As SQLParsingException
             ' Set caret to error position
-            SqlEditor.SelectionStart = ex.ErrorPos.pos
+            SqlEditor.CaretPosition = SqlEditor.Document.ContentStart.GetPositionAtOffset(ex.ErrorPos.pos)
             ' Report error
             ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
         End Try
