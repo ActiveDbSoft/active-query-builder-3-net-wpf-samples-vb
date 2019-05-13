@@ -5,7 +5,7 @@
     "Oracle.ManagedDataAccess": "12.2.1100"
   },
   "frameworks": {
-    "net45": {}
+    "net452": {}
   },
   "runtimes": {
     "win": {},

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    ".NETFramework,Version=v4.5": {
+    ".NETFramework,Version=v4.5.2": {
       "MySql.Data/6.9.12": {
         "type": "package",
         "compile": {
@@ -17,10 +17,10 @@
           "System.Threading.Tasks.Extensions": "4.3.0"
         },
         "compile": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         },
         "runtime": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         }
       },
       "Oracle.ManagedDataAccess/12.2.1100": {
@@ -42,7 +42,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5/win": {
+    ".NETFramework,Version=v4.5.2/win": {
       "MySql.Data/6.9.12": {
         "type": "package",
         "compile": {
@@ -58,10 +58,10 @@
           "System.Threading.Tasks.Extensions": "4.3.0"
         },
         "compile": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         },
         "runtime": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         }
       },
       "Oracle.ManagedDataAccess/12.2.1100": {
@@ -83,7 +83,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5/win-x64": {
+    ".NETFramework,Version=v4.5.2/win-x64": {
       "MySql.Data/6.9.12": {
         "type": "package",
         "compile": {
@@ -99,10 +99,10 @@
           "System.Threading.Tasks.Extensions": "4.3.0"
         },
         "compile": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         },
         "runtime": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         }
       },
       "Oracle.ManagedDataAccess/12.2.1100": {
@@ -124,7 +124,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5/win-x86": {
+    ".NETFramework,Version=v4.5.2/win-x86": {
       "MySql.Data/6.9.12": {
         "type": "package",
         "compile": {
@@ -140,10 +140,10 @@
           "System.Threading.Tasks.Extensions": "4.3.0"
         },
         "compile": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         },
         "runtime": {
-          "lib/net45/Npgsql.dll": {}
+          "lib/net451/Npgsql.dll": {}
         }
       },
       "Oracle.ManagedDataAccess/12.2.1100": {
@@ -247,7 +247,7 @@
       "Npgsql >= 3.2.6",
       "Oracle.ManagedDataAccess >= 12.2.1100"
     ],
-    ".NETFramework,Version=v4.5": []
+    ".NETFramework,Version=v4.5.2": []
   },
   "packageFolders": {
     "C:\\Users\\user\\.nuget\\packages\\": {}
@@ -269,7 +269,7 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net45": {
+        "net452": {
           "projectReferences": {}
         }
       }
@@ -280,7 +280,7 @@
       "Oracle.ManagedDataAccess": "[12.2.1100, )"
     },
     "frameworks": {
-      "net45": {}
+      "net452": {}
     },
     "runtimes": {
       "win": {

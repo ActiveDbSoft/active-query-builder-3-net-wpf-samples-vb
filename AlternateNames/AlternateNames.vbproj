@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AlternateNames</RootNamespace>
     <AssemblyName>AlternateNames</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -50,13 +50,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ActiveQueryBuilder.Core">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.15.1127\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.16.1128\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.15.1127\lib\net\ActiveQueryBuilder.View.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.16.1128\lib\net\ActiveQueryBuilder.View.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View.WPF">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.15.1127\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.16.1128\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
 	</Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    ".NETFramework,Version=v4.0": {
+    ".NETFramework,Version=v4.5.2": {
       "Oracle.ManagedDataAccess/12.2.1100": {
         "type": "package",
         "compile": {
@@ -12,7 +12,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.0/win": {
+    ".NETFramework,Version=v4.5.2/win": {
       "Oracle.ManagedDataAccess/12.2.1100": {
         "type": "package",
         "compile": {
@@ -23,7 +23,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.0/win-x86": {
+    ".NETFramework,Version=v4.5.2/win-x86": {
       "Oracle.ManagedDataAccess/12.2.1100": {
         "type": "package",
         "compile": {
@@ -64,7 +64,7 @@
     "": [
       "Oracle.ManagedDataAccess >= 12.2.1100"
     ],
-    ".NETFramework,Version=v4.0": []
+    ".NETFramework,Version=v4.5.2": []
   },
   "packageFolders": {
     "C:\\Users\\user\\.nuget\\packages\\": {}
@@ -86,7 +86,7 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net40": {
+        "net452": {
           "projectReferences": {}
         }
       }
@@ -95,7 +95,7 @@
       "Oracle.ManagedDataAccess": "[12.2.1100, )"
     },
     "frameworks": {
-      "net40": {}
+      "net452": {}
     },
     "runtimes": {
       "win": {

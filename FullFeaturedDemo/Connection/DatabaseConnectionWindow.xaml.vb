@@ -184,10 +184,10 @@ Namespace Connection
             End If
 
             LvConnections.Focus()
-            Properties.Settings.[Default].XmlFiles = App.XmlFiles
+            Settings.[Default].XmlFiles = App.XmlFiles
 
-            Properties.Settings.[Default].Connections = App.Connections
-            Properties.Settings.[Default].Save()
+            Settings.[Default].Connections = App.Connections
+            Settings.[Default].Save()
         End Sub
 
         Private Sub ButtonRemoveConnection_OnClick(sender As Object, e As RoutedEventArgs)
@@ -249,10 +249,10 @@ Namespace Connection
 
             LvXmlFiles.Focus()
 
-            Properties.Settings.[Default].XmlFiles = App.XmlFiles
+            Settings.[Default].XmlFiles = App.XmlFiles
 
-            Properties.Settings.[Default].Connections = App.Connections
-            Properties.Settings.[Default].Save()
+            Settings.[Default].Connections = App.Connections
+            Settings.[Default].Save()
         End Sub
 
 		Private Sub ButtonRemoveXml_OnClick(sender As Object, e As RoutedEventArgs)
@@ -272,10 +272,10 @@ Namespace Connection
 
 			LvXmlFiles.Focus()
 
-			Properties.Settings.[Default].XmlFiles = App.XmlFiles
+			Settings.[Default].XmlFiles = App.XmlFiles
 
-			Properties.Settings.[Default].Connections = App.Connections
-			Properties.Settings.[Default].Save()
+			Settings.[Default].Connections = App.Connections
+			Settings.[Default].Save()
 		End Sub
 
 		Private Sub ButtonConfigureXml_OnClick(sender As Object, e As RoutedEventArgs)
