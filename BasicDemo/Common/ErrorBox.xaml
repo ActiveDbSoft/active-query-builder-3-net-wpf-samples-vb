@@ -3,11 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" x:ClassModifier="Friend">
     <Grid  x:Name="GridError" >
-        <Border Background="LightPink" BorderBrush="Gray" BorderThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Unspecified">
-            <TextBlock Margin="5" Text="Some text" x:Name="TextBlockErrorPrompt" TextOptions.TextFormattingMode="Display"/>
+        <Border Background="LightPink" BorderBrush="Gray" BorderThickness="1" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Unspecified" Padding="5">
+            <StackPanel>
+                <TextBlock Text="Some text" x:Name="TextBlockErrorPrompt" TextOptions.TextFormattingMode="Display"/>
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Check syntax:" TextOptions.TextFormattingMode="Display" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Column="1"  TextOptions.TextFormattingMode="Display" 
+                              x:Name="ComboBoxSyntaxProvider" 
+                              DisplayMemberPath="DisplayString" 
+                              SelectionChanged="ComboBoxSyntaxProvider_OnSelectionChanged"/>
+                </Grid>
+                <StackPanel  Margin="0,10,0,0">
+                    <TextBlock Margin="0,0,5,0" TextOptions.TextFormattingMode="Display" FontWeight="Bold">
+                        <Hyperlink x:Name="HyperlinkGoToPosition" Click="HyperlinkGoToPosition_OnClick">
+                            Go to the error position
+                        </Hyperlink>
+                    </TextBlock>
+
+                    <TextBlock>
+                        <Hyperlink x:Name="HyperlinkPreviousValidTexts"  TextOptions.TextFormattingMode="Display" FontWeight="Bold" Click="HyperlinkPreviousValidText_OnClick">
+                            Get back to the previous valid query text
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>

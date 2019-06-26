@@ -8,6 +8,8 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Windows.Threading
+
 #If _MyType <> "Empty" Then
 
 Namespace My
@@ -127,5 +129,7 @@ Partial Class Application
             Return New Global.Microsoft.VisualBasic.ApplicationServices.AssemblyInfo(Global.System.Reflection.Assembly.GetExecutingAssembly())
         End Get
     End Property
+
+    
 End Class
 #End If

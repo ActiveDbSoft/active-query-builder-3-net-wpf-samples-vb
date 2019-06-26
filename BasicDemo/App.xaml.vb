@@ -9,6 +9,8 @@
 '*******************************************************************'
 
 Imports System.Windows
+Imports System.Windows.Threading
+Imports BasicDemo.Common
 
 ''' <summary>
 ''' Interaction logic for App.xaml
@@ -16,6 +18,12 @@ Imports System.Windows
 Public Partial Class App
 	Inherits Application
 
-	Public Sub New()
-	End Sub
+	Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
+        Dim errorWindow = New ExceptionWindow With {
+                .Owner = Current.MainWindow,
+                .Message = e.Exception.Message,
+                .StackTrace = e.Exception.StackTrace
+                }
+        errorWindow.ShowDialog()
+    End Sub
 End Class

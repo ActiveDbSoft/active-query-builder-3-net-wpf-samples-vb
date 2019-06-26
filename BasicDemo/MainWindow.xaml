@@ -62,6 +62,7 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="147"/>
                     </Grid.RowDefinitions>
 
@@ -74,10 +75,24 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                         </aqb:QueryBuilder.ExpressionEditor>
                     </aqb:QueryBuilder>
 
-                    <expressionEditor:SqlTextEditor Grid.Row="1" x:Name="sqlTextEditor1" Margin="0,4,0,0" BorderThickness="1" BorderBrush="Gray"
-                                                    LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus" LostFocus="SqlTextEditor_OnLostFocus"
+                    <Border Grid.Row="1" 
+                            Padding="5" 
+                            Background="Bisque" 
+                            Margin="0,0,0,3" 
+                            BorderBrush="Gray" 
+                            BorderThickness="1" 
+                            x:Name="BorderSleepMode" 
+                            Visibility="Collapsed">
+                        <TextBlock Text="Unsupported SQL statement. Visual Query Builder has been disabled. Either type a SELECT statement or start building a query visually to turn this mode off."/>
+                    </Border>
+
+                    <expressionEditor:SqlTextEditor Grid.Row="2" x:Name="sqlTextEditor1" Margin="0,4,0,0" BorderThickness="1" BorderBrush="Gray"
+                                                    LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus"
                                                     FontFamily="Courier New" Padding="5" FontSize="14" TextChanged="SqlTextEditor1_OnTextChanged"/>
-                    <basicDemo:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox"/>
+                    <basicDemo:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" 
+                                     SyntaxProviderChanged="ErrorBox_OnSyntaxProviderChanged" 
+                                     GoToErrorPositionEvent="ErrorBox_OnGoToErrorPositionEvent" 
+                                     RevertValidTextEvent="ErrorBox_OnRevertValidTextEvent"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Data" x:Name="tbData">

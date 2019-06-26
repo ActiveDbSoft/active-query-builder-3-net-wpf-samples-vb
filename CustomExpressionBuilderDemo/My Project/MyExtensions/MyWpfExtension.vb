@@ -8,6 +8,8 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Windows.Threading
+
 #If _MyType <> "Empty" Then
 
 Namespace My

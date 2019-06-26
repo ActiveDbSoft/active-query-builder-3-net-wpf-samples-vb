@@ -8,9 +8,16 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Windows.Threading
+Imports SeparatedComponents.Common
+
 Class Application
-
-    ' События приложения, например, Startup, Exit и DispatcherUnhandledException,
-    ' можно обрабатывать в данном файле.
-
+Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
+        Dim errorWindow = New ExceptionWindow With {
+                .Owner = Current.MainWindow,
+                .Message = e.Exception.Message,
+                .StackTrace = e.Exception.StackTrace
+                }
+        errorWindow.ShowDialog()
+    End Sub
 End Class

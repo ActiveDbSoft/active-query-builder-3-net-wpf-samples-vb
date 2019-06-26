@@ -8,16 +8,21 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
-Imports System.Collections.Generic
-Imports System.Configuration
-Imports System.Data
-Imports System.Linq
-Imports System.Threading.Tasks
 Imports System.Windows
+Imports System.Windows.Threading
+Imports QueryTransformerDemo.Common
 
 ''' <summary>
 ''' Логика взаимодействия для App.xaml
 ''' </summary>
 Public Partial Class App
 	Inherits Application
+	Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
+        Dim errorWindow = New ExceptionWindow With {
+                .Owner = Current.MainWindow,
+                .Message = e.Exception.Message,
+                .StackTrace = e.Exception.StackTrace
+                }
+        errorWindow.ShowDialog()
+    End Sub
 End Class

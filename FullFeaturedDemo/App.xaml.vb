@@ -9,6 +9,8 @@
 '*******************************************************************'
 
 Imports System.Windows
+Imports System.Windows.Threading
+Imports FullFeaturedDemo.Common
 Imports FullFeaturedDemo.Properties
 
 ''' <summary>
@@ -37,4 +39,13 @@ Public Partial Class App
 		Settings.[Default].XmlFiles = XmlFiles
 		Settings.[Default].Save()
 	End Sub
+	
+	Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
+        Dim errorWindow = New ExceptionWindow With {
+                .Owner = Current.MainWindow,
+                .Message = e.Exception.Message,
+                .StackTrace = e.Exception.StackTrace
+                }
+        errorWindow.ShowDialog()
+    End Sub
 End Class
