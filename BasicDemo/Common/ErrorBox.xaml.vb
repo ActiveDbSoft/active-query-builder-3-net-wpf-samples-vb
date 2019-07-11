@@ -8,96 +8,103 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System
 Imports System.Collections.Generic
 Imports System.Collections.ObjectModel
-Imports System.Collections.Specialized
 Imports System.Windows
 Imports System.Windows.Controls
 Imports ActiveQueryBuilder.Core
 
-Partial Friend Class ErrorBox
-    Public ReadOnly SyntaxProviders As ObservableCollection(Of BaseSyntaxProvider) = New ObservableCollection(Of BaseSyntaxProvider)()
+Namespace Common
 
-    Public Event SyntaxProviderChanged As SelectionChangedEventHandler
-    public event  GoToErrorPositionEvent as EventHandler
-    public event  RevertValidTextEvent as EventHandler
+    Partial Public Class ErrorBox
+        Private _allowChangedSyntax As Boolean = True
+        Public Event SyntaxProviderChanged As SelectionChangedEventHandler
+        Public Event GoToErrorPosition As EventHandler
+        Public Event RevertValidText As EventHandler
+        Public Shared ReadOnly VisibilityCheckSyntaxBlockProperty As DependencyProperty = DependencyProperty.Register("VisibilityCheckSyntaxBlock", GetType(Visibility), GetType(ErrorBox), New PropertyMetadata(Visibility.Collapsed))
 
-    Public Shared ReadOnly MessageProperty As DependencyProperty = DependencyProperty.Register("Message", GetType(String), GetType(ErrorBox),  New FrameworkPropertyMetadata(Nothing, AddressOf MessageChanged))
-    Private _allowChangedSyntax As Boolean = True
+        Public Property VisibilityCheckSyntaxBlock As Visibility
+            Get
+                Return CType(GetValue(VisibilityCheckSyntaxBlockProperty), Visibility)
+            End Get
+            Set(ByVal value As Visibility)
+                SetValue(VisibilityCheckSyntaxBlockProperty, value)
+            End Set
+        End Property
 
-    Public Property Message As String
-        Get
-            Return DirectCast(GetValue(MessageProperty), String)
-        End Get
-        Set
-            SetValue(MessageProperty, Value)
-        End Set
-    End Property
+        Public Sub New()
+            InitializeComponent()
+            Visibility = Visibility.Collapsed
+            Dim collection As ObservableCollection(Of ComboBoxItem) = New ObservableCollection(Of ComboBoxItem)()
 
-    Private Shared Sub MessageChanged(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-        Dim self As ErrorBox = CType(d, ErrorBox)
-        Dim value As String = CType(e.NewValue, String)
+            For Each syntax As Type In Helpers.SyntaxProviderList
+                Dim instance As BaseSyntaxProvider= TryCast(Activator.CreateInstance(syntax), BaseSyntaxProvider)
+                collection.Add(New ComboBoxItem(instance))
+            Next
 
-        self.TextBlockErrorPrompt.Text = value
-        self.Visibility = If(String.IsNullOrEmpty(value), Visibility.Collapsed, Visibility.Visible)
-    End Sub
-    Public Sub New()
-        InitializeComponent()
-        Visibility = Visibility.Collapsed
-       
-        AddHandler SyntaxProviders.CollectionChanged, AddressOf CollectionChanged
-    End Sub
+            ComboBoxSyntaxProvider.ItemsSource = collection
+        End Sub
 
-    Private Sub CollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
-        _allowChangedSyntax = false
-        ComboBoxSyntaxProvider.Items.Clear()
-        For Each baseSyntaxProvider As BaseSyntaxProvider In SyntaxProviders
-            ComboBoxSyntaxProvider.Items.Add(new ComboBoxItem(baseSyntaxProvider))    
-        Next
-        
-        _allowChangedSyntax = true
-    End Sub
+        Public Sub Show(ByVal message As String, ByVal currentSyntaxProvider As BaseSyntaxProvider)
+            If String.IsNullOrEmpty(message) Then
+                Visibility = Visibility.Collapsed
+                Return
+            End If
 
-    Private Sub ComboBoxSyntaxProvider_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-        If Not _allowChangedSyntax Then Return
-        Dim syntaxProvider = CType(ComboBoxSyntaxProvider.SelectedItem, ComboBoxItem).SyntaxProvider
-        OnSyntaxProviderChanged(New SelectionChangedEventArgs(e.RoutedEvent, New List(Of BaseSyntaxProvider)(), New List(Of BaseSyntaxProvider) From {
-                                                                 syntaxProvider
-                                                                 }))
-    End Sub
+            _allowChangedSyntax = False
+            TextBlockErrorPrompt.Text = message
+            ComboBoxSyntaxProvider.Text = currentSyntaxProvider.ToString()
+            _allowChangedSyntax = True
+            Visibility = Visibility.Visible
+        End Sub
 
-    Public Sub SetCurrentSyntaxProvider(syntaxProvider As BaseSyntaxProvider)
-        _allowChangedSyntax = False
-        ComboBoxSyntaxProvider.Text = syntaxProvider.ToString()
-        _allowChangedSyntax = True
-    End Sub
+        Private Sub ComboBoxSyntaxProvider_OnSelectionChanged(ByVal sender As Object, ByVal e As SelectionChangedEventArgs)
+            If Not _allowChangedSyntax Then Return
+            Dim syntaxProvider As BaseSyntaxProvider = (CType(ComboBoxSyntaxProvider.SelectedItem, ComboBoxItem)).SyntaxProvider
+            OnSyntaxProviderChanged(New SelectionChangedEventArgs(e.RoutedEvent, New List(Of BaseSyntaxProvider)(), New List(Of BaseSyntaxProvider) From {
+                                                                     syntaxProvider
+                                                                     }))
+        End Sub
 
-    Protected Overridable Sub OnSyntaxProviderChanged(e As SelectionChangedEventArgs)
-        RaiseEvent SyntaxProviderChanged(Me, e)
-    End Sub
+        Protected Overridable Sub OnSyntaxProviderChanged(ByVal e As SelectionChangedEventArgs)
+            RaiseEvent SyntaxProviderChanged(Me, e)
+            Visibility = Visibility.Collapsed
+        End Sub
 
-    Private Sub HyperlinkGoToPosition_OnClick(sender As Object, e As RoutedEventArgs)
-        RaiseEvent GoToErrorPositionEvent(Me, e)
-    End Sub
+        Private Sub HyperlinkGoToPosition_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+            OnGoToErrorPositionEvent()
+            Visibility = Visibility.Collapsed
+        End Sub
 
-    Private Sub HyperlinkPreviousValidText_OnClick(sender As Object, e As RoutedEventArgs)
-        RaiseEvent RevertValidTextEvent(Me, e)
-    End Sub
-End Class
+        Private Sub HyperlinkPreviousValidText_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+            OnRevertValidTextEvent()
+            Visibility = Visibility.Collapsed
+        End Sub
 
-Public Class ComboBoxItem
-    Public ReadOnly Property SyntaxProvider As BaseSyntaxProvider
+        Protected Overridable Sub OnGoToErrorPositionEvent()
+            RaiseEvent GoToErrorPosition(Me, EventArgs.Empty)
+        End Sub
 
-    Public ReadOnly Property DisplayString As String
-        Get
-            Return SyntaxProvider.ToString()
-        End Get
-    End Property
+        Protected Overridable Sub OnRevertValidTextEvent()
+            RaiseEvent RevertValidText(Me, EventArgs.Empty)
+        End Sub
+    End Class
 
-    Public Sub New()
-    End Sub
+    Public Class ComboBoxItem
+        Public ReadOnly Property SyntaxProvider As BaseSyntaxProvider
 
-    Public Sub New(ByVal provider As BaseSyntaxProvider)
-        SyntaxProvider = provider
-    End Sub
-End Class
+        Public ReadOnly Property DisplayString As String
+            Get
+                Return SyntaxProvider.ToString()
+            End Get
+        End Property
+
+        Public Sub New()
+        End Sub
+
+        Public Sub New(ByVal provider As BaseSyntaxProvider)
+            SyntaxProvider = provider
+        End Sub
+    End Class
+End Namespace

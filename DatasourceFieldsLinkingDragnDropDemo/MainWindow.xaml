@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:DatasourceFieldsLinkingDragnDropDemo"
         xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:DatasourceFieldsLinkingDragnDropDemo.Common"
         mc:Ignorable="d"
         Title="Datasource Fields Linking Drag'n'Drop demo" Height="600" Width="800">
     <Grid>
@@ -29,10 +30,12 @@
                           LinkDragOver="QBuilder_OnLinkDragOver" 
                           SQLUpdated="QBuilder_OnSQLUpdated" Margin="0,4,0,0"/>
 
-        <RichTextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
-                                        LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus"/>
+        <TextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
+                                        LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus"
+                                        VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"/>
 
-        <local:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"/>
+        <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition" RevertValidText="ErrorBox_OnRevertValidText"/>
 
         <TextBox Grid.Row="3" Margin="4" Background="{x:Static SystemColors.InfoBrush}" 
                  x:Name="BoxLogEvents" IsReadOnly="True" VerticalScrollBarVisibility="Visible"

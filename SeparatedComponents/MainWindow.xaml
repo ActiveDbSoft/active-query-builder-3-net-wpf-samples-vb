@@ -8,6 +8,7 @@
         xmlns:databaseSchemaView="clr-namespace:ActiveQueryBuilder.View.WPF.DatabaseSchemaView;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:navigationBar="clr-namespace:ActiveQueryBuilder.View.WPF.NavigationBar;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:SeparatedComponents.Common"
         mc:Ignorable="d"
        Title="SeparatedComponents Demo" Height="658" Width="950">
     <Grid>
@@ -64,6 +65,8 @@
         </Grid>
         <expressionEditor:SqlTextEditor Grid.Row="2"  Margin="4" Background="#404040" Foreground="White" Text="sqlTextEditor"
                                         x:Name="sqlTextEditor" LostKeyboardFocus="SqlTextEditor_OnLostFocus" TextChanged="TextBox1_OnTextChanged" Height="150"/>
-        <local:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"/>
+        <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
+                         RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
 </Window>

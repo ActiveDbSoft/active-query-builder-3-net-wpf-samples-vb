@@ -8,33 +8,34 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
-Namespace Common
-    Public Partial Class ExceptionWindow
-        Public Property Message As String
-            Get
-                Return BlockMessage.Text
-            End Get
-            Set(ByVal value As String)
-                BlockMessage.Text = value
-            End Set
-        End Property
+Imports System.Windows
+Imports System.Windows.Documents
 
-        Public Property StackTrace As String
-            Get
-                Return New TextRange(BoxStackTrace.Document.ContentStart, BoxStackTrace.Document.ContentEnd).Text
-            End Get
-            Set(ByVal value As String)
-                BoxStackTrace.Document.Blocks.Clear()
-                BoxStackTrace.Document.Blocks.Add(New Paragraph(New Run(value)))
-            End Set
-        End Property
+Partial Public Class ExceptionWindow
+    Public Property Message As String
+        Get
+            Return BlockMessage.Text
+        End Get
+        Set(ByVal value As String)
+            BlockMessage.Text = value
+        End Set
+    End Property
 
-        Public Sub New()
-            InitializeComponent()
-        End Sub
+    Public Property StackTrace As String
+        Get
+            Return New TextRange(BoxStackTrace.Document.ContentStart, BoxStackTrace.Document.ContentEnd).Text
+        End Get
+        Set(ByVal value As String)
+            BoxStackTrace.Document.Blocks.Clear()
+            BoxStackTrace.Document.Blocks.Add(New Paragraph(New Run(value)))
+        End Set
+    End Property
 
-        Private Sub ButtonOk_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
-            Close()
-        End Sub
-    End Class
-End Namespace
+    Public Sub New()
+        InitializeComponent()
+    End Sub
+
+    Private Sub ButtonOk_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+        Close()
+    End Sub
+End Class

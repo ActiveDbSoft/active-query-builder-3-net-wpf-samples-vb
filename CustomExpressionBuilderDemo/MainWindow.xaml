@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CustomExpressionBuilderDemo"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:CustomExpressionBuilderDemo.Common"
         mc:Ignorable="d"
-        Title="C:\Users\Roldugin\source\repos" Height="800" Width="1000">
+        Title="Custom Expression Builder Demo" Height="800" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,8 +19,11 @@
                           CustomExpressionBuilder="QBuilder_OnCustomExpressionBuilder">
         </wpf:QueryBuilder>
 
-        <RichTextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
-                                        LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus" TextChanged="SqlEditor_OnTextChanged"/>
-        <local:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"/>
+        <TextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
+                                        LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus" TextChanged="SqlEditor_OnTextChanged"
+                                        VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+
+        <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition" RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
 </Window>

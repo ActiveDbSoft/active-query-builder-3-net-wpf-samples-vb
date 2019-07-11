@@ -34,6 +34,11 @@ Namespace Common
         Private ReadOnly _transformerSql As QueryTransformer
         Private ReadOnly _timerStartingExecuteSql As Timer
 
+        Private _lastValidSql As String = String.Empty
+        Private _lastValidSqlCurrent As String = String.Empty
+        Private _errorPosition As Integer = -1
+        Private _errorPositionCurrent As Integer = -1
+
         Private _sql As String
 
         Public Property IsModified As Boolean
@@ -348,10 +353,12 @@ Namespace Common
                 SqlQuery.SQL = BoxSql.Text
 
                 ' Hide error banner if any
-                ErrorBox.Message = String.Empty
+                ErrorBox.Visibility = Visibility.Collapsed
+                _lastValidSql = SqlQuery.SQL
             Catch ex As SQLParsingException
                 ' Show banner with error text
-                ErrorBox.Message = ex.Message
+                _errorPosition = ex.ErrorPos.pos
+                ErrorBox.Show(ex.Message, SqlContext.SyntaxProvider)
             End Try
         End Sub
 
@@ -463,7 +470,7 @@ Namespace Common
 #End Region
 
         Private Sub BoxSql_OnTextChanged(sender As Object, eventArgs As EventArgs)
-            ErrorBox.Message = String.Empty
+            ErrorBox.Visibility = Visibility.Collapsed
         End Sub
 
         Private Sub ResetPagination()
@@ -496,7 +503,7 @@ Namespace Common
         End Sub
 
         Private Sub SetSqlTextCurrentSubQuery()
-            BorderErrorFast.Visibility = Visibility.Collapsed
+            ErrorBoxCurrent.Visibility = Visibility.Collapsed
             If _transformerSql Is Nothing Then
                 Return
             End If
@@ -513,6 +520,7 @@ Namespace Common
 
             Dim sql As String = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(SqlFormattingOptions)
             BoxSqlCurrentSubQuery.Text = sql
+            _lastValidSqlCurrent = sql
         End Sub
 
         Private Sub FillFastResult()
@@ -558,7 +566,7 @@ Namespace Common
                 Return
             End If
             Try
-                BorderErrorFast.Visibility = Visibility.Collapsed
+                ErrorBoxCurrent.Visibility = Visibility.Collapsed
 
                 QView.ActiveUnionSubQuery.ParentSubQuery.SQL = DirectCast(sender, SqlTextEditor).Text
 
@@ -567,9 +575,9 @@ Namespace Common
                 _transformerSql.Query = New SQLQuery(QueryView.ActiveUnionSubQuery.SQLContext) With {
                     .SQL = sql
                 }
-            Catch ex As Exception
-                LabelErrorFast.Text = ex.Message
-                BorderErrorFast.Visibility = Visibility.Visible
+            Catch ex As SQLParsingException
+                ErrorBoxCurrent.Show(ex.Message, SqlContext.SyntaxProvider)
+                _errorPositionCurrent = ex.ErrorPos.pos
             End Try
         End Sub
 
@@ -612,6 +620,34 @@ Namespace Common
             End If
 
             FillFastResult()
+        End Sub
+
+        Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+            BoxSql.Focus()
+
+            If _errorPosition <> -1 Then
+                BoxSql.ScrollToPosition(_errorPosition)
+                BoxSql.CaretOffset = _errorPosition
+            End If
+        End Sub
+
+        Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+            BoxSql.Text = _lastValidSql
+            BoxSql.Focus()
+        End Sub
+
+        Private Sub ErrorBoxCurrent_OnGoToErrorPosition(sender As Object, e As EventArgs)
+            BoxSqlCurrentSubQuery.Focus()
+
+            If _errorPositionCurrent <> -1 Then
+                BoxSqlCurrentSubQuery.ScrollToPosition(_errorPositionCurrent)
+                BoxSqlCurrentSubQuery.CaretOffset = _errorPositionCurrent
+            End If
+        End Sub
+
+        Private Sub ErrorBoxCurrent_OnRevertValidText(sender As Object, e As EventArgs)
+            BoxSqlCurrentSubQuery.Text = _lastValidSqlCurrent
+            BoxSqlCurrentSubQuery.Focus()
         End Sub
     End Class
 End Namespace

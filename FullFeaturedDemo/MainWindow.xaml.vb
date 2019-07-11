@@ -47,6 +47,11 @@ Partial Public Class MainWindow
     Private _showHintConnection As Boolean = True
     Private ReadOnly _transformerSql As QueryTransformer
     Private ReadOnly _timerStartingExecuteSql As Timer
+    Private _errorPosition As Integer = -1
+    Private _lastValidSql As String
+
+    Private _errorPositionCurrent As Integer = -1
+    Private _lastValidSqlCurrent As String
 
     Public Sub New()
         ' Options to present the formatted SQL query text to end-user
@@ -179,9 +184,9 @@ Partial Public Class MainWindow
 
         MenuItemUndo.IsEnabled = BoxSql.CanUndo
         MenuItemRedo.IsEnabled = BoxSql.CanRedo
-        MenuItemCopyIco.IsEnabled = InlineAssignHelper(MenuItemCopy.IsEnabled, BoxSql.Selection.Text.Length > 0)
+        MenuItemCopyIco.IsEnabled = InlineAssignHelper(MenuItemCopy.IsEnabled, BoxSql.SelectedText.Length > 0)
         MenuItemPasteIco.IsEnabled = InlineAssignHelper(MenuItemPaste.IsEnabled, Clipboard.ContainsText())
-        MenuItemCutIco.IsEnabled = InlineAssignHelper(MenuItemCut.IsEnabled, BoxSql.Selection.Text.Length > 0)
+        MenuItemCutIco.IsEnabled = InlineAssignHelper(MenuItemCut.IsEnabled, BoxSql.SelectedText.Length > 0)
         MenuItemSelectAll.IsEnabled = True
 
         MenuItemQueryAddDerived.IsEnabled = CanAddDerivedTable()
@@ -336,7 +341,7 @@ Partial Public Class MainWindow
         End If
 
         DataGridResult.FillDataGrid(DataGridResult.QueryTransformer.SQL)
-        SetTextRichTextBox(DataGridResult.QueryTransformer.SQL, BoxSqlTransformer)
+        BoxSqlTransformer.Text = DataGridResult.QueryTransformer.SQL
     End Sub
 
     Private Sub MenuItemQueryStatistics_OnClick(sender As Object, e As RoutedEventArgs)
@@ -618,19 +623,20 @@ Partial Public Class MainWindow
     Private Sub BoxSql_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
         Try
             ' Update the query builder with manually edited query text:
-            QBuilder.SQL = GetTextRichTextBox(BoxSql)
-
+            QBuilder.SQL = BoxSql.Text
+            _lastValidSql= BoxSql.Text
             ' Hide error banner if any
-            ErrorBox.Message = String.Empty
+            ErrorBox.Visibility = Visibility.Collapsed
         Catch ex As SQLParsingException
             ' Show banner with error text
-            ErrorBox.Message = ex.Message
+            _errorPosition = ex.ErrorPos.pos
+            ErrorBox.Show(ex.Message, QBuilder.SyntaxProvider)
         End Try
     End Sub
 
     Private Sub QBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
-        SetTextRichTextBox(QBuilder.FormattedSQL, BoxSql)
-
+        BoxSql.Text = QBuilder.FormattedSQL
+        _lastValidSql = QBuilder.FormattedSQL
         SetSqlTextCurrentSubQuery()
 
         If Not TabItemFastResult.IsSelected OrElse CheckBoxAutoRefresh.IsChecked = False Then
@@ -644,15 +650,6 @@ Partial Public Class MainWindow
         Dispatcher.BeginInvoke(DirectCast(AddressOf FillFastResult, Action))
     End Sub
 
-    Private Shared Sub SetTextRichTextBox(text As String, editor As RichTextBox)
-        editor.Document.Blocks.Clear()
-        editor.Document.Blocks.Add(New Paragraph(New Run(text)))
-    End Sub
-
-    Private Shared Function GetTextRichTextBox(editor As RichTextBox) As String
-        Return New TextRange(editor.Document.ContentStart, editor.Document.ContentEnd).Text
-    End Function
-
     Private Sub TabControl_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
         ' Execute a query on switching to the Data tab
         If e.AddedItems.Count = 0 OrElse _selectedConnection Is Nothing Then
@@ -665,11 +662,10 @@ Partial Public Class MainWindow
 
         ResetPagination()
 
-        SetTextRichTextBox(GetTextRichTextBox(BoxSql), BoxSqlTransformer)
-
+        BoxSqlTransformer.Text = BoxSql.Text
         If Equals(TabItemData, TabControl.SelectedItem) Then
             BorderBlockPagination.Visibility = Visibility.Visible
-            DataGridResult.FillDataGrid(GetTextRichTextBox(BoxSql))
+            DataGridResult.FillDataGrid(BoxSql.Text)
         End If
     End Sub
 
@@ -703,7 +699,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub BoxSql_OnTextChanged(sender As Object, e As TextChangedEventArgs)
-        ErrorBox.Message = String.Empty
+        ErrorBox.Visibility = Visibility.Collapsed
     End Sub
 
     Private Sub QBuilder_OnActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
@@ -711,13 +707,13 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub SetSqlTextCurrentSubQuery()
-        BorderErrorFast.Visibility = Visibility.Collapsed
+        ErrorBoxCurrent.Visibility = Visibility.Collapsed
         If _transformerSql Is Nothing Then
             Return
         End If
 
         If QBuilder.ActiveUnionSubQuery Is Nothing Or QBuilder.SleepMode Then
-            SetTextRichTextBox("", BoxSqlCurrentSubQuery)
+            BoxSqlCurrentSubQuery.Text = String.Empty
             _transformerSql.Query = Nothing
             Return
         End If
@@ -728,7 +724,8 @@ Partial Public Class MainWindow
         }
 
         Dim sql As String = QBuilder.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(_sqlFormattingOptions)
-        SetTextRichTextBox(sql, BoxSqlCurrentSubQuery)
+        BoxSqlCurrentSubQuery.Text = sql
+        _lastValidSqlCurrent = sql
     End Sub
 
     Private Sub FillFastResult()
@@ -785,18 +782,17 @@ Partial Public Class MainWindow
             Return
         End If
         Try
-            BorderErrorFast.Visibility = Visibility.Collapsed
-
-            QBuilder.ActiveUnionSubQuery.ParentSubQuery.SQL = GetTextRichTextBox(DirectCast(sender, RichTextBox))
+            QBuilder.ActiveUnionSubQuery.ParentSubQuery.SQL = DirectCast(sender, TextBox).Text
 
             Dim sql As String = QBuilder.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(_sqlFormattingOptions)
 
             _transformerSql.Query = New SQLQuery(QBuilder.ActiveUnionSubQuery.SQLContext) With {
                 .SQL = sql
             }
-        Catch ex As Exception
-            LabelErrorFast.Text = ex.Message
-            BorderErrorFast.Visibility = Visibility.Visible
+            ErrorBoxCurrent.Visibility = Visibility.Collapsed
+        Catch ex As SQLParsingException
+            ErrorBoxCurrent.Show(ex.Message, QBuilder.SyntaxProvider)
+            _errorPositionCurrent = ex.ErrorPos.pos
         End Try
     End Sub
     Private Shared Function InlineAssignHelper(Of T)(ByRef target As T, value As T) As T
@@ -806,5 +802,34 @@ Partial Public Class MainWindow
 
     Private Sub MenuItemEditMetadata_OnClick(sender As Object, e As RoutedEventArgs)
         QueryBuilder.EditMetadataContainer(QBuilder.SQLContext)
+    End Sub
+
+    Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        BoxSql.Focus()
+
+        If _errorPosition <> -1 Then
+            BoxSql.ScrollToLine(BoxSql.GetLineIndexFromCharacterIndex(_errorPosition))
+            BoxSql.CaretIndex = _errorPosition
+        End If
+    End Sub
+
+    Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+        BoxSql.Text = _lastValidSql
+        ErrorBox.Visibility = Visibility.Collapsed
+        BoxSql.Focus()
+    End Sub
+
+    Private Sub ErrorBoxCurrent_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        BoxSqlCurrentSubQuery.Focus()
+
+        If _errorPositionCurrent <> -1 Then
+            BoxSqlCurrentSubQuery.ScrollToLine(BoxSql.GetLineIndexFromCharacterIndex(_errorPositionCurrent))
+            BoxSqlCurrentSubQuery.CaretIndex = _errorPositionCurrent
+        End If
+    End Sub
+
+    Private Sub ErrorBoxCurrent_OnRevertValidText(sender As Object, e As EventArgs)
+        BoxSqlCurrentSubQuery.Text = _lastValidSqlCurrent
+        BoxSqlCurrentSubQuery.Focus()
     End Sub
 End Class

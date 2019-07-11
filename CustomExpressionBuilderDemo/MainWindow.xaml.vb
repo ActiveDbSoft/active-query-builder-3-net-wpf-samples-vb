@@ -12,6 +12,8 @@ Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.QueryView
 
 Class MainWindow
+    Private _errorPosition As Integer = -1
+    Private _lastValidSql As String
        Public Sub New()
         InitializeComponent()
 
@@ -39,26 +41,22 @@ Class MainWindow
 
     Private Sub QBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
         ' Text of SQL query has been updated by the query builder.
-        SqlEditor.Document.Blocks.Clear()
-        SqlEditor.Document.Blocks.Add(New Paragraph(New Run(QBuilder.FormattedSQL)))
+        SqlEditor.Text = QBuilder.FormattedSQL
+        _lastValidSql = QBuilder.FormattedSQL
     End Sub
 
     Private Sub SqlEditor_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
         Try
             ' Update the query builder with manually edited query text:
-            QBuilder.SQL = New TextRange(SqlEditor.Document.ContentStart, SqlEditor.Document.ContentEnd).Text
-            ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
+            QBuilder.SQL = SqlEditor.Text
+           ErrorBox.Visibility = Visibility.Collapsed
         Catch ex As SQLParsingException
             ' Set caret to error position
-            SqlEditor.CaretPosition = SqlEditor.Document.ContentStart.GetPositionAtOffset(ex.ErrorPos.pos)
+            SqlEditor.CaretIndex = ex.ErrorPos.pos
             ' Report error
-            ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
+            _errorPosition = ex.ErrorPos.pos
+            ErrorBox.Show(ex.Message, QBuilder.SyntaxProvider)
         End Try
-    End Sub
-
-    Public Sub ShowErrorBanner(control As FrameworkElement, text As String)
-        ' Show new banner if text is not empty
-       ErrorBox.Message = text
     End Sub
 
     Private Sub QBuilder_OnCustomExpressionBuilder(querycolumnlistitem As QueryColumnListItem, conditionIndex As Integer, expression As String)
@@ -151,6 +149,20 @@ Class MainWindow
     End Class
 
     Private Sub SqlEditor_OnTextChanged(sender As Object, e As EventArgs)
-        ErrorBox.Message = string.Empty
+        ErrorBox.Visibility = Visibility.Collapsed
     End Sub
+
+       Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+           SqlEditor.Focus()
+
+           If _errorPosition <> -1 Then
+               SqlEditor.ScrollToLine(SqlEditor.GetLineIndexFromCharacterIndex(_errorPosition))
+               SqlEditor.CaretIndex = _errorPosition
+           End If
+       End Sub
+
+       Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+           SqlEditor.Text = _lastValidSql
+           SqlEditor.Focus()
+       End Sub
 End Class

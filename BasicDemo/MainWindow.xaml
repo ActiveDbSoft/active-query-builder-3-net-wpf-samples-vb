@@ -4,6 +4,7 @@
     xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
 	xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
 	xmlns:basicDemo="clr-namespace:BasicDemo"
+	xmlns:common="clr-namespace:BasicDemo.Common"
 	Title="Active Query Builder for .NET WPF Edition - Basic Demo (C#)" Height="640" Width="800"
     Loaded="Window_Loaded" FontSize="11" WindowStartupLocation="CenterScreen">
     <Grid x:Name="GridRoot">
@@ -89,10 +90,10 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                     <expressionEditor:SqlTextEditor Grid.Row="2" x:Name="sqlTextEditor1" Margin="0,4,0,0" BorderThickness="1" BorderBrush="Gray"
                                                     LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus"
                                                     FontFamily="Courier New" Padding="5" FontSize="14" TextChanged="SqlTextEditor1_OnTextChanged"/>
-                    <basicDemo:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" 
-                                     SyntaxProviderChanged="ErrorBox_OnSyntaxProviderChanged" 
-                                     GoToErrorPositionEvent="ErrorBox_OnGoToErrorPositionEvent" 
-                                     RevertValidTextEvent="ErrorBox_OnRevertValidTextEvent"/>
+                    <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" 
+                                     SyntaxProviderChanged="ErrorBox_OnSyntaxProviderChanged" VisibilityCheckSyntaxBlock="Visible"
+                                     GoToErrorPosition="ErrorBox_OnGoToErrorPositionEvent" 
+                                     RevertValidText="ErrorBox_OnRevertValidTextEvent"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Data" x:Name="tbData">

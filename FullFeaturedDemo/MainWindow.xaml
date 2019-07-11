@@ -284,7 +284,7 @@
                                     <Border Grid.Row="0" Padding="7,3" Background="#5bc0de" CornerRadius="5" HorizontalAlignment="Left" Margin="5,3,0,0">
                                         <TextBlock Text="Text of the entire SQL query." FontWeight="Bold" Foreground="White"/>
                                     </Border>
-                                    <RichTextBox Grid.Row="1"
+                                    <TextBox Grid.Row="1"
                                          Margin="4,5,4,0" 
                                          x:Name="BoxSql" 
                                          LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
@@ -294,14 +294,13 @@
                                          FontFamily="Courier New"
                                          VerticalScrollBarVisibility="Auto" 
                                          HorizontalScrollBarVisibility="Auto"
-                                         TextChanged="BoxSql_OnTextChanged">
-                                        <RichTextBox.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0"/>
-                                            </Style>
-                                        </RichTextBox.Resources>
-                                    </RichTextBox>
-                                    <fullFeaturedDemo:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"/>
+                                         TextChanged="BoxSql_OnTextChanged"
+                                         AcceptsReturn="True"/>
+
+                                    <common:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                                     Margin="0,0,6,3" x:Name="ErrorBox"
+                                                     GoToErrorPosition="ErrorBox_OnGoToErrorPosition" 
+                                                     RevertValidText="ErrorBox_OnRevertValidText"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Current SubQuery Text" x:Name="TabItemCurrentSubQuery">
@@ -315,7 +314,7 @@
                                         <TextBlock Text="Text of the currently visible subquery. May include multiple SELECT statements united with set operators. (UNION, EXCEPT, INTRESECT)" FontWeight="Bold" Foreground="White"/>
                                     </Border>
                                     <Grid Grid.Row="1">
-                                        <RichTextBox 
+                                        <TextBox 
                                         Margin="4,5,4,0" 
                                         x:Name="BoxSqlCurrentSubQuery" 
                                         LostKeyboardFocus="BoxSqlCurrentSubQuery_OnLostKeyboardFocus" 
@@ -325,22 +324,13 @@
                                         FontFamily="Courier New"
                                         VerticalScrollBarVisibility="Auto" 
                                         HorizontalScrollBarVisibility="Auto"
-                                        TextChanged="BoxSql_OnTextChanged">
-                                            <RichTextBox.Resources>
-                                                <Style TargetType="{x:Type Paragraph}">
-                                                    <Setter Property="Margin" Value="0"/>
-                                                </Style>
-                                            </RichTextBox.Resources>
-                                        </RichTextBox>
+                                        TextChanged="BoxSql_OnTextChanged"
+                                        AcceptsReturn="True"/>
 
-                                        <Border x:Name="BorderErrorFast" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1,1,1,1" CornerRadius="4,4,0,0" Padding="5"
-                                            Visibility="Collapsed" Background="Pink" Margin="3,0,3,0" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased">
-                                            <Grid>
-                                                <TextBlock x:Name="LabelErrorFast" Foreground="{x:Static SystemColors.InfoTextBrush}" TextOptions.TextFormattingMode="Display" />
-                                                <Image Source="Resources/cancel.png" HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="None" 
-                                                   Cursor="{x:Static Cursors.Hand}" MouseUp="CloseImage_OnMouseUp"/>
-                                            </Grid>
-                                        </Border>
+                                        <common:ErrorBox x:Name="ErrorBoxCurrent"
+                                                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                                         GoToErrorPosition="ErrorBoxCurrent_OnGoToErrorPosition"
+                                                         RevertValidText="ErrorBoxCurrent_OnRevertValidText" Margin="4,5,4,0" />
                                     </Grid>
 
                                 </Grid>
@@ -420,7 +410,7 @@
 
                     <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>
 
-                    <RichTextBox Grid.Row="2"
+                    <TextBox Grid.Row="2"
                                  Padding="5"
                                  Margin="0,4,0,0" 
                                  x:Name="BoxSqlTransformer" 
@@ -428,13 +418,10 @@
                                  IsReadOnly="True"  
                                  FontFamily="Courier New" 
                                  VerticalScrollBarVisibility="Auto" 
-                                 HorizontalScrollBarVisibility="Auto">
-                        <RichTextBox.Resources>
-                            <Style TargetType="Paragraph">
-                                <Setter Property="Margin" Value="0"/>
-                            </Style>
-                        </RichTextBox.Resources>
-                    </RichTextBox>
+                                 HorizontalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True">
+                      
+                    </TextBox>
                 </Grid>
             </TabItem>
         </TabControl>

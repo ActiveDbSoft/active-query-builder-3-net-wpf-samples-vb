@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:QueryUIEventsDemo.Common"
         Title="Query UI events demo" Height="800" Width="1010.169">
     <Grid>
         <Grid.RowDefinitions>
@@ -103,8 +104,15 @@
                           QueryColumnListItemAdded="QBuilder_OnQueryColumnListItemAdded"
                           QueryColumnListItemRemoving="QBuilder_OnQueryColumnListItemRemoving"/>
 
-        <RichTextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
-                                        LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus"/>
+        <TextBox Grid.Row="2" Margin="4" x:Name="SqlEditor" BorderBrush="LightGray" BorderThickness="1" 
+                                        LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus"
+                                        VerticalScrollBarVisibility="Auto"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        AcceptsReturn="True"/>
+
+        <common:ErrorBox Grid.Row="2" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
+                         RevertValidText="ErrorBox_OnRevertValidText"/>
 
         <TextBox Grid.Row="3" Margin="4" Background="{x:Static SystemColors.InfoBrush}" x:Name="BoxLogEvents" IsReadOnly="True" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"/>
     </Grid>

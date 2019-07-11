@@ -10,11 +10,8 @@
 
 Imports System.Collections.Generic
 Imports System.Globalization
-Imports System.Threading
 Imports System.Windows
 Imports System.Windows.Controls
-Imports System.Windows.Controls.Primitives
-Imports System.Windows.Documents
 Imports System.Windows.Input
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
@@ -29,7 +26,8 @@ Imports QueryColumnListItem = ActiveQueryBuilder.Core.QueryColumnListItem
 ''' Interaction logic for MainWindow.xaml
 ''' </summary>
 Partial Public Class MainWindow
-    Private _errorPopup As Popup
+    Private _lastValidSql As String = String.Empty
+    Private _errorPosition As Integer = -1
 
     Public Sub New()
         InitializeComponent()
@@ -39,7 +37,6 @@ Partial Public Class MainWindow
 
     Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs)
         RemoveHandler Loaded, AddressOf MainWindow_Loaded
-        _errorPopup = New Popup()
 
         ' set syntax provider
         QBuilder.SyntaxProvider = New MSSQLSyntaxProvider()
@@ -58,49 +55,24 @@ Partial Public Class MainWindow
 
     Private Sub QBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
         ' Update the text of SQL query when it's changed in the query builder.
-        SqlEditor.Document.Blocks.Clear()
-        SqlEditor.Document.Blocks.Add(New Paragraph(New Run(QBuilder.FormattedSQL)))
+        SqlEditor.Text = QBuilder.FormattedSQL
+        ErrorBox.Visibility = Visibility.Collapsed
+        _lastValidSql = QBuilder.FormattedSQL
     End Sub
 
     Private Sub SqlEditor_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
         Try
             ' Feed the text from text editor to the query builder when user exits the editor.
-            QBuilder.SQL = New TextRange(SqlEditor.Document.ContentStart, SqlEditor.Document.ContentEnd).Text
-            ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
+            QBuilder.SQL =SqlEditor.Text
+            ErrorBox.Visibility = Visibility.Collapsed
+            _lastValidSql = SqlEditor.Text
         Catch ex As SQLParsingException
             ' Set caret to error position
-            SqlEditor.CaretPosition = SqlEditor.Document.ContentStart.GetPositionAtOffset(ex.ErrorPos.pos)
+            SqlEditor.CaretIndex = ex.ErrorPos.pos
             ' Report error
-            ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
+            ErrorBox.Show(ex.Message, QBuilder.SyntaxProvider)
+            _errorPosition = ex.ErrorPos.pos
         End Try
-    End Sub
-
-    Public Sub ShowErrorBanner(control As FrameworkElement, text As String)
-        ' Display error banner if passed text is not empty
-        If String.IsNullOrEmpty(text) Then
-            If _errorPopup.IsOpen Then
-                _errorPopup.IsOpen = False
-            End If
-            Return
-        End If
-
-        Dim label As TextBlock = New TextBlock() With {
-            .Text = text,
-            .Background = Brushes.LightPink,
-            .Padding = New Thickness(5)
-        }
-
-        _errorPopup.PlacementTarget = control
-
-        _errorPopup.Child = label
-        _errorPopup.IsOpen = True
-        _errorPopup.HorizontalOffset = control.ActualWidth - label.ActualWidth - 2
-        _errorPopup.VerticalOffset = control.ActualHeight - label.ActualHeight - 2
-        Dim timer As Timer = New Timer(AddressOf CallBackPopup, Nothing, 3000, Timeout.Infinite)
-    End Sub
-
-    Private Sub CallBackPopup(state As Object)
-        Dispatcher.BeginInvoke(DirectCast(Sub() If _errorPopup.IsOpen Then _errorPopup.IsOpen = False, Action))
     End Sub
 
     Private Sub QBuilder_OnQueryElementControlCreated(owner As QueryElement, control As IQueryElementControl)
@@ -285,6 +257,20 @@ Partial Public Class MainWindow
         target = value
         Return value
     End Function
+
+    Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        SqlEditor.Focus()
+
+        If _errorPosition <> -1 Then
+            If SqlEditor.LineCount <> 1 Then SqlEditor.ScrollToLine(SqlEditor.GetLineIndexFromCharacterIndex(_errorPosition))
+            SqlEditor.CaretIndex = _errorPosition
+        End If
+    End Sub
+
+    Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+        SqlEditor.Text = _lastValidSql
+        SqlEditor.Focus()
+    End Sub
 End Class
 
 Public Class FieldComparerByName

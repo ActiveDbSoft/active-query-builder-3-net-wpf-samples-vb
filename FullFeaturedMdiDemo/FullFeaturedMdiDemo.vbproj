@@ -79,31 +79,31 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ActiveQueryBuilder.Core">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.21.1135\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.22.1136\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.MSSQLMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.MSSQLMetadataProvider.3.5.21.1135\lib\net\ActiveQueryBuilder.MSSQLMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.MSSQLMetadataProvider.3.5.22.1136\lib\net\ActiveQueryBuilder.MSSQLMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.MySQLMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.MySQLMetadataProvider.3.5.21.1135\lib\net\ActiveQueryBuilder.MySQLMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.MySQLMetadataProvider.3.5.22.1136\lib\net\ActiveQueryBuilder.MySQLMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.ODBCMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.ODBCMetadataProvider.3.5.21.1135\lib\net\ActiveQueryBuilder.ODBCMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.ODBCMetadataProvider.3.5.22.1136\lib\net\ActiveQueryBuilder.ODBCMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.OLEDBMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.OLEDBMetadataProvider.3.5.21.1135\lib\net\ActiveQueryBuilder.OLEDBMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.OLEDBMetadataProvider.3.5.22.1136\lib\net\ActiveQueryBuilder.OLEDBMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.OracleNativeMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.OracleNativeMetadataProvider.3.5.21.1135\lib\net\ActiveQueryBuilder.OracleNativeMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.OracleNativeMetadataProvider.3.5.22.1136\lib\net\ActiveQueryBuilder.OracleNativeMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.PostgreSQLMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.PostgreSQLMetadataProvider.3.5.21.1135\lib\net\ActiveQueryBuilder.PostgreSQLMetadataProvider.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.PostgreSQLMetadataProvider.3.5.22.1136\lib\net\ActiveQueryBuilder.PostgreSQLMetadataProvider.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.21.1135\lib\net\ActiveQueryBuilder.View.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.22.1136\lib\net\ActiveQueryBuilder.View.dll</HintPath>
 	</Reference>
     <Reference Include="ActiveQueryBuilder.View.WPF">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.21.1135\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
+		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.22.1136\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
 	</Reference>
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>

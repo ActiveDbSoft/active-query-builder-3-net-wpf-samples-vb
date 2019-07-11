@@ -25,8 +25,10 @@ Public Partial Class MainWindow
 	Inherits Window
 	Private _dbConnection As IDbConnection
 	Private _way3EventMetadataProvider As EventMetadataProvider
+    Private _lastValidSql As String
+    Private _errorPosition As Integer = -1
 
-	Public Sub New()
+    Public Sub New()
 		InitializeComponent()
 	End Sub
 
@@ -276,10 +278,11 @@ Public Partial Class MainWindow
 		' Handle the event raised by SQL builder object that the text of SQL query is changed
 
 		' Hide error banner if any
-		ShowErrorBanner(SqlTextBox, "")
+		ErrorBox.Visibility = Visibility.Collapsed
 
 		' update the text box
 		SqlTextBox.Text = QBuilder.FormattedSQL
+        _lastValidSql = QBuilder.FormattedSQL
 	End Sub
 
 
@@ -431,17 +434,30 @@ Public Partial Class MainWindow
 			QBuilder.SQL = SqlTextBox.Text
 
 			' Hide error banner if any
-			ShowErrorBanner(SqlTextBox, "")
+			ErrorBox.Visibility = Visibility.Collapsed
+            _lastValidSql = SqlTextBox.Text
 		Catch ex As SQLParsingException
 			' Set caret to error position
 			SqlTextBox.SelectionStart = ex.ErrorPos.pos
 
 			' Show banner with error text
-			ShowErrorBanner(SqlTextBox, ex.Message)
+			ErrorBox.Show(ex.Message, QBuilder.SyntaxProvider)
+            _errorPosition = ex.ErrorPos.pos
 		End Try
 	End Sub
 
-	Private Sub ShowErrorBanner(sqlTextBox As FrameworkElement, empty As String)
 
-	End Sub
+    Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        SqlTextBox.Focus()
+
+        If _errorPosition <> -1 Then
+            If SqlTextBox.LineCount <> 1 Then SqlTextBox.ScrollToLine(SqlTextBox.GetLineIndexFromCharacterIndex(_errorPosition))
+            SqlTextBox.CaretIndex = _errorPosition
+        End If
+    End Sub
+
+    Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+        SqlTextBox.Text = _lastValidSql
+        SqlTextBox.Focus()
+    End Sub
 End Class

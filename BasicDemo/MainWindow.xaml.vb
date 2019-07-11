@@ -13,17 +13,14 @@ Imports System.Data.Odbc
 Imports System.Data.OleDb
 Imports Oracle.ManagedDataAccess.Client
 Imports System.Data.SqlClient
-Imports System.Linq
 Imports System.Text
 Imports System.Threading
 Imports System.Windows
 Imports System.Windows.Controls
-Imports System.Windows.Controls.Primitives
 Imports System.Windows.Markup
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.WPF
-Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports BasicDemo.ConnectionWindow
 Imports BasicDemo.PropertiesForm
 Imports Microsoft.Win32
@@ -59,11 +56,6 @@ Partial Public Class MainWindow
         _oracleSyntaxProvider1 = New OracleSyntaxProvider()
         _genericSyntaxProvider1 = New GenericSyntaxProvider()
         _odbcMetadataProvider1 = New ODBCMetadataProvider()
-
-        ErrorBox.SyntaxProviders.Add(_mssqlSyntaxProvider1)
-        ErrorBox.SyntaxProviders.Add(_msaccessSyntaxProvider1)
-        ErrorBox.SyntaxProviders.Add(_oracleSyntaxProvider1)
-        ErrorBox.SyntaxProviders.Add(_genericSyntaxProvider1)
 
         _openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
         _saveFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
@@ -129,14 +121,14 @@ Partial Public Class MainWindow
         Try
             ' Update the query builder with manually edited query text:
             queryBuilder.SQL = sqlTextEditor1.Text
-            ShowErrorBanner(DirectCast(sender, FrameworkElement), "")
-            _lastValidSql = queryBuilder.FormattedSQL
+            ErrorBox.Visibility = Visibility.Collapsed
+            
         Catch ex As SQLParsingException
             ' Set caret to error position
             sqlTextEditor1.SelectionStart = ex.ErrorPos.pos
             _errorPosition = ex.ErrorPos.pos
             ' Report error
-            ShowErrorBanner(DirectCast(sender, FrameworkElement), ex.Message)
+            ErrorBox.Show(ex.Message, queryBuilder.SyntaxProvider)
         End Try
     End Sub
 
@@ -206,15 +198,8 @@ Partial Public Class MainWindow
         ' Handle the event raised by SQL Builder object that the text of SQL query is changed
         ' update the text box
         sqlTextEditor1.Text = queryBuilder.FormattedSQL
-    End Sub
-
-
-    Public Sub ShowErrorBanner(control As FrameworkElement, text As String)
-        ' Show new banner if text is not empty
-        ErrorBox.Message = text
-        If String.IsNullOrEmpty(text) Then Return
-
-        ErrorBox.SetCurrentSyntaxProvider(queryBuilder.SyntaxProvider)
+        _lastValidSql = queryBuilder.FormattedSQL
+        ErrorBox.Visibility = Visibility.Collapsed
     End Sub
 
     Public Sub ResetQueryBuilder()
@@ -588,7 +573,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub SqlTextEditor1_OnTextChanged(sender As Object, e As EventArgs)
-        ErrorBox.Message = String.Empty
+        ErrorBox.Visibility = Visibility.Collapsed
     End Sub
 
     Private Sub MenuItemEditMetadata_OnClick(sender As Object, e As RoutedEventArgs)
@@ -603,7 +588,6 @@ Partial Public Class MainWindow
         sqlTextEditor1.Text = oldSql
         sqlTextEditor1.Focus()
         sqlTextEditor1.CaretOffset = caretPosition
-        ErrorBox.Message = String.Empty
     End Sub
 
     Private Sub ErrorBox_OnGoToErrorPositionEvent(sender As Object, e As EventArgs)
@@ -613,13 +597,10 @@ Partial Public Class MainWindow
             sqlTextEditor1.CaretOffset = _errorPosition
             sqlTextEditor1.ScrollToPosition(_errorPosition)
         End If
-        ErrorBox.Message = String.Empty
     End Sub
 
     Private Sub ErrorBox_OnRevertValidTextEvent(sender As Object, e As EventArgs)
         sqlTextEditor1.Text = _lastValidSql
-        ErrorBox.Message = String.Empty
-
         sqlTextEditor1.Focus()
     End Sub
 End Class

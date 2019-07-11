@@ -7,6 +7,7 @@
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:core="clr-namespace:ActiveQueryBuilder.Core;assembly=ActiveQueryBuilder.Core"
         xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
+        xmlns:common="clr-namespace:DragDropDemo.Common"
         mc:Ignorable="d"
         Title="DragDropDemo" Height="770" Width="1035" Background="{x:Static SystemColors.ControlBrush}">
 
@@ -61,7 +62,11 @@
             </ListBox>
         </Grid>
 
-        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Height="130" Margin="0,5,0,0" x:Name="TextBox1" LostKeyboardFocus="TextBox_OnLostKeyboardFocus" TextChanged="TextBox1_OnTextChanged"/>
-        <local:ErrorBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox"/>
+        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Height="130" Margin="0,5,0,0" x:Name="TextBox1" 
+                 LostKeyboardFocus="TextBox_OnLostKeyboardFocus" TextChanged="TextBox1_OnTextChanged" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"/>
+        <common:ErrorBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right" 
+                         VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition" RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
 </Window>

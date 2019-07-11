@@ -8,258 +8,206 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
-Imports System.Threading
+
 Imports System.Windows
-Imports System.Windows.Controls
-Imports System.Windows.Controls.Primitives
-Imports System.Windows.Input
-Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
 
-Namespace SubQueryTextEditingDemo
-	Friend Enum ModeEditor
-		Entire
-		SubQuery
-		Expression
-	End Enum
-	''' <summary>
-	''' Interaction logic for MainWindow.xaml
-	''' </summary>
-	Public Partial Class MainWindow
-		Private _popupMessage As Popup
-		Private ReadOnly _timerCleanMessage As Timer
-		Private _mode As ModeEditor
 
-		Public Sub New()
-			InitializeComponent()
-			_timerCleanMessage = New Timer(AddressOf ClosePopup)
+Friend Enum ModeEditor
+    Entire
+    SubQuery
+    Expression
+End Enum
+''' <summary>
+''' Interaction logic for MainWindow.xaml
+''' </summary>
+Public Partial Class MainWindow
+    Private _mode As ModeEditor
+    Private _lastValidSql as String
+    Private _errorPosition as Integer = -1
 
-			AddHandler Loaded, AddressOf MainWindow_Loaded
-			_mode = ModeEditor.Entire
-		End Sub
+    Public Sub New()
+        InitializeComponent()
 
-		Private Sub ClosePopup(state As Object)
-			If _popupMessage Is Nothing Then
-				Return
-			End If
+        AddHandler Loaded, AddressOf MainWindow_Loaded
+        _mode = ModeEditor.Entire
+    End Sub
 
-			Dispatcher.BeginInvoke(DirectCast(Sub() 
-			_popupMessage.IsOpen = False
-			_popupMessage = Nothing
+    Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs)
+        RemoveHandler Loaded, AddressOf MainWindow_Loaded
 
-End Sub, Action))
-		End Sub
+        Builder.SyntaxProvider = New MSSQLSyntaxProvider()
+        Builder.MetadataProvider = New MSSQLMetadataProvider()
 
-		Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs)
-			RemoveHandler Loaded, AddressOf MainWindow_Loaded
+        Builder.MetadataContainer.LoadingOptions.OfflineMode = True
+        Builder.MetadataContainer.ImportFromXML("Northwind.xml")
 
-			Builder.SyntaxProvider = New MSSQLSyntaxProvider()
-			Builder.MetadataProvider = New MSSQLMetadataProvider()
+        Builder.InitializeDatabaseSchemaTree()
 
-			Builder.MetadataContainer.LoadingOptions.OfflineMode = True
-			Builder.MetadataContainer.ImportFromXML("Northwind.xml")
+        TextEditor.QueryProvider = Builder
 
-			Builder.InitializeDatabaseSchemaTree()
+        Builder.SQL = "Select * From Customers"
 
-			TextEditor.QueryProvider = Builder
+        Breadcrumb.QueryView = Builder.QueryView
 
-			Builder.SQL = "Select * From Customers"
+        AddHandler Builder.ActiveUnionSubQueryChanging, AddressOf Builder_ActiveUnionSubQueryChanging
+        AddHandler Builder.ActiveUnionSubQueryChanged, AddressOf Builder_ActiveUnionSubQueryChanged
 
-			Breadcrumb.QueryView = Builder.QueryView
+        AddHandler Breadcrumb.SizeChanged, AddressOf Breadcrumb_SizeChanged
+    End Sub
 
-			AddHandler Builder.ActiveUnionSubQueryChanging, AddressOf Builder_ActiveUnionSubQueryChanging
-			AddHandler Builder.ActiveUnionSubQueryChanged, AddressOf Builder_ActiveUnionSubQueryChanged
+    Private Sub Breadcrumb_SizeChanged(sender As Object, e As SizeChangedEventArgs)
+        BottomGrid.InvalidateVisual()
+    End Sub
 
-			AddHandler Breadcrumb.SizeChanged, AddressOf Breadcrumb_SizeChanged
-		End Sub
+    Private Function CheckSql() As SQLParsingException
+        Try
+            Dim sql as String = TextEditor.Text.Trim()
 
-		Private Sub Breadcrumb_SizeChanged(sender As Object, e As SizeChangedEventArgs)
-			BottomGrid.InvalidateVisual()
-		End Sub
+            Select Case _mode
+                Case ModeEditor.Entire
+                    If Not String.IsNullOrEmpty(sql) Then
+                        Builder.SQLContext.ParseSelect(sql)
+                    End If
+                    Exit Select
+                Case ModeEditor.SubQuery
+                    Builder.SQLContext.ParseSelect(sql)
+                    Exit Select
+                Case ModeEditor.Expression
+                    Builder.SQLContext.ParseSelect(sql)
+                    Exit Select
+                Case Else
+                    Throw New ArgumentOutOfRangeException()
+            End Select
 
-		Private Function CheckSql() As SQLParsingException
-			Try
-				Dim sql as String = TextEditor.Text.Trim()
+            Return Nothing
+        Catch ex As SQLParsingException
+            Return ex
+        End Try
+    End Function
 
-				Select Case _mode
-					Case ModeEditor.Entire
-						If Not String.IsNullOrEmpty(sql) Then
-							Builder.SQLContext.ParseSelect(sql)
-						End If
-						Exit Select
-					Case ModeEditor.SubQuery
-						Builder.SQLContext.ParseSelect(sql)
-						Exit Select
-					Case ModeEditor.Expression
-						Builder.SQLContext.ParseSelect(sql)
-						Exit Select
-					Case Else
-						Throw New ArgumentOutOfRangeException()
-				End Select
+    Private Sub Builder_ActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
+        ApplyText()
+    End Sub
 
-				Return Nothing
-			Catch ex As SQLParsingException
-				Return ex
-			End Try
-		End Function
+    Private Sub ApplyText()
+        Dim sqlFormattingOptions As SQLFormattingOptions = Builder.SQLFormattingOptions
 
-		Private Sub Builder_ActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
-			ApplyText()
-		End Sub
+        If TextEditor Is Nothing Then
+            Return
+        End If
 
-		Private Sub ApplyText()
-			Dim sqlFormattingOptions As SQLFormattingOptions = Builder.SQLFormattingOptions
+        Select Case _mode
+            Case ModeEditor.Entire
+                TextEditor.Text = Builder.FormattedSQL
+                Exit Select
+            Case ModeEditor.SubQuery
+                If Builder.ActiveUnionSubQuery Is Nothing Then
+                    Exit Select
+                End If
+                Dim subQuery as SubQuery = Builder.ActiveUnionSubQuery.ParentSubQuery
+                TextEditor.Text = FormattedSQLBuilder.GetSQL(subQuery, sqlFormattingOptions)
+                Exit Select
+            Case ModeEditor.Expression
+                If Builder.ActiveUnionSubQuery Is Nothing Then
+                    Exit Select
+                End If
+                Dim unionSubQuery as UnionSubQuery = Builder.ActiveUnionSubQuery
+                TextEditor.Text = FormattedSQLBuilder.GetSQL(unionSubQuery, sqlFormattingOptions)
+                Exit Select
+            Case Else
+                Throw New ArgumentOutOfRangeException()
+        End Select
+    End Sub
 
-			If TextEditor Is Nothing Then
-				Return
-			End If
+    Private Sub Builder_ActiveUnionSubQueryChanging(sender As Object, e As ActiveQueryBuilder.View.SubQueryChangingEventArgs)
+        Dim exception As SQLParsingException = CheckSql()
 
-			Select Case _mode
-				Case ModeEditor.Entire
-					TextEditor.Text = Builder.FormattedSQL
-					Exit Select
-				Case ModeEditor.SubQuery
-					If Builder.ActiveUnionSubQuery Is Nothing Then
-						Exit Select
-					End If
-					Dim subQuery as SubQuery = Builder.ActiveUnionSubQuery.ParentSubQuery
-					TextEditor.Text = FormattedSQLBuilder.GetSQL(subQuery, sqlFormattingOptions)
-					Exit Select
-				Case ModeEditor.Expression
-					If Builder.ActiveUnionSubQuery Is Nothing Then
-						Exit Select
-					End If
-					Dim unionSubQuery as UnionSubQuery = Builder.ActiveUnionSubQuery
-					TextEditor.Text = FormattedSQLBuilder.GetSQL(unionSubQuery, sqlFormattingOptions)
-					Exit Select
-				Case Else
-					Throw New ArgumentOutOfRangeException()
-			End Select
-		End Sub
+        If exception Is Nothing Then
+            Return
+        End If
 
-		Private Sub Builder_ActiveUnionSubQueryChanging(sender As Object, e As ActiveQueryBuilder.View.SubQueryChangingEventArgs)
-			Dim exception As SQLParsingException = CheckSql()
+        e.Abort = True
 
-			If exception Is Nothing Then
-				Return
-			End If
+        ErrorBox.Show(exception.Message, Builder.SyntaxProvider)
+        _errorPosition = exception.ErrorPos.pos
+    End Sub
 
-			e.Abort = True
+    Private Sub Builder_OnSQLUpdated(sender As Object, e As EventArgs)
+        ApplyText()
+    End Sub
+   
+    Private Sub ToggleButton_OnChecked(sender As Object, e As RoutedEventArgs)
+        Try
+            PopupSwitch.IsOpen = False
 
-			ShowErrorBanner(TextEditor, exception)
-		End Sub
+            If Equals(sender, RadioButtonEntire) Then
+                _mode = ModeEditor.Entire
+                Return
+            End If
 
-		Private Sub Builder_OnSQLUpdated(sender As Object, e As EventArgs)
-			ApplyText()
-		End Sub
+            If Equals(sender, RadioButtonSubQuery) Then
+                _mode = ModeEditor.SubQuery
+                Return
+            End If
 
-		Private Sub ShowErrorBanner(element As UIElement, exception As Exception)
-			If Not (TypeOf exception Is SQLParsingException) Then
-				Return
-			End If
+            _mode = ModeEditor.Expression
+        Finally
+            ApplyText()
+        End Try
+    End Sub
 
-			If _popupMessage IsNot Nothing Then
-				_popupMessage.IsOpen = False
-				_popupMessage = Nothing
-			End If
+    Private Sub ButtonSwitch_OnClick(sender As Object, e As RoutedEventArgs)
+        PopupSwitch.IsOpen = True
+    End Sub
 
-			Dim label as TextBlock= New TextBlock() With {
-				.Text = exception.Message, 
-            .Background = Brushes.LightPink, 
-            .Padding = New Thickness(10)
-			}
+    Private Sub TextEditor_OnPreviewLostFocus(sender As Object, e1 As RoutedEventArgs)
+        Dim text as String = TextEditor.Text.Trim()
 
-			Dim textContent as Border = New Border() With {
-				.Child = label,
-				.BorderBrush = Brushes.Black,
-				.BorderThickness = New Thickness(1)
-			}
+        Builder.BeginUpdate()
 
-			textContent.Measure(New Size(Double.MaxValue, Double.MaxValue))
-            Dim rect As Rect = New Rect(New Point(0, 0), textContent.DesiredSize) 
-			textContent.Arrange(rect)
+        Try
+            If Not String.IsNullOrEmpty(text) Then
+                Builder.SQLContext.ParseSelect(text)
+            End If
 
-			_popupMessage = New Popup() With {
-				.PlacementTarget = element,
-				.Placement = PlacementMode.Left,
-				.Child = textContent
-			}
+            Select Case _mode
+                Case ModeEditor.Entire
+                    Builder.SQL = text
+                    _lastValidSql  = text
+                    Exit Select
+                Case ModeEditor.SubQuery
+                    Dim subQuery As SubQuery = Builder.ActiveUnionSubQuery.ParentSubQuery
+                    subQuery.SQL = text
+                    _lastValidSql = text
+                    Exit Select
+                Case ModeEditor.Expression
+                    Dim unionSubQuery As UnionSubQuery = Builder.ActiveUnionSubQuery
+                    unionSubQuery.SQL = text
+                    _lastValidSql = text
+                    Exit Select
+                Case Else
+                    Throw New ArgumentOutOfRangeException()
+            End Select
+        Catch exception As SQLParsingException
+          _errorPosition = exception.ErrorPos.pos
+            ErrorBox.Show(exception.Message, Builder.SyntaxProvider)
+        Finally
+            Builder.EndUpdate()
+        End Try
+    End Sub
 
-			_popupMessage.HorizontalOffset -= textContent.ActualWidth + 5
-			_popupMessage.VerticalOffset += 5
+    Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        TextEditor.Focus()
 
-			_popupMessage.IsOpen = True
-			_timerCleanMessage.Change(3000, Timeout.Infinite)
-		End Sub
+        If _errorPosition <> -1 Then
+            TextEditor.CaretOffset = _errorPosition
+            TextEditor.ScrollToPosition(_errorPosition)
+        End If
+    End Sub
 
-		Private Sub TextEditor_OnGotKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
-			If _popupMessage Is Nothing Then
-				Return
-			End If
-
-			_popupMessage.IsOpen = False
-			_popupMessage = Nothing
-		End Sub
-
-		Private Sub ToggleButton_OnChecked(sender As Object, e As RoutedEventArgs)
-			Try
-				PopupSwitch.IsOpen = False
-
-				If Equals(sender, RadioButtonEntire) Then
-					_mode = ModeEditor.Entire
-					Return
-				End If
-
-				If Equals(sender, RadioButtonSubQuery) Then
-					_mode = ModeEditor.SubQuery
-					Return
-				End If
-
-				_mode = ModeEditor.Expression
-			Finally
-				ApplyText()
-			End Try
-		End Sub
-
-		Private Sub ButtonSwitch_OnClick(sender As Object, e As RoutedEventArgs)
-			PopupSwitch.IsOpen = True
-		End Sub
-
-		Private Sub TextEditor_OnPreviewLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
-			Dim text as String = TextEditor.Text.Trim()
-
-			Dim isSuccess As Boolean = True
-
-			Builder.BeginUpdate()
-
-			Try
-				If Not String.IsNullOrEmpty(text) Then
-					Builder.SQLContext.ParseSelect(text)
-				End If
-
-				Select Case _mode
-					Case ModeEditor.Entire
-						Builder.SQL = text
-						Exit Select
-					Case ModeEditor.SubQuery
-						Dim subQuery = Builder.ActiveUnionSubQuery.ParentSubQuery
-						subQuery.SQL = text
-						Exit Select
-					Case ModeEditor.Expression
-						Dim unionSubQuery = Builder.ActiveUnionSubQuery
-						unionSubQuery.SQL = text
-						Exit Select
-					Case Else
-						Throw New ArgumentOutOfRangeException()
-				End Select
-			Catch exception As Exception
-				isSuccess = False
-				ShowErrorBanner(TextEditor, exception)
-			Finally
-				Builder.EndUpdate()
-			End Try
-
-			e.Handled = Not isSuccess
-		End Sub
-	End Class
-End Namespace
+    Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+        TextEditor.Text = _lastValidSql
+        TextEditor.Focus()
+    End Sub
+End Class

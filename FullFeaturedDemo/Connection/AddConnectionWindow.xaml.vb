@@ -341,6 +341,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("SQL Server 2005")
 				BoxServerVersion.Items.Add("SQL Server 2012")
 				BoxServerVersion.Items.Add("SQL Server 2014")
+				BoxServerVersion.Items.Add("SQL Server 2016")
+				BoxServerVersion.Items.Add("SQL Server 2017")
+				BoxServerVersion.Items.Add("SQL Server 2019")
 
 				Dim mssqlSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider)
 
@@ -360,6 +363,15 @@ Namespace Connection
 					Case MSSQLServerVersion.MSSQL2014
 						BoxServerVersion.SelectedItem = "SQL Server 2014"
 						Exit Select
+					Case MSSQLServerVersion.MSSQL2016
+						BoxServerVersion.SelectedItem = "SQL Server 2016"
+						Exit Select
+					Case MSSQLServerVersion.MSSQL2017
+						BoxServerVersion.SelectedItem = "SQL Server 2017"
+						Exit Select
+					Case MSSQLServerVersion.MSSQL2019
+						BoxServerVersion.SelectedItem = "SQL Server 2019"
+						Exit Select
 					Case Else
 						BoxServerVersion.SelectedItem = "Auto"
 						Exit Select
@@ -368,7 +380,8 @@ Namespace Connection
 				BoxServerVersion.IsEnabled = True
 				BoxServerVersion.Items.Add("3.0")
 				BoxServerVersion.Items.Add("4.0")
-				BoxServerVersion.Items.Add("5.0+")
+				BoxServerVersion.Items.Add("5.0")
+				BoxServerVersion.Items.Add("8.0+")
 
 				Dim mySqlSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider)
 
@@ -376,8 +389,10 @@ Namespace Connection
 					BoxServerVersion.SelectedItem = "3.0"
 				ElseIf mySqlSyntaxProvider.ServerVersionInt < 50000 Then
 					BoxServerVersion.SelectedItem = "4.0"
+				ElseIf mySqlSyntaxProvider.ServerVersionInt < 80000 Then
+					BoxServerVersion.SelectedItem = "5.0"
 				Else
-					BoxServerVersion.SelectedItem = "5.0+"
+					BoxServerVersion.SelectedItem = "8.0+"
 				End If
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
 				BoxServerVersion.IsEnabled = True
@@ -385,8 +400,10 @@ Namespace Connection
 				BoxServerVersion.Items.Add("Oracle 8")
 				BoxServerVersion.Items.Add("Oracle 9")
 				BoxServerVersion.Items.Add("Oracle 10")
-				BoxServerVersion.Items.Add("Oracle 11")
-				BoxServerVersion.Items.Add("Oracle 12")
+				BoxServerVersion.Items.Add("Oracle 11g")
+				BoxServerVersion.Items.Add("Oracle 12c")
+				BoxServerVersion.Items.Add("Oracle 18c")
+				BoxServerVersion.Items.Add("Oracle 19c")
 
 				Dim oracleSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider)
 
@@ -404,10 +421,19 @@ Namespace Connection
 						BoxServerVersion.SelectedItem = "Oracle 10"
 						Exit Select
 					Case OracleServerVersion.Oracle11
-						BoxServerVersion.SelectedItem = "Oracle 11"
+						BoxServerVersion.SelectedItem = "Oracle 11g"
+						Exit Select
+					Case OracleServerVersion.Oracle12
+						BoxServerVersion.SelectedItem = "Oracle 12c"
+						Exit Select
+					Case OracleServerVersion.Oracle18
+						BoxServerVersion.SelectedItem = "Oracle 18c"
+						Exit Select
+					Case OracleServerVersion.Oracle19
+						BoxServerVersion.SelectedItem = "Oracle 19c"
 						Exit Select
 					Case Else
-						BoxServerVersion.SelectedItem = "Oracle 12"
+						BoxServerVersion.SelectedItem = "Oracle 18c"
 						Exit Select
 				End Select
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is PostgreSQLSyntaxProvider Then
@@ -647,6 +673,18 @@ Namespace Connection
 					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2000
 				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2005" Then
 					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2005
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2008" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2008
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2012" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2012
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2014" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2014
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2016" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2016
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2017" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2017
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "SQL Server 2019" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion = MSSQLServerVersion.MSSQL2019
 				End If
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MySQLSyntaxProvider Then
 				If DirectCast(BoxServerVersion.SelectedItem, String) = "3.0" Then
@@ -655,6 +693,8 @@ Namespace Connection
 					DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 49999
 				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "5.0" Then
 					DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 50000
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "8.0+" Then
+					DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt = 80012
 				End If
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is OracleSyntaxProvider Then
 				If DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 7" Then
@@ -665,6 +705,14 @@ Namespace Connection
 					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle9
 				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 10" Then
 					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle10
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 11g" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle11
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 12c" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle12
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 18c" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle18
+				ElseIf DirectCast(BoxServerVersion.SelectedItem, String) = "Oracle 19c" Then
+					DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider).ServerVersion = OracleServerVersion.Oracle19
 				End If
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is SybaseSyntaxProvider Then
 				If DirectCast(BoxServerVersion.SelectedItem, String) = "ASE" Then

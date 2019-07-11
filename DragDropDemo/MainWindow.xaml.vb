@@ -13,6 +13,8 @@ Imports ActiveQueryBuilder.View
 
 Class MainWindow
     Private _dragBoxFromMouseDown As Rect = Rect.Empty
+    Private _errorPosition As Integer = -1
+    Private _lastValidSql As String
 
 	Public Sub New()
 
@@ -113,10 +115,11 @@ Class MainWindow
 		' Handle the event raised by SQL Builder object that the text of SQL query is changed
 
 		' Hide error banner if any
-		ShowErrorBanner(TextBox1, "")
+		ErrorBox.Visibility = Visibility.Collapsed
 
 		' update the text box
 		TextBox1.Text = QueryBuilder1.FormattedSQL
+        _lastValidSql = QueryBuilder1.FormattedSQL
 	End Sub
 
 	Private Sub TextBox_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
@@ -124,24 +127,35 @@ Class MainWindow
 		Try
 			' Update the query builder with manually edited query text:
 			QueryBuilder1.SQL = TextBox1.Text
-
+		    _lastValidSql = QueryBuilder1.FormattedSQL
 			' Hide error banner if any
-			ShowErrorBanner(TextBox1, "")
+		    ErrorBox.Visibility = Visibility.Collapsed
 		Catch ex As SQLParsingException
 			' Set caret to error position
 			TextBox1.SelectionStart = ex.ErrorPos.pos
 
 			' Show banner with error text
-			ShowErrorBanner(TextBox1, ex.Message)
+			_errorPosition = ex.ErrorPos.pos
+            ErrorBox.Show(ex.Message, QueryBuilder1.SyntaxProvider)
 		End Try
 	End Sub
 
-	Public Sub ShowErrorBanner(control As FrameworkElement, text As String)
-		' Show new banner if text is not empty
-		ErrorBox.Message = text
+	Private Sub TextBox1_OnTextChanged(sender As Object, e As TextChangedEventArgs)
+	    ErrorBox.Visibility = Visibility.Collapsed
 	End Sub
 
-	Private Sub TextBox1_OnTextChanged(sender As Object, e As TextChangedEventArgs)
-	    ErrorBox.Message = string.Empty
-	End Sub
+    Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        TextBox1.Focus()
+
+        If _errorPosition <> -1 Then
+            TextBox1.ScrollToLine(TextBox1.GetLineIndexFromCharacterIndex(_errorPosition))
+            TextBox1.CaretIndex = _errorPosition
+        End If
+    End Sub
+
+    Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+        TextBox1.Text = _lastValidSql
+        ErrorBox.Visibility = Visibility.Collapsed
+        TextBox1.Focus()
+    End Sub
 End Class

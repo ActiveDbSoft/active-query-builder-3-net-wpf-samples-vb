@@ -8,109 +8,120 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System
+Imports System.Net.Mime
+Imports System.Windows
+Imports System.Windows.Controls
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.WPF
 
-Public Class MainWindow
+    Public Partial Class MainWindow
+        Private _lastValidSql1 As String = String.Empty
+        Private _lastValidSql2 As String = String.Empty
+        Private _errorPosition1 As Integer = -1
+        Private _errorPosition2 As Integer = -1
 
-	Public Sub New()
-        InitializeComponent()
+        Public Sub New()
+            InitializeComponent()
+            AddHandler Loaded, AddressOf MainWindow_Loaded
+        End Sub
 
-        AddHandler Loaded, AddressOf MainWindow_Loaded
-    End Sub
+        Private Sub MainWindow_Loaded(ByVal sender As Object, ByVal e As RoutedEventArgs)
+            RemoveHandler Loaded, AddressOf MainWindow_Loaded
+            QueryBuilder1.SyntaxProvider = New DB2SyntaxProvider()
 
-    Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs)
-        RemoveHandler Loaded, AddressOf MainWindow_Loaded
+            Try
+                QueryBuilder1.MetadataLoadingOptions.OfflineMode = True
+                QueryBuilder1.MetadataContainer.ImportFromXML("db2_sample_with_alt_names.xml")
+                QueryBuilder1.InitializeDatabaseSchemaTree()
+                QueryBuilder1.SQL = "Select DEPARTMENT.DEPTNO, DEPARTMENT.DEPTNAME, DEPARTMENT.MGRNO From DEPARTMENT"
+            Catch ex As QueryBuilderException
+                MessageBox.Show(ex.Message)
+            End Try
+        End Sub
 
-        ' set required syntax provider
-        QueryBuilder1.SyntaxProvider = New DB2SyntaxProvider()
+        Private Sub QueryBuilder1_OnSQLUpdated(ByVal sender As Object, ByVal e As EventArgs)
+            TextBox1.Text = QueryBuilder1.FormattedSQL
+            TextBox2.Text = QueryBuilder1.SQL
+        End Sub
 
-        Try
-            ' Load demo metadata from XML file
-            QueryBuilder1.MetadataLoadingOptions.OfflineMode = True
-            QueryBuilder1.MetadataContainer.ImportFromXML("db2_sample_with_alt_names.xml")
-            QueryBuilder1.InitializeDatabaseSchemaTree()
+        Private Sub TextBox1_OnLostKeyboardFocus(ByVal sender As Object, ByVal routedEventArgs As RoutedEventArgs)
+            Try
+                QueryBuilder1.SQL = TextBox1.Text
+                ErrorBox1.Show(Nothing, QueryBuilder1.SyntaxProvider)
+                _lastValidSql1 = TextBox1.Text
+                _errorPosition1 = -1
+            Catch ex As SQLParsingException
+                TextBox1.SelectionStart = ex.ErrorPos.pos
+                ErrorBox1.Show(ex.Message, QueryBuilder1.SyntaxProvider)
+                _errorPosition1 = ex.ErrorPos.pos
+            End Try
+        End Sub
 
-            ' set example query text
-            QueryBuilder1.SQL = "Select DEPARTMENT.DEPTNO, DEPARTMENT.DEPTNAME, DEPARTMENT.MGRNO From DEPARTMENT"
-        Catch ex As QueryBuilderException
-            MessageBox.Show(ex.Message)
-        End Try
-    End Sub
+        Private Sub TextBox2_OnLostKeyboardFocus(ByVal sender As Object, ByVal routedEventArgs As RoutedEventArgs)
+            Try
+                QueryBuilder1.SQL = TextBox2.Text
+                ErrorBox2.Show(Nothing, QueryBuilder1.SyntaxProvider)
+                _lastValidSql2 = TextBox2.Text
+                _errorPosition2 = -1
+            Catch ex As SQLParsingException
+                TextBox2.SelectionStart = ex.ErrorPos.pos
+                ErrorBox2.Show(ex.Message, QueryBuilder1.SyntaxProvider)
+                _errorPosition2 = ex.ErrorPos.pos
+            End Try
+        End Sub
 
-    Private Sub QueryBuilder1_OnSQLUpdated(sender As Object, e As EventArgs)
-        ' Text of SQL query has been updated.
+        Private Sub MenuItemAbout_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+            QueryBuilder.ShowAboutDialog()
+        End Sub
 
-        ' To get the formatted query text with alternate object names just use FormattedSQL property
-        TextBox1.Text = QueryBuilder1.FormattedSQL
+        Private Sub Selector_OnSelectionChanged(ByVal sender As Object, ByVal e As SelectionChangedEventArgs)
+            ErrorBox1.Show(Nothing, QueryBuilder1.SyntaxProvider)
+            ErrorBox2.Show(Nothing, QueryBuilder1.SyntaxProvider)
+        End Sub
 
-        ' To get the query text, ready for execution on SQL server with real object names just use SQL property.
-        TextBox2.Text = QueryBuilder1.SQL
+        Private Sub ErrorBox2_OnSyntaxProviderChanged(ByVal sender As Object, ByVal e As SelectionChangedEventArgs)
+            Dim oldSql = TextBox2.Text
+            Dim caretPosition = TextBox2.CaretIndex
+            QueryBuilder1.SyntaxProvider = CType(e.AddedItems(0), BaseSyntaxProvider)
+            TextBox2.Text = oldSql
+            TextBox2.Focus()
+            TextBox2.CaretIndex = caretPosition
+        End Sub
 
-        ' The query text containing in SQL property is unformatted. If you need the formatted text, but with real object names, 
-        ' do the following:
-        '			SQLFormattingOptions formattingOptions = new SQLFormattingOptions();
-        '			formattingOptions.Assign(queryBuilder1.SQLFormattingOptions); // copy actual formatting options from the QueryBuilder
-        '			formattingOptions.UseAltNames = false; // disable alt names
-        '			TextBox2.Text = FormattedSQLBuilder.GetSQL(queryBuilder1.SQLQuery.QueryRoot, formattingOptions);
-    End Sub
+        Private Sub ErrorBox2_OnRevertValidTextEvent(ByVal sender As Object, ByVal e As EventArgs)
+            TextBox2.Text = _lastValidSql2
+            ErrorBox2.Show(Nothing, QueryBuilder1.SyntaxProvider)
+            TextBox2.Focus()
+        End Sub
 
-    Private Sub TextBox1_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
-        Try
-            ' Update the query builder with manually edited query text:
-            QueryBuilder1.SQL = TextBox1.Text
+        Private Sub ErrorBox2_OnGoToErrorPositionEvent(ByVal sender As Object, ByVal e As EventArgs)
+            TextBox2.Focus()
+            If _errorPosition2 = -1 Then Return
+            If TextBox2.LineCount <> 1 Then TextBox2.ScrollToLine(TextBox1.GetLineIndexFromCharacterIndex(_errorPosition2))
+            TextBox2.CaretIndex = _errorPosition2
+        End Sub
 
-            ' Hide error banner if any
-            ShowErrorBanner(TextBox1, "")
-        Catch ex As SQLParsingException
-            ' Set caret to error position
-            TextBox1.SelectionStart = ex.ErrorPos.pos
+        Private Sub ErrorBox1_OnSyntaxProviderChanged(ByVal sender As Object, ByVal e As SelectionChangedEventArgs)
+            Dim oldSql = TextBox1.Text
+            Dim caretPosition = TextBox1.CaretIndex
+            QueryBuilder1.SyntaxProvider = CType(e.AddedItems(0), BaseSyntaxProvider)
+            TextBox1.Text = oldSql
+            TextBox1.Focus()
+            TextBox1.CaretIndex = caretPosition
+        End Sub
 
-            ' Show banner with error text
-            ShowErrorBanner(TextBox1, ex.Message)
-        End Try
-    End Sub
+        Private Sub ErrorBox1_OnRevertValidTextEvent(ByVal sender As Object, ByVal e As EventArgs)
+            TextBox1.Text = _lastValidSql1
+            TextBox1.Focus()
+        End Sub
 
-    Private Sub TextBox2_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
-        Try
-            ' Update the query builder with manually edited query text:
-            QueryBuilder1.SQL = TextBox2.Text
+        Private Sub ErrorBox1_OnGoToErrorPositionEvent(ByVal sender As Object, ByVal e As EventArgs)
+            TextBox1.Focus()
 
-            ' Hide error banner if any
-            ShowErrorBanner(TextBox2, "")
-        Catch ex As SQLParsingException
-            ' Set caret to error position
-            TextBox2.SelectionStart = ex.ErrorPos.pos
-
-            ' Show banner with error text
-            ShowErrorBanner(TextBox2, ex.Message)
-        End Try
-    End Sub
-
-    Public Sub ShowErrorBanner(control As FrameworkElement, text As String)
-        ' Show new banner if text is not empty
-      If Equals(control, ErrorBox1)
-            ErrorBox1.Message = text
-      End If
-        If Equals(control, ErrorBox2)
-            ErrorBox2.Message = text
-        End If
-	End Sub
-
-    Private Sub MenuItemAbout_OnClick(sender As Object, e As RoutedEventArgs)
-		QueryBuilder.ShowAboutDialog()
-	End Sub
-
-	Private Sub TextBox1_OnTextChanged(sender As Object, e As TextChangedEventArgs)
-	    ErrorBox1.Message = String.Empty
-	End Sub
-
-	Private Sub TextBox2_OnTextChanged(sender As Object, e As TextChangedEventArgs)
-	    ErrorBox2.Message = String.Empty
-	End Sub
-
-	Private Sub Selector_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-	    ErrorBox1.Message = String.Empty
-	    ErrorBox2.Message = String.Empty
-	End Sub
-End Class
+            If _errorPosition1 <> -1 Then
+                If TextBox1.LineCount <> 1 Then TextBox1.ScrollToLine(TextBox1.GetLineIndexFromCharacterIndex(_errorPosition1))
+                TextBox1.CaretIndex = _errorPosition1
+            End If
+        End Sub
+    End Class

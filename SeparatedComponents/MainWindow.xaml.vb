@@ -14,8 +14,10 @@ Imports ActiveQueryBuilder.View.WPF
 Imports Microsoft.Win32
 
 Class MainWindow
- Private ReadOnly _sqlQuery As SQLQuery
+    Private ReadOnly _sqlQuery As SQLQuery
     Private ReadOnly _sqlContext As SQLContext
+    Private _errorPosition As Integer = -1
+    Private _lastValidSql As String
 
     Public Sub New()
         Dim builder As StringBuilder = New StringBuilder()
@@ -30,9 +32,9 @@ Class MainWindow
 
         InitializeComponent()
 
-        _sqlContext = New SQLContext() With { _
-            .SyntaxProvider = New MSSQLSyntaxProvider() With { _
-                .ServerVersion = MSSQLServerVersion.MSSQL2012 _
+        _sqlContext = New SQLContext() With {
+            .SyntaxProvider = New MSSQLSyntaxProvider() With {
+                .ServerVersion = MSSQLServerVersion.MSSQL2012
             }
         }
 
@@ -55,11 +57,13 @@ Class MainWindow
 
     Private Sub sqlQuery_SQLUpdated(sender As Object, e As EventArgs)
         sqlTextEditor.Text = FormattedSQLBuilder.GetSQL(_sqlQuery.QueryRoot, New SQLFormattingOptions())
+        ErrorBox.Visibility = Visibility.Collapsed
+        _lastValidSql = sqlTextEditor.Text
     End Sub
 
     Private Sub MenuItemLoadMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim openFileDialog = New OpenFileDialog() With { _
-            .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*" _
+        Dim openFileDialog = New OpenFileDialog() With {
+            .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
         }
 
         ' Load metadata from XML file
@@ -73,9 +77,9 @@ Class MainWindow
     End Sub
 
     Private Sub MenuItemSaveMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim saveFileDialog As SaveFileDialog = New SaveFileDialog() With { _
-            .FileName = "Metadata.xml", _
-            .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*" _
+        Dim saveFileDialog As SaveFileDialog = New SaveFileDialog() With {
+            .FileName = "Metadata.xml",
+            .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
         }
 
         ' Save metadata to XML file
@@ -126,18 +130,34 @@ Class MainWindow
         Try
             ' Update the query builder with manually edited query text:
             _sqlQuery.SQL = sqlTextEditor.Text
-            ErrorBox.Message = string.Empty
+            ErrorBox.Visibility = Visibility.Collapsed
         Catch ex As SQLParsingException
             ' Set caret to error position
             sqlTextEditor.SelectionStart = ex.ErrorPos.pos
 
             ' Show banner with error text
-            ErrorBox.Message = ex.Message
+            ErrorBox.Show(ex.Message, _sqlQuery.SQLContext.SyntaxProvider)
+            _errorPosition = ex.ErrorPos.pos
         End Try
     End Sub
 
     Private Sub TextBox1_OnTextChanged(sender As Object, e As EventArgs)
-        If Equals(ErrorBox , Nothing) Then Return
-        ErrorBox.Message = string.Empty
+        If Equals(ErrorBox, Nothing) Then Return
+        ErrorBox.Visibility = Visibility.Collapsed
+    End Sub
+
+    Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        sqlTextEditor.Focus()
+
+        If _errorPosition <> -1 Then
+            
+            sqlTextEditor.CaretOffset = _errorPosition
+            sqlTextEditor.ScrollToPosition(_errorPosition)
+        End If
+    End Sub
+
+    Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
+        sqlTextEditor.Text = _lastValidSql
+        sqlTextEditor.Focus()
     End Sub
 End Class

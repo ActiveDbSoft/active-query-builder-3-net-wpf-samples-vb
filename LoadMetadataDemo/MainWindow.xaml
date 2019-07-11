@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:core="clr-namespace:ActiveQueryBuilder.Core;assembly=ActiveQueryBuilder.Core"
+        xmlns:common="clr-namespace:LoadMetadataDemo.Common"
 
         x:Class="MainWindow"
         Title="LoadMetadataDemo" Height="677" Width="1086.75">
@@ -23,7 +24,7 @@
                 <MenuItem Header="Connect to database through OLE DB" Click="connectOleDbMenuItem_Click"/>
                 <MenuItem Header="Connect to database through ODBC" Click="connectODBCMenuItem_Click"/>
             </MenuItem>
-            <MenuItem Header="About"/>
+            <MenuItem Header="About" Click="aboutMenuItem_Click"/>
         </Menu>
 
         <TabControl Grid.Row="1" Margin="4">
@@ -71,6 +72,11 @@
             </aqb:QueryBuilder.SyntaxProvider>
         </aqb:QueryBuilder>
 
-        <TextBox TextWrapping="Wrap" Grid.Row="3" Height="120" Margin="4,0,4,4" x:Name="SqlTextBox" LostFocus="SqlTextBox_OnLostFocus"/>
+        <TextBox TextWrapping="Wrap" Grid.Row="3" Height="120" Margin="4,0,4,4" x:Name="SqlTextBox" LostFocus="SqlTextBox_OnLostFocus" 
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"/>
+
+        <common:ErrorBox Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
+                         RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
 </Window>
