@@ -18,5 +18,7 @@ Namespace PropertiesForm
 
 			Foreground = Brushes.CornflowerBlue
 		End Sub
+
+
 	End Class
 End Namespace

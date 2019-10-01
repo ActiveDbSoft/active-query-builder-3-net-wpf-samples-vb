@@ -10,6 +10,7 @@
 
 Imports System.ComponentModel
 Imports ActiveQueryBuilder.Core
+Imports ActiveQueryBuilder.View.WPF
 
 Namespace PropertiesForm
 	''' <summary>
@@ -17,7 +18,8 @@ Namespace PropertiesForm
 	''' </summary>
 	<ToolboxItem(False)> _
 	Public Partial Class GeneralPage
-		Private ReadOnly _sqlFormattingOptions As SQLFormattingOptions
+		Private ReadOnly _queryBuilder As QueryBuilder
+
 
 		Public Property Modified() As Boolean
 			Get
@@ -34,22 +36,22 @@ Namespace PropertiesForm
 			InitializeComponent()
 		End Sub
 
-		Public Sub New(sqlFormattingOptions As SQLFormattingOptions)
+		Public Sub New(queryBuilder As QueryBuilder)
 			Modified = False
-			_sqlFormattingOptions = sqlFormattingOptions
+			_queryBuilder = queryBuilder
 
 			InitializeComponent()
 
-			cbWordWrap.IsChecked = (_sqlFormattingOptions.RightMargin <> 0)
+			cbWordWrap.IsChecked = (_queryBuilder.SQLFormattingOptions.RightMargin <> 0)
 			updownRightMargin.IsEnabled = cbWordWrap.IsChecked.Value
 
-			updownRightMargin.Value = If(_sqlFormattingOptions.RightMargin = 0, 80, _sqlFormattingOptions.RightMargin)
+			updownRightMargin.Value = If(_queryBuilder.SQLFormattingOptions.RightMargin = 0, 80, _queryBuilder.SQLFormattingOptions.RightMargin)
 
 			comboKeywordsCasing.Items.Add("Capitalized")
 			comboKeywordsCasing.Items.Add("Uppercase")
 			comboKeywordsCasing.Items.Add("Lowercase")
 
-			comboKeywordsCasing.SelectedIndex = CInt(_sqlFormattingOptions.KeywordFormat)
+			comboKeywordsCasing.SelectedIndex = CInt(queryBuilder.SQLFormattingOptions.KeywordFormat)
 
 			AddHandler cbWordWrap.Checked, AddressOf checkWordWrap_CheckedChanged
 			AddHandler cbWordWrap.Unchecked, AddressOf checkWordWrap_CheckedChanged
@@ -76,12 +78,12 @@ Namespace PropertiesForm
 			End If
 
 			If cbWordWrap.IsChecked.HasValue AndAlso cbWordWrap.IsChecked.Value Then
-				_sqlFormattingOptions.RightMargin = updownRightMargin.Value
+				_queryBuilder.SQLFormattingOptions.RightMargin = updownRightMargin.Value
 			Else
-				_sqlFormattingOptions.RightMargin = 0
+				_queryBuilder.SQLFormattingOptions.RightMargin = 0
 			End If
 
-			_sqlFormattingOptions.KeywordFormat = CType(comboKeywordsCasing.SelectedIndex, KeywordFormat)
+			_queryBuilder.SQLFormattingOptions.KeywordFormat = CType(comboKeywordsCasing.SelectedIndex, KeywordFormat)
 		End Sub
 	End Class
 End Namespace

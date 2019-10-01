@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="PropertiesForm.SqlFormattingPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:common="clr-namespace:FullFeaturedDemo.Common"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
             >
     <UserControl.Resources>
         <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
@@ -36,7 +36,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid Margin="3">
         <StackPanel>
             <GroupBox Header="Common" Style="{StaticResource StyleGroupBox}" Foreground="CornflowerBlue" FontWeight="Bold">
@@ -74,13 +74,13 @@
                     <common:CustomUpDown Width="60" Height="20" Foreground="Black" FontWeight="Normal" HorizontalAlignment="Left" x:Name="updownWhereIndent"/>
                 </StackPanel>
             </GroupBox>
-            
+
             <GroupBox Header="GROUP BY" Style="{StaticResource StyleGroupBox}" Foreground="CornflowerBlue" FontWeight="Bold" Margin="0,10,0,0" SnapsToDevicePixels="True">
                 <StackPanel Margin="0,4,0,0">
                     <CheckBox Foreground="Black" FontWeight="Normal" Content="Insert new line after each group list item" x:Name="cbNewLineAfterGroupItem"/>
                 </StackPanel>
             </GroupBox>
-            
+
             <GroupBox Header="HAVING" Style="{StaticResource StyleGroupBox}" Foreground="CornflowerBlue" FontWeight="Bold" Margin="0,10,0,0" SnapsToDevicePixels="True">
                 <StackPanel Margin="0,4,0,0">
                     <CheckBox Foreground="Black" FontWeight="Normal" Content="Insert new line after topmost logical operators" Margin="0,0,0,6" x:Name="cbNewLineHavingTop"/>
@@ -91,6 +91,6 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-        </StackPanel> 
+        </StackPanel>
     </Grid>
 </UserControl>

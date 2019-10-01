@@ -520,7 +520,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub MenuItemProperties_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim propWindow As QueryPropertiesWindow = New QueryPropertiesWindow(QBuilder.SQLContext, _sqlFormattingOptions)
+        Dim propWindow As QueryBuilderPropertiesWindow = New QueryBuilderPropertiesWindow(QBuilder)
         propWindow.ShowDialog()
     End Sub
 

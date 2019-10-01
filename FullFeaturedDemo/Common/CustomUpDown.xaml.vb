@@ -54,8 +54,8 @@ Namespace Common
 
 		Private Sub textBoxValue_Pasting(sender As Object, e As DataObjectPastingEventArgs)
 			If e.DataObject.GetDataPresent(GetType(String)) Then
-				Dim text1 = DirectCast(e.DataObject.GetData(GetType(String)), String)
-				If Not TextBoxTextAllowed(text1) Then
+                Dim text1 As String = DirectCast(e.DataObject.GetData(GetType(String)), String)
+                If Not TextBoxTextAllowed(text1) Then
 					e.CancelCommand()
 				End If
 			Else

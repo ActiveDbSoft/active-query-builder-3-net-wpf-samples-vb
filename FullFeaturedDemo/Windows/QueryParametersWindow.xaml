@@ -1,4 +1,4 @@
-﻿<Window x:Class="QueryParametersWindow"
+﻿<Window x:Class="Windows.QueryParametersWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="QueryParametersWindow" SizeToContent="Height" MinHeight="300" Width="400" WindowStartupLocation="CenterScreen">

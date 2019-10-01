@@ -10,6 +10,7 @@
 
 Imports System.Windows.Controls
 Imports ActiveQueryBuilder.Core
+Imports ActiveQueryBuilder.View.WPF
 
 Namespace PropertiesForm
 	''' <summary>
@@ -26,17 +27,19 @@ Namespace PropertiesForm
 		End Property
 		Private m_Modified As Boolean
 
+		Private ReadOnly _queryBuilder As QueryBuilder = Nothing
 		Private _syntaxProvider As BaseSyntaxProvider = Nothing
-		Private ReadOnly _sqlContext As SQLContext
+
 		Public Sub New()
 			Modified = False
 			InitializeComponent()
 		End Sub
 
-		Public Sub New(sqlQuery As SQLContext, syntaxProvider As BaseSyntaxProvider)
+		Public Sub New(queryBuilder As QueryBuilder, syntaxProvider As BaseSyntaxProvider)
 			Modified = False
+			_queryBuilder = queryBuilder
 			_syntaxProvider = syntaxProvider
-			_sqlContext = sqlQuery
+
 			InitializeComponent()
 
 			comboIdentCaseSens.Items.Add("All identifiers are case insensitive")
@@ -90,16 +93,16 @@ Namespace PropertiesForm
 			comboSqlDialect.Items.Add("VistaDB")
 			comboSqlDialect.Items.Add("Generic")
 
-			If TypeOf _sqlContext.SyntaxProvider Is SQL92SyntaxProvider Then
+			If TypeOf queryBuilder.SyntaxProvider Is SQL92SyntaxProvider Then
 				comboSqlDialect.SelectedItem = "ANSI SQL-92"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is AutoSyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is AutoSyntaxProvider Then
 				comboSqlDialect.SelectedItem = "Auto"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is SQL89SyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is SQL89SyntaxProvider Then
 				comboSqlDialect.SelectedItem = "ANSI SQL-89"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is SQL2003SyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is SQL2003SyntaxProvider Then
 				comboSqlDialect.SelectedItem = "ANSI SQL-2003"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is FirebirdSyntaxProvider Then
-				Select Case TryCast(_sqlContext.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is FirebirdSyntaxProvider Then
+				Select Case TryCast(queryBuilder.SyntaxProvider, FirebirdSyntaxProvider).ServerVersion
 					Case FirebirdVersion.Firebird10
 						comboSqlDialect.SelectedItem = "Firebird 1.0"
 						Exit Select
@@ -113,10 +116,10 @@ Namespace PropertiesForm
 						comboSqlDialect.SelectedItem = "Firebird 2.0"
 						Exit Select
 				End Select
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is DB2SyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is DB2SyntaxProvider Then
 				comboSqlDialect.SelectedItem = "IBM DB2"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is InformixSyntaxProvider Then
-				Select Case TryCast(_sqlContext.SyntaxProvider, InformixSyntaxProvider).ServerVersion
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is InformixSyntaxProvider Then
+				Select Case TryCast(queryBuilder.SyntaxProvider, InformixSyntaxProvider).ServerVersion
 					Case InformixVersion.DS8
 						comboSqlDialect.SelectedItem = "IBM Informix 8"
 						Exit Select
@@ -127,8 +130,8 @@ Namespace PropertiesForm
 						comboSqlDialect.SelectedItem = "IBM Informix 10"
 						Exit Select
 				End Select
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is MSAccessSyntaxProvider Then
-				Select Case TryCast(_sqlContext.SyntaxProvider, MSAccessSyntaxProvider).ServerVersion
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is MSAccessSyntaxProvider Then
+				Select Case TryCast(queryBuilder.SyntaxProvider, MSAccessSyntaxProvider).ServerVersion
 					Case MSAccessServerVersion.MSJET3
 						comboSqlDialect.SelectedItem = "MS Access 97 (MS Jet 3.0)"
 						Exit Select
@@ -139,10 +142,10 @@ Namespace PropertiesForm
 						comboSqlDialect.SelectedItem = "MS Access 2003 (MS Jet 4.0)"
 						Exit Select
 				End Select
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is MSSQLCESyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is MSSQLCESyntaxProvider Then
 				comboSqlDialect.SelectedItem = "MS SQL Server Compact Edition"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is MSSQLSyntaxProvider Then
-				Select Case TryCast(_sqlContext.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is MSSQLSyntaxProvider Then
+				Select Case TryCast(queryBuilder.SyntaxProvider, MSSQLSyntaxProvider).ServerVersion
 					Case MSSQLServerVersion.MSSQL7
 						comboSqlDialect.SelectedItem = "MS SQL Server 7"
 						Exit Select
@@ -174,20 +177,20 @@ Namespace PropertiesForm
 						comboSqlDialect.SelectedItem = "MS SQL Server 2017"
 						Exit Select
 				End Select
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is MySQLSyntaxProvider Then
-				If TryCast(_sqlContext.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt < 40000 Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is MySQLSyntaxProvider Then
+				If TryCast(queryBuilder.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt < 40000 Then
 					comboSqlDialect.SelectedItem = "MySQL 3.xx"
-				ElseIf TryCast(_sqlContext.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt <= 40099 Then
+				ElseIf TryCast(queryBuilder.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt <= 40099 Then
 					comboSqlDialect.SelectedItem = "MySQL 4.0"
-				ElseIf TryCast(_sqlContext.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt < 50000 Then
+				ElseIf TryCast(queryBuilder.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt < 50000 Then
 					comboSqlDialect.SelectedItem = "MySQL 4.1"
-				ElseIf TryCast(_sqlContext.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt < 80000 Then
+				ElseIf TryCast(queryBuilder.SyntaxProvider, MySQLSyntaxProvider).ServerVersionInt < 80000 Then
 					comboSqlDialect.SelectedItem = "MySQL 5.0"
 				Else
 					comboSqlDialect.SelectedItem = "MySQL 8.0"
 				End If
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is OracleSyntaxProvider Then
-				Select Case TryCast(_sqlContext.SyntaxProvider, OracleSyntaxProvider).ServerVersion
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is OracleSyntaxProvider Then
+				Select Case TryCast(queryBuilder.SyntaxProvider, OracleSyntaxProvider).ServerVersion
 					Case OracleServerVersion.Oracle7
 						comboSqlDialect.SelectedItem = "Oracle 7"
 						Exit Select
@@ -216,12 +219,12 @@ Namespace PropertiesForm
 						comboSqlDialect.SelectedItem = "Oracle 18c"
 						Exit Select
 				End Select
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is PostgreSQLSyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is PostgreSQLSyntaxProvider Then
 				comboSqlDialect.SelectedItem = "PostgreSQL"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is SQLiteSyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is SQLiteSyntaxProvider Then
 				comboSqlDialect.SelectedItem = "SQLite"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is SybaseSyntaxProvider Then
-				Select Case TryCast(_sqlContext.SyntaxProvider, SybaseSyntaxProvider).ServerVersion
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is SybaseSyntaxProvider Then
+				Select Case TryCast(queryBuilder.SyntaxProvider, SybaseSyntaxProvider).ServerVersion
 					Case SybaseServerVersion.SybaseASE
 						comboSqlDialect.SelectedItem = "Sybase ASE"
 						Exit Select
@@ -232,23 +235,23 @@ Namespace PropertiesForm
 						comboSqlDialect.SelectedItem = "Sybase SQL Anywhere"
 						Exit Select
 				End Select
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is TeradataSyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is TeradataSyntaxProvider Then
 				comboSqlDialect.SelectedItem = "Teradata"
-			ElseIf TypeOf _sqlContext.SyntaxProvider Is VistaDBSyntaxProvider Then
+			ElseIf TypeOf queryBuilder.SyntaxProvider Is VistaDBSyntaxProvider Then
 				comboSqlDialect.SelectedItem = "VistaDB"
 			End If
 
-			If TypeOf _sqlContext.SyntaxProvider Is GenericSyntaxProvider Then
+			If TypeOf queryBuilder.SyntaxProvider Is GenericSyntaxProvider Then
 				comboSqlDialect.SelectedItem = "Generic"
 			End If
 
-			If _sqlContext.SyntaxProvider IsNot Nothing Then
-				comboIdentCaseSens.SelectedIndex = CInt(_sqlContext.SyntaxProvider.IdentCaseSens)
-				textBeginQuotationSymbol.Text = _sqlContext.SyntaxProvider.QuoteBegin
-				textEndQuotationSymbol.Text = _sqlContext.SyntaxProvider.QuoteEnd
+			If queryBuilder.SyntaxProvider IsNot Nothing Then
+				comboIdentCaseSens.SelectedIndex = CInt(queryBuilder.SyntaxProvider.IdentCaseSens)
+				textBeginQuotationSymbol.Text = queryBuilder.SyntaxProvider.QuoteBegin
+				textEndQuotationSymbol.Text = queryBuilder.SyntaxProvider.QuoteEnd
 			End If
 
-			cbQuoteAllIdentifiers.IsChecked = _sqlContext.SQLGenerationOptionsForServer.QuoteIdentifiers = IdentQuotation.All
+			cbQuoteAllIdentifiers.IsChecked = queryBuilder.SQLGenerationOptions.QuoteIdentifiers = IdentQuotation.All
 
 			AddHandler comboSqlDialect.SelectionChanged, AddressOf comboSqlDialect_SelectionChanged
 			AddHandler comboIdentCaseSens.SelectionChanged, AddressOf comboIdentCaseSens_SelectionChanged
@@ -257,7 +260,7 @@ Namespace PropertiesForm
 		End Sub
 
 		Private Sub cbQuoteAllIdentifiers_Checked(sender As Object, e As System.Windows.RoutedEventArgs)
-			Modified = True
+			Me.Modified = True
 		End Sub
 
 		Private Sub comboIdentCaseSens_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
@@ -437,7 +440,7 @@ Namespace PropertiesForm
 					Exit Select
 				Case "Generic"
 					_syntaxProvider = New GenericSyntaxProvider()
-					DirectCast(_syntaxProvider, GenericSyntaxProvider).RedetectServer(_sqlContext)
+					DirectCast(_syntaxProvider, GenericSyntaxProvider).RedetectServer(_queryBuilder.SQLContext)
 					Exit Select
 				Case Else
 					_syntaxProvider = New GenericSyntaxProvider()
@@ -456,11 +459,11 @@ Namespace PropertiesForm
 				Return
 			End If
 
-			Dim oldSyntaxProvider = _sqlContext.SyntaxProvider
+			Dim oldSyntaxProvider = _queryBuilder.SyntaxProvider
 
-			_sqlContext.SyntaxProvider = _syntaxProvider
-
-			_sqlContext.SQLGenerationOptionsForServer.QuoteIdentifiers = If(cbQuoteAllIdentifiers.IsChecked.HasValue AndAlso cbQuoteAllIdentifiers.IsChecked.Value, IdentQuotation.All, IdentQuotation.IfNeed)
+			_queryBuilder.SyntaxProvider = _syntaxProvider
+			_queryBuilder.SQLGenerationOptions.QuoteIdentifiers = If(cbQuoteAllIdentifiers.IsChecked.HasValue AndAlso cbQuoteAllIdentifiers.IsChecked.Value, IdentQuotation.All, IdentQuotation.IfNeed)
+			_queryBuilder.SQLFormattingOptions.QuoteIdentifiers = If(cbQuoteAllIdentifiers.IsChecked.HasValue AndAlso cbQuoteAllIdentifiers.IsChecked.Value, IdentQuotation.All, IdentQuotation.IfNeed)
 
 			If oldSyntaxProvider IsNot Nothing Then
 				oldSyntaxProvider.Dispose()

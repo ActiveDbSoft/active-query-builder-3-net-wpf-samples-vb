@@ -9,6 +9,7 @@
 '*******************************************************************'
 
 Imports ActiveQueryBuilder.Core
+Imports ActiveQueryBuilder.View.WPF
 
 Namespace PropertiesForm
 	Public Enum SqlBuilderOptionsPages
@@ -22,9 +23,8 @@ Namespace PropertiesForm
 	Public Partial Class SqlFormattingPage
 
 		Private ReadOnly _page As SqlBuilderOptionsPages = SqlBuilderOptionsPages.MainQuery
+		Private ReadOnly _queryBuilder As QueryBuilder
 		Private ReadOnly _format As SQLBuilderSelectFormat
-		Private ReadOnly _sqlFormattingOptions As SQLFormattingOptions
-
 		Public Property Modified() As Boolean
 			Get
 				Return m_Modified
@@ -35,19 +35,18 @@ Namespace PropertiesForm
 		End Property
 		Private m_Modified As Boolean
 
-		Public Sub New(page As SqlBuilderOptionsPages, sqlFormattingOptions As SQLFormattingOptions)
+		Public Sub New(page As SqlBuilderOptionsPages, queryBuilder As QueryBuilder)
 			Modified = False
 			_page = page
-			_sqlFormattingOptions = sqlFormattingOptions
-
+			_queryBuilder = queryBuilder
 			_format = New SQLBuilderSelectFormat(Nothing)
 
 			If _page = SqlBuilderOptionsPages.MainQuery Then
-				_format.Assign(_sqlFormattingOptions.MainQueryFormat)
+				_format.Assign(_queryBuilder.SQLFormattingOptions.MainQueryFormat)
 			ElseIf _page = SqlBuilderOptionsPages.DerievedQueries Then
-				_format.Assign(_sqlFormattingOptions.DerivedQueryFormat)
+				_format.Assign(_queryBuilder.SQLFormattingOptions.DerivedQueryFormat)
 			ElseIf _page = SqlBuilderOptionsPages.ExpressionSubqueries Then
-				_format.Assign(_sqlFormattingOptions.ExpressionSubQueryFormat)
+				_format.Assign(_queryBuilder.SQLFormattingOptions.ExpressionSubQueryFormat)
 			End If
 
 			InitializeComponent()
@@ -189,11 +188,11 @@ Namespace PropertiesForm
 
 
 			If _page = SqlBuilderOptionsPages.MainQuery Then
-				_sqlFormattingOptions.MainQueryFormat.Assign(_format)
+				_queryBuilder.SQLFormattingOptions.MainQueryFormat.Assign(_format)
 			ElseIf _page = SqlBuilderOptionsPages.DerievedQueries Then
-				_sqlFormattingOptions.DerivedQueryFormat.Assign(_format)
+				_queryBuilder.SQLFormattingOptions.DerivedQueryFormat.Assign(_format)
 			ElseIf _page = SqlBuilderOptionsPages.ExpressionSubqueries Then
-				_sqlFormattingOptions.ExpressionSubQueryFormat.Assign(_format)
+				_queryBuilder.SQLFormattingOptions.ExpressionSubQueryFormat.Assign(_format)
 			End If
 		End Sub
 	End Class

@@ -1,4 +1,4 @@
-﻿<Window x:Class="QueryStatisticsWindow"
+﻿<Window x:Class="Windows.QueryStatisticsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Query Statistics" Height="425" Width="421" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">

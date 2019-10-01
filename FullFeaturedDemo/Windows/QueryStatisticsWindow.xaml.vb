@@ -8,28 +8,21 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
-Imports System.Collections.Generic
-Imports System.Linq
-Imports System.Text
 Imports System.Windows
-Imports System.Windows.Controls
-Imports System.Windows.Data
-Imports System.Windows.Documents
-Imports System.Windows.Input
-Imports System.Windows.Media
-Imports System.Windows.Media.Imaging
-Imports System.Windows.Shapes
 
-''' <summary>
-''' Interaction logic for QueryStatisticsWindow.xaml
-''' </summary>
-Public Partial Class QueryStatisticsWindow
-	Inherits Window
-	Public Sub New()
-		InitializeComponent()
-	End Sub
+Namespace Windows
 
-	Private Sub ButtonOk_OnClick(sender As Object, e As RoutedEventArgs)
-		Close()
-	End Sub
-End Class
+    ''' <summary>
+    ''' Interaction logic for QueryStatisticsWindow.xaml
+    ''' </summary>
+    Partial Public Class QueryStatisticsWindow
+        Inherits Window
+        Public Sub New()
+            InitializeComponent()
+        End Sub
+
+        Private Sub ButtonOk_OnClick(sender As Object, e As RoutedEventArgs)
+            Close()
+        End Sub
+    End Class
+End Namespace

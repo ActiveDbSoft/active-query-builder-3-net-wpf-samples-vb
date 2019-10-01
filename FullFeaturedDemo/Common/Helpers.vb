@@ -13,6 +13,7 @@ Imports System.Data.Common
 Imports System.Data.SqlClient
 Imports System.Linq
 Imports ActiveQueryBuilder.Core
+Imports FullFeaturedDemo.Windows
 
 Namespace Common
     Public NotInheritable Class Helpers

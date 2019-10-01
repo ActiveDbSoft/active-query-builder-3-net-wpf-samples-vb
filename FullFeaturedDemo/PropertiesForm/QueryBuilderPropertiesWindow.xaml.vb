@@ -9,21 +9,27 @@
 '*******************************************************************'
 
 Imports System.ComponentModel
+Imports System.Diagnostics
 Imports System.Windows
 Imports System.Windows.Controls
 Imports System.Windows.Input
 Imports System.Windows.Media
 Imports ActiveQueryBuilder.Core
+Imports ActiveQueryBuilder.View.WPF
 
 Namespace PropertiesForm
 	''' <summary>
-	''' Interaction logic for QueryPropertiesWindow.xaml
+	''' Interaction logic for QueryBuilderPropertiesWindow.xaml
 	''' </summary>
-	Public Partial Class QueryPropertiesWindow
+	Public Partial Class QueryBuilderPropertiesWindow
 
 		Private _currentSelectedLink As TextBlock
+		Private ReadOnly _queryBuilder As QueryBuilder
 		Private ReadOnly _sqlSyntaxPage As SqlSyntaxPage
 		Private ReadOnly _offlineModePage As OfflineModePage
+		Private ReadOnly _panesVisibilityPage As PanesVisibilityPage
+		Private ReadOnly _databaseSchemaViewPage As DatabaseSchemaViewPage
+		Private ReadOnly _miscellaneousPage As MiscellaneousPage
 		Private ReadOnly _generalPage As GeneralPage
 		Private ReadOnly _mainQueryPage As SqlFormattingPage
 		Private ReadOnly _derievedQueriesPage As SqlFormattingPage
@@ -33,13 +39,14 @@ Namespace PropertiesForm
 		<Browsable(False)> _
 		Public Property Modified() As Boolean
 			Get
-				Return _sqlSyntaxPage.Modified OrElse _offlineModePage.Modified OrElse _generalPage.Modified OrElse _mainQueryPage.Modified OrElse _derievedQueriesPage.Modified OrElse _expressionSubqueriesPage.Modified
+				Return _sqlSyntaxPage.Modified OrElse _offlineModePage.Modified OrElse _panesVisibilityPage.Modified OrElse _databaseSchemaViewPage.Modified OrElse _miscellaneousPage.Modified OrElse _generalPage.Modified OrElse _mainQueryPage.Modified OrElse _derievedQueriesPage.Modified OrElse _expressionSubqueriesPage.Modified
 			End Get
 			Set
-				buttonApply.IsEnabled = value
 				_sqlSyntaxPage.Modified = value
 				_offlineModePage.Modified = value
-
+				_panesVisibilityPage.Modified = value
+				_databaseSchemaViewPage.Modified = value
+				_miscellaneousPage.Modified = value
 				_generalPage.Modified = value
 				_mainQueryPage.Modified = value
 				_derievedQueriesPage.Modified = value
@@ -51,19 +58,26 @@ Namespace PropertiesForm
 			InitializeComponent()
 		End Sub
 
-		Public Sub New(sqlContext As SQLContext, sqlFormattingOptions As SQLFormattingOptions)
+		Public Sub New(queryBuilder As QueryBuilder)
+			Debug.Assert(queryBuilder IsNot Nothing)
+
 			InitializeComponent()
 
-			Dim syntaxProvider As BaseSyntaxProvider = If(sqlContext.SyntaxProvider IsNot Nothing, sqlContext.SyntaxProvider.Clone(), New GenericSyntaxProvider())
+			_queryBuilder = queryBuilder
 
-			_sqlSyntaxPage = New SqlSyntaxPage(sqlContext, syntaxProvider)
-			_offlineModePage = New OfflineModePage(sqlContext)
+			Dim syntaxProvider As BaseSyntaxProvider = If(queryBuilder.SyntaxProvider IsNot Nothing, queryBuilder.SyntaxProvider.Clone(), New GenericSyntaxProvider())
 
+			_sqlSyntaxPage = New SqlSyntaxPage(_queryBuilder, syntaxProvider)
+			_offlineModePage = New OfflineModePage(_queryBuilder.SQLContext)
 
-			_generalPage = New GeneralPage(sqlFormattingOptions)
-			_mainQueryPage = New SqlFormattingPage(SqlBuilderOptionsPages.MainQuery, sqlFormattingOptions)
-			_derievedQueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.DerievedQueries, sqlFormattingOptions)
-			_expressionSubqueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.ExpressionSubqueries, sqlFormattingOptions)
+			_panesVisibilityPage = New PanesVisibilityPage(_queryBuilder)
+			_databaseSchemaViewPage = New DatabaseSchemaViewPage(_queryBuilder)
+			_miscellaneousPage = New MiscellaneousPage(_queryBuilder)
+
+			_generalPage = New GeneralPage(_queryBuilder)
+			_mainQueryPage = New SqlFormattingPage(SqlBuilderOptionsPages.MainQuery, _queryBuilder)
+			_derievedQueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.DerievedQueries, _queryBuilder)
+			_expressionSubqueriesPage = New SqlFormattingPage(SqlBuilderOptionsPages.ExpressionSubqueries, _queryBuilder)
 
 			' Activate the first page
 			UIElement_OnMouseLeftButtonUp(linkSqlSyntax, Nothing)
@@ -78,6 +92,12 @@ Namespace PropertiesForm
 				SwitchPage(_sqlSyntaxPage)
 			ElseIf Equals(sender, linkOfflineMode) Then
 				SwitchPage(_offlineModePage)
+			ElseIf Equals(sender, linkPanesVisibility) Then
+				SwitchPage(_panesVisibilityPage)
+			ElseIf Equals(sender, linkMetadataTree) Then
+				SwitchPage(_databaseSchemaViewPage)
+			ElseIf Equals(sender, linkMiscellaneous) Then
+				SwitchPage(_miscellaneousPage)
 			ElseIf Equals(sender, linkGeneral) Then
 				SwitchPage(_generalPage)
 			ElseIf Equals(sender, linkMainQuery) Then
@@ -96,22 +116,36 @@ Namespace PropertiesForm
 			panelPages.Children.Clear()
 			page.Margin = New Thickness(10, 10, 0, 0)
 			panelPages.Children.Add(page)
+
 		End Sub
 
 		Public Sub ApplyChanges()
-			_sqlSyntaxPage.ApplyChanges()
-			_offlineModePage.ApplyChanges()
-			_generalPage.ApplyChanges()
-			_mainQueryPage.ApplyChanges()
-			_derievedQueriesPage.ApplyChanges()
-			_expressionSubqueriesPage.ApplyChanges()
+			_queryBuilder.BeginUpdate()
+
+			Try
+				_sqlSyntaxPage.ApplyChanges()
+				_offlineModePage.ApplyChanges()
+				_panesVisibilityPage.ApplyChanges()
+				_databaseSchemaViewPage.ApplyChanges()
+				_miscellaneousPage.ApplyChanges()
+				_generalPage.ApplyChanges()
+				_mainQueryPage.ApplyChanges()
+				_derievedQueriesPage.ApplyChanges()
+				_expressionSubqueriesPage.ApplyChanges()
+			Finally
+				_queryBuilder.EndUpdate()
+			End Try
+
+			If _databaseSchemaViewPage.Modified OrElse _offlineModePage.Modified Then
+				_queryBuilder.InitializeDatabaseSchemaTree()
+			End If
 
 			Modified = False
 		End Sub
 
 		Private Sub ButtonOk_OnClick(sender As Object, e As RoutedEventArgs)
 			ApplyChanges()
-			DialogResult = False
+			Close()
 		End Sub
 
 		Private Sub ButtonApply_OnClick(sender As Object, e As RoutedEventArgs)
@@ -119,7 +153,7 @@ Namespace PropertiesForm
 		End Sub
 
 		Private Sub ButtonCancel_OnClick(sender As Object, e As RoutedEventArgs)
-			DialogResult = False
+			Close()
 		End Sub
 	End Class
 End Namespace
