@@ -24,14 +24,14 @@ Namespace ConnectionWindow
 		End Sub
 
 		Private Sub ButtonConnect_OnClick(sender As Object, e As RoutedEventArgs)
-			Dim builder = New OleDbConnectionStringBuilder()
+			Dim builder as OleDbConnectionStringBuilder = New OleDbConnectionStringBuilder()
 
 			Try
 				builder.ConnectionString = textBoxConnectionString.Text
 
 				Mouse.OverrideCursor = Cursors.Wait
 
-				Using connection = New OleDbConnection(builder.ConnectionString)
+				Using connection As OleDbConnection = New OleDbConnection(builder.ConnectionString)
 					Try
 						connection.Open()
 						ConnectionString = builder.ConnectionString

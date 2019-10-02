@@ -25,31 +25,31 @@ Namespace ConnectionWindow
 		End Sub
 
 		Private Sub ButtonConnect_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim builder = New OracleConnectionStringBuilder() With { _
-                .DataSource = textBoxServerName.Text _
+            Dim builder As OracleConnectionStringBuilder = New OracleConnectionStringBuilder() With {
+                .DataSource = textBoxServerName.Text
             }
 
 
-			builder.UserID = textBoxLogin.Text
+            builder.UserID = textBoxLogin.Text
 			builder.Password = textBoxPassword.Password
 
-			' check the connection
+            ' check the connection
 
-			Using connection = New OracleConnection(builder.ConnectionString)
-				Mouse.OverrideCursor = Cursors.Wait
+            Using connection As OracleConnection = New OracleConnection(builder.ConnectionString)
+                Mouse.OverrideCursor = Cursors.Wait
 
-				Try
-					connection.Open()
-					ConnectionString = builder.ConnectionString
-					DialogResult = True
-					Close()
-				Catch ex As System.Exception
-					MessageBox.Show(ex.Message, "Connection Failure.")
-				Finally
-					Mouse.OverrideCursor = Nothing
-				End Try
-			End Using
-		End Sub
+                Try
+                    connection.Open()
+                    ConnectionString = builder.ConnectionString
+                    DialogResult = True
+                    Close()
+                Catch ex As System.Exception
+                    MessageBox.Show(ex.Message, "Connection Failure.")
+                Finally
+                    Mouse.OverrideCursor = Nothing
+                End Try
+            End Using
+        End Sub
 
 		Private Sub ButtonCancel_OnClick(sender As Object, e As RoutedEventArgs)
 			Close()

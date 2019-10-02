@@ -257,16 +257,16 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
+      "projectUniqueName": "C:\\TeamCity_work\\ActiveQueryBuilderNET3\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
       "projectName": "FullFeaturedDemo",
-      "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
-      "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\project.json",
+      "projectPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\FullFeaturedDemo.vbproj",
+      "projectJsonPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\project.json",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\obj\\",
+      "outputPath": "C:\\TeamCity_work\\ActiveQueryBuilderNET3\\_deployment\\Files\\Samples\\wpf\\vb\\FullFeaturedDemo\\obj\\",
       "projectStyle": "ProjectJson",
       "validateRuntimeAssets": true,
       "configFilePaths": [
-        "C:\\TeamCity_work\\ActiveQueryBuilderNET3_release\\NuGet.Config",
+        "C:\\TeamCity_work\\ActiveQueryBuilderNET3\\NuGet.Config",
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.1.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

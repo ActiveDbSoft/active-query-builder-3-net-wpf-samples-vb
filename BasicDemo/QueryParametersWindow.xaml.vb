@@ -31,7 +31,7 @@ Public Partial Class QueryParametersWindow
 		InitializeComponent()
 
         For i As Int32 = 0 To _command.Parameters.Count - 1
-            Dim p = _command.Parameters(i)
+            Dim p As DbParameter = _command.Parameters(i)
 
             _source.Add(New DataGridItem(p.ParameterName, p.DbType, ""))
         Next

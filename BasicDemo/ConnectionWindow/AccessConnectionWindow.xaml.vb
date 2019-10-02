@@ -38,7 +38,7 @@ Namespace ConnectionWindow
 
 			' check the connection
 
-			Using connection = New OleDbConnection(ConnectionString)
+			Using connection as OleDbConnection = New OleDbConnection(ConnectionString)
 				Mouse.OverrideCursor = Cursors.Wait
 
 				Try

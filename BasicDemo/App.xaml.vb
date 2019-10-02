@@ -19,7 +19,7 @@ Public Partial Class App
 	Inherits Application
 
 	Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
-        Dim errorWindow = New ExceptionWindow With {
+        Dim errorWindow As ExceptionWindow = New ExceptionWindow With {
                 .Owner = Current.MainWindow,
                 .Message = e.Exception.Message,
                 .StackTrace = e.Exception.StackTrace

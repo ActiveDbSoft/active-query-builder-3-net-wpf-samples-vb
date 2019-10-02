@@ -45,40 +45,23 @@
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="project.json" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ActiveQueryBuilder.Core">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.25.1142\lib\net\ActiveQueryBuilder.Core.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.EventMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.Core.3.5.25.1142\lib\net\ActiveQueryBuilder.EventMetadataProvider.dll</HintPath>
-	</Reference>
+    
+    
     <Reference Include="ActiveQueryBuilder.MSSQLCEMetadataProvider">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="ActiveQueryBuilder.MSSQLMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.MSSQLMetadataProvider.3.5.25.1142\lib\net\ActiveQueryBuilder.MSSQLMetadataProvider.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.ODBCMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.ODBCMetadataProvider.3.5.25.1142\lib\net\ActiveQueryBuilder.ODBCMetadataProvider.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.OLEDBMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.OLEDBMetadataProvider.3.5.25.1142\lib\net\ActiveQueryBuilder.OLEDBMetadataProvider.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.OracleNativeMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.OracleNativeMetadataProvider.3.5.25.1142\lib\net\ActiveQueryBuilder.OracleNativeMetadataProvider.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.UniversalMetadataProvider">
-		<HintPath>..\packages\ActiveQueryBuilder.UniversalMetadataProvider.3.5.25.1142\lib\net\ActiveQueryBuilder.UniversalMetadataProvider.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.View">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.25.1142\lib\net\ActiveQueryBuilder.View.dll</HintPath>
-	</Reference>
-    <Reference Include="ActiveQueryBuilder.View.WPF">
-		<HintPath>..\packages\ActiveQueryBuilder.View.WPF.3.5.25.1142\lib\net\ActiveQueryBuilder.View.WPF.dll</HintPath>
-	</Reference>
+    
+    
+    
+    
+    
+    
+    
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />

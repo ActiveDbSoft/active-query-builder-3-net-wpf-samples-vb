@@ -45,10 +45,10 @@ Namespace ConnectionWindow
 		End Sub
 
 		Private Sub ComboBoxDatabase_OnDropDownOpened(sender As Object, e As EventArgs)
-			' Fill the drop down list with available database names
+            ' Fill the drop down list with available database names
 
-            Dim builder = New SqlConnectionStringBuilder() With { _
-                .DataSource = textBoxServerName.Text _
+            Dim builder As SqlConnectionStringBuilder = New SqlConnectionStringBuilder() With {
+                .DataSource = textBoxServerName.Text
             }
 
 
@@ -92,8 +92,8 @@ Namespace ConnectionWindow
         End Sub
 
         Private Sub ButtonConnect_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim builder = New SqlConnectionStringBuilder() With { _
-                .DataSource = textBoxServerName.Text _
+            Dim builder As SqlConnectionStringBuilder = New SqlConnectionStringBuilder() With {
+                .DataSource = textBoxServerName.Text
             }
 
             If comboBoxAuthentication.SelectedIndex = 0 Then
