@@ -56,13 +56,13 @@ Namespace Connection.FrameConnection
 		End Sub
 
 		Public Function GetConnectionString() As String
-            Dim builder = New SqlConnectionStringBuilder() With { _
-                .ConnectionString = _connectionString, _
-                .DataSource = tbDataSource.Text, _
-                .IntegratedSecurity = (cmbIntegratedSecurity.SelectedIndex = 0), _
-                .UserID = tbUserID.Text, _
-                .Password = tbPassword.Password, _
-                .InitialCatalog = If(cmbInitialCatalog.Text = "<default>", "", cmbInitialCatalog.Text) _
+            Dim builder As SqlConnectionStringBuilder = New SqlConnectionStringBuilder() With {
+                .ConnectionString = _connectionString,
+                .DataSource = tbDataSource.Text,
+                .IntegratedSecurity = (cmbIntegratedSecurity.SelectedIndex = 0),
+                .UserID = tbUserID.Text,
+                .Password = tbPassword.Password,
+                .InitialCatalog = If(cmbInitialCatalog.Text = "<default>", "", cmbInitialCatalog.Text)
             }
 
             Try
@@ -79,8 +79,8 @@ Namespace Connection.FrameConnection
             If String.IsNullOrEmpty(_connectionString) Then
                 Return
             End If
-            Dim builder = New SqlConnectionStringBuilder() With { _
-                .ConnectionString = _connectionString _
+            Dim builder As SqlConnectionStringBuilder = New SqlConnectionStringBuilder() With {
+                .ConnectionString = _connectionString
             }
 
             Try
@@ -121,10 +121,10 @@ Namespace Connection.FrameConnection
 
         Private Sub CmbInitialCatalog_OnDropDownOpened(sender As Object, e As EventArgs)
 
-            Using connection = New SqlConnection(ConnectionString)
+            Using connection As SqlConnection = New SqlConnection(ConnectionString)
                 Mouse.OverrideCursor = Cursors.Wait
 
-                Dim currentDatabase = cmbInitialCatalog.Text
+                Dim currentDatabase As String = cmbInitialCatalog.Text
 
                 cmbInitialCatalog.Items.Clear()
                 cmbInitialCatalog.Items.Add("<default>")
@@ -133,7 +133,7 @@ Namespace Connection.FrameConnection
                 Try
                     connection.Open()
 
-                    Dim schemaTable = connection.GetSchema("Databases")
+                    Dim schemaTable As DataTable = connection.GetSchema("Databases")
 
                     For Each r As DataRow In schemaTable.Rows
                         cmbInitialCatalog.Items.Add(r(0))
@@ -154,8 +154,8 @@ Namespace Connection.FrameConnection
         End Sub
 
         Private Sub BtnEditConnectionString_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim csef = New ConnectionStringEditWindow() With { _
-                .ConnectionString = ConnectionString _
+            Dim csef As ConnectionStringEditWindow = New ConnectionStringEditWindow() With {
+                .ConnectionString = ConnectionString
             }
 
 

@@ -18,7 +18,6 @@ Imports System.Windows.Controls
 Imports System.Windows.Input
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.Core.QueryTransformer
-Imports ActiveQueryBuilder.View.WPF
 Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports ActiveQueryBuilder.View.WPF.QueryView
 
@@ -105,7 +104,7 @@ Namespace Common
             BoxSql.ExpressionContext = QueryView.ActiveUnionSubQuery
             BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
 
-            AddHandler QueryView.ActiveUnionSubQueryChanged, ActiveUnionSubQueryChanged
+            AddHandler QueryView.ActiveUnionSubQueryChanged, AddressOf ActiveUnionSubQueryChanged
 
             _transformerSql = New QueryTransformer()
 
@@ -146,12 +145,12 @@ Namespace Common
             UpdateStateButtons()
         End Sub
 
-        Private Function ActiveUnionSubQueryChanged() As EventHandler
+        Private Sub ActiveUnionSubQueryChanged()
             BoxSql.ExpressionContext = QueryView.ActiveUnionSubQuery
             BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
-' ReSharper disable once VBWarnings::BC42105,BC42106,BC42107
-        End Function
-       
+            ' ReSharper disable once VBWarnings::BC42105,BC42106,BC42107
+        End Sub
+
         Private Sub SqlQuery_SQLUpdated(sender As Object, e As EventArgs)
             IsModified = _sql <> QueryText
 

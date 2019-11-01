@@ -63,14 +63,14 @@ End Sub))
 		Public Event CurrentPageChanged As RoutedEventHandler
 		Public Event PageSizeChanged As RoutedEventHandler
 
-		Public Shared ReadOnly PageSizeProperty As DependencyProperty = DependencyProperty.Register("PageSize", GetType(Integer), GetType(PaginationPanel), New PropertyMetadata(10, Function(o, args) 
-		Dim obj As PaginationPanel = TryCast(o, PaginationPanel)
-		If obj IsNot Nothing Then
-			obj.TextBoxPageSize.Text = args.NewValue.ToString()
-		End If
-        End Function))
+        Public Shared ReadOnly PageSizeProperty As DependencyProperty = DependencyProperty.Register("PageSize", GetType(Integer), GetType(PaginationPanel), New PropertyMetadata(10, Sub(o, args)
+                                                                                                                                                                                         Dim obj As PaginationPanel = TryCast(o, PaginationPanel)
+                                                                                                                                                                                         If obj IsNot Nothing Then
+                                                                                                                                                                                             obj.TextBoxPageSize.Text = args.NewValue.ToString()
+                                                                                                                                                                                         End If
+                                                                                                                                                                                     End Sub))
 
-		Public Property PageSize() As Integer
+        Public Property PageSize() As Integer
 			Get
 				Return CInt(GetValue(PageSizeProperty))
 			End Get
@@ -82,14 +82,14 @@ End Sub))
 
 		Private _maxPageCount As Integer
 
-		Public Shared ReadOnly CurrentPageProperty As DependencyProperty = DependencyProperty.Register("CurrentPage", GetType(Integer), GetType(PaginationPanel), New PropertyMetadata(1, Function(o, args) 
-		Dim obj As PaginationPanel = TryCast(o, PaginationPanel)
-		If obj IsNot Nothing Then
-			obj.TextBoxCurrentPage.Text = args.NewValue.ToString()
-		End If
-        End Function))
+        Public Shared ReadOnly CurrentPageProperty As DependencyProperty = DependencyProperty.Register("CurrentPage", GetType(Integer), GetType(PaginationPanel), New PropertyMetadata(1, Sub(o, args)
+                                                                                                                                                                                              Dim obj As PaginationPanel = TryCast(o, PaginationPanel)
+                                                                                                                                                                                              If obj IsNot Nothing Then
+                                                                                                                                                                                                  obj.TextBoxCurrentPage.Text = args.NewValue.ToString()
+                                                                                                                                                                                              End If
+                                                                                                                                                                                          End Sub))
 
-		Public Property CurrentPage() As Integer
+        Public Property CurrentPage() As Integer
 			Get
 				Return CInt(GetValue(CurrentPageProperty))
 			End Get
@@ -115,8 +115,8 @@ End Sub))
 
 		Public Shadows ReadOnly Property IsEnabled() As Boolean
 			Get
-				Return CheckBoxEnabled.IsChecked = True
-			End Get
+                Return CBool(CheckBoxEnabled.IsChecked) = True
+            End Get
 		End Property
 
 		Public Sub New()
@@ -135,9 +135,9 @@ End Sub))
 		End Sub
 
 		Private Sub CheckBoxEnabled_CheckedChanged(sender As Object, e As RoutedEventArgs)
-			ToggleEnabled(CheckBoxEnabled.IsChecked = True)
+            ToggleEnabled(CBool(CheckBoxEnabled.IsChecked) = True)
 
-			OnEnabledPaginationChanged(e)
+            OnEnabledPaginationChanged(e)
 		End Sub
 
 		Private Sub ButtonPreviewPage_OnClick(sender As Object, e As RoutedEventArgs)

@@ -333,9 +333,9 @@ Partial Public Class MainWindow
             .Height = 23
         }
 
-        AddHandler buttonClose.Click, Function()
+        AddHandler buttonClose.Click, Sub()
                                           window.Close()
-                                      End Function
+                                      End Sub
 
         buttonClose.SetValue(Grid.RowProperty, 1)
 

@@ -40,9 +40,9 @@ Public Class ErrorMessageBox
     End Sub
 
     Private Sub ElepsedTime(state As Object)
-        _popup.Dispatcher.Invoke(DispatcherPriority.Normal, New Action(Function()
+        _popup.Dispatcher.Invoke(DispatcherPriority.Normal, New Action(Sub()
                                                                            _popup.IsOpen = False
-                                                                       End Function))
+                                                                       End Sub))
     End Sub
 
     Private Sub PopupOnOpened(sender As Object, e As EventArgs)

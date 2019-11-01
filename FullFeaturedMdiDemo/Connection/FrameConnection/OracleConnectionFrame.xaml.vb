@@ -51,11 +51,11 @@ Namespace Connection.FrameConnection
 
 		Public Function GetConnectionString() As String
 			Try
-                Dim builder = New OracleConnectionStringBuilder() With {
-                    .ConnectionString = _connectionString, _
-                    .DataSource = tbDataSource.Text, _
-                    .UserID = tbUserID.Text, _
-                    .Password = tbPassword.Password _
+                Dim builder As OracleConnectionStringBuilder = New OracleConnectionStringBuilder() With {
+                    .ConnectionString = _connectionString,
+                    .DataSource = tbDataSource.Text,
+                    .UserID = tbUserID.Text,
+                    .Password = tbPassword.Password
                 }
 
 
@@ -73,8 +73,8 @@ Namespace Connection.FrameConnection
                 Return
             End If
             Try
-                Dim builder = New OracleConnectionStringBuilder() With {
-                    .ConnectionString = _connectionString _
+                Dim builder As OracleConnectionStringBuilder = New OracleConnectionStringBuilder() With {
+                    .ConnectionString = _connectionString
                 }
 
                 tbDataSource.Text = builder.DataSource
@@ -87,8 +87,8 @@ Namespace Connection.FrameConnection
         End Sub
 
         Private Sub btnEditConnectionString_Click(sender As Object, e As EventArgs)
-            Dim csef = New ConnectionStringEditWindow() With {
-                .ConnectionString = ConnectionString _
+            Dim csef As ConnectionStringEditWindow = New ConnectionStringEditWindow() With {
+                .ConnectionString = ConnectionString
             }
 
 
@@ -104,8 +104,8 @@ Namespace Connection.FrameConnection
 			Mouse.OverrideCursor = Cursors.Wait
 
 			Try
-				Dim connection = New OracleConnection(ConnectionString)
-				connection.Open()
+                Dim connection As OracleConnection = New OracleConnection(ConnectionString)
+                connection.Open()
 				connection.Close()
 			Catch e As Exception
 				MessageBox.Show(e.Message, App.Name)

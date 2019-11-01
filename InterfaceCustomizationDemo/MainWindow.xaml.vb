@@ -212,10 +212,10 @@ Partial Public Class MainWindow
                     QueryColumnListItemProperty.Condition,
                     QueryColumnListItemProperty.Custom
                     menu.AddSeparator()
-                    menu.AddItem("Get info of current cell", Function(o, args)
-                        Dim message As String = $"Item property [{queryColumnListHitTestInfo.ItemProperty}]{Environment.NewLine}Item index [{queryColumnListHitTestInfo.ItemIndex}]{Environment.NewLine}Condition index [{queryColumnListHitTestInfo.ConditionIndex}]{Environment.NewLine}Is now here [{queryColumnListHitTestInfo.IsNowhere}]"
-                        MessageBox.Show(Me, message, "Information")
-                    End Function)
+                    menu.AddItem("Get info of current cell", Sub(o, args)
+                                                                 Dim message As String = $"Item property [{queryColumnListHitTestInfo.ItemProperty}]{Environment.NewLine}Item index [{queryColumnListHitTestInfo.ItemIndex}]{Environment.NewLine}Condition index [{queryColumnListHitTestInfo.ConditionIndex}]{Environment.NewLine}Is now here [{queryColumnListHitTestInfo.IsNowhere}]"
+                                                                 MessageBox.Show(Me, message, "Information")
+                                                             End Sub)
                 Case Else
                     Throw New ArgumentOutOfRangeException()
             End Select

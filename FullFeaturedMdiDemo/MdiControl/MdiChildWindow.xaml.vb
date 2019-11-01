@@ -59,8 +59,8 @@ Namespace MdiControl
 				Return
 			End If
 
-			Dim obj = TryCast(d, MdiChildWindow)
-			If obj IsNot Nothing Then
+            Dim obj As MdiChildWindow = TryCast(d, MdiChildWindow)
+            If obj IsNot Nothing Then
 				obj.IsMaximized = True
 				obj.Measure(New Size(Double.PositiveInfinity, Double.PositiveInfinity))
 				obj.Arrange(New Rect(obj.DesiredSize))

@@ -16,9 +16,9 @@ Namespace Common
 	Friend Class ColorEnabledConverter
 		Implements IValueConverter
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-			Dim enabled = value IsNot Nothing AndAlso CBool(value)
+            Dim enabled As Boolean = value IsNot Nothing AndAlso CBool(value)
 
-			Return If(enabled, New SolidColorBrush(Color.FromArgb(255, 47, 52, 53)), Brushes.Gray)
+            Return If(enabled, New SolidColorBrush(Color.FromArgb(255, 47, 52, 53)), Brushes.Gray)
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack

@@ -52,13 +52,13 @@ Namespace Connection.FrameConnection
 
 		Public Function GetConnectionString() As String
 			Try
-                Dim builder = New NpgsqlConnectionStringBuilder() With { _
-                    .ConnectionString = _connectionString, _
-                    .Host = tbHost.Text, _
-                    .Port = Convert.ToInt32(tbPort.Text), _
-                    .Database = tbDatabase.Text, _
-                    .Username = tbUserName.Text, _
-                    .Password = tbPassword.Password _
+                Dim builder As NpgsqlConnectionStringBuilder = New NpgsqlConnectionStringBuilder() With {
+                    .ConnectionString = _connectionString,
+                    .Host = tbHost.Text,
+                    .Port = Convert.ToInt32(tbPort.Text),
+                    .Database = tbDatabase.Text,
+                    .Username = tbUserName.Text,
+                    .Password = tbPassword.Password
                 }
 
                 _connectionString = builder.ConnectionString
@@ -76,8 +76,8 @@ Namespace Connection.FrameConnection
             End If
 
             Try
-                Dim builder = New NpgsqlConnectionStringBuilder() With { _
-                    .ConnectionString = _connectionString _
+                Dim builder As NpgsqlConnectionStringBuilder = New NpgsqlConnectionStringBuilder() With {
+                    .ConnectionString = _connectionString
                 }
 
                 tbHost.Text = builder.Host
@@ -91,8 +91,8 @@ Namespace Connection.FrameConnection
         End Sub
 
         Private Sub btnEditConnectionString_Click(sender As Object, e As EventArgs)
-            Dim csef = New ConnectionStringEditWindow() With { _
-                .ConnectionString = ConnectionString _
+            Dim csef As ConnectionStringEditWindow = New ConnectionStringEditWindow() With {
+                .ConnectionString = ConnectionString
             }
 
             If csef.ShowDialog() <> True Then
@@ -107,8 +107,8 @@ Namespace Connection.FrameConnection
 			Mouse.OverrideCursor = Cursors.Wait
 
 			Try
-				Dim connection = New NpgsqlConnection(ConnectionString)
-				connection.Open()
+                Dim connection As NpgsqlConnection = New NpgsqlConnection(ConnectionString)
+                connection.Open()
 				connection.Close()
 			Catch e As Exception
 				MessageBox.Show(e.Message, Assembly.GetEntryAssembly().GetName().Name)

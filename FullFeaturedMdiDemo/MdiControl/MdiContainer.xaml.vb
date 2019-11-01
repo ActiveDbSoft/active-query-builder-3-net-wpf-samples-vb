@@ -8,6 +8,7 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Collections.Generic
 Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.Linq
@@ -21,7 +22,7 @@ Namespace MdiControl
     ''' <summary>
     ''' Interaction logic for MdiContainer.xaml
     ''' </summary>
-    <ContentProperty("Children")> _
+    <ContentProperty("Children")>
     Partial Public Class MdiContainer
         Public Delegate Sub ActiveWindowChangedHandler(sender As Object, args As EventArgs)
 
@@ -42,7 +43,7 @@ Namespace MdiControl
                 Return DirectCast(GetValue(ActiveChildProperty), MdiChildWindow)
             End Get
             Set(value As MdiChildWindow)
-                SetValue(ActiveChildProperty, Value)
+                SetValue(ActiveChildProperty, value)
                 OnActiveWindowChanged()
             End Set
         End Property
@@ -54,12 +55,12 @@ Namespace MdiControl
                 Return DirectCast(GetValue(BackgroundProperty), Brush)
             End Get
             Set(value As Brush)
-                SetValue(BackgroundProperty, Value)
+                SetValue(BackgroundProperty, value)
             End Set
         End Property
 
         Private Shared Sub CallBackBackground(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-            Dim obj = TryCast(d, MdiContainer)
+            Dim obj As MdiContainer = TryCast(d, MdiContainer)
             If obj IsNot Nothing Then
                 obj.ScrollViewerRoot.Background = DirectCast(e.NewValue, Brush)
             End If
@@ -104,7 +105,7 @@ Namespace MdiControl
                 Return DirectCast(GetValue(FocusedWindowProperty), MdiChildWindow)
             End Get
             Set(value As MdiChildWindow)
-                SetValue(FocusedWindowProperty, Value)
+                SetValue(FocusedWindowProperty, value)
             End Set
         End Property
 
@@ -113,7 +114,7 @@ Namespace MdiControl
                 Return DirectCast(GetValue(PropertyTypeProperty), ObservableCollection(Of MdiChildWindow))
             End Get
             Set(value As ObservableCollection(Of MdiChildWindow))
-                SetValue(PropertyTypeProperty, Value)
+                SetValue(PropertyTypeProperty, value)
             End Set
         End Property
 
@@ -254,7 +255,7 @@ Namespace MdiControl
         Private Sub objAdd_Minimize(sender As Object, e As EventArgs)
             Dim mdiChild As MdiChildWindow = DirectCast(sender, MdiChildWindow)
 
-            Dim collectionMinimizedWindow = Children.Where(Function(x) x.State = StateWindow.Minimized AndAlso Math.Abs(x.Height - SystemParameters.MinimizedWindowHeight) < 0.2 AndAlso Not x.Equals(mdiChild)).ToList()
+            Dim collectionMinimizedWindow As List(Of MdiChildWindow) = Children.Where(Function(x) x.State = StateWindow.Minimized AndAlso Math.Abs(x.Height - SystemParameters.MinimizedWindowHeight) < 0.2 AndAlso Not x.Equals(mdiChild)).ToList()
 
             Dim startY As Double = ScrollViewerRoot.ViewportHeight - SystemParameters.MinimizedWindowHeight
 

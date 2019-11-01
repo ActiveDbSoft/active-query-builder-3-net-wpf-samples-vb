@@ -456,9 +456,9 @@ Namespace PropertiesForm
 				Return
 			End If
 
-			Dim oldSyntaxProvider = _sqlContext.SyntaxProvider
+            Dim oldSyntaxProvider As BaseSyntaxProvider = _sqlContext.SyntaxProvider
 
-			_sqlContext.SyntaxProvider = _syntaxProvider
+            _sqlContext.SyntaxProvider = _syntaxProvider
 
 			_sqlContext.SQLGenerationOptionsForServer.QuoteIdentifiers = If(cbQuoteAllIdentifiers.IsChecked.HasValue AndAlso cbQuoteAllIdentifiers.IsChecked.Value, IdentQuotation.All, IdentQuotation.IfNeed)
 

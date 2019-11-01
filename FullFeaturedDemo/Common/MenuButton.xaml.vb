@@ -16,9 +16,9 @@ Namespace Common
 	''' Interaction logic for MenuButton.xaml
 	''' </summary>
 	Public Partial Class MenuButton
-		Public Shared ReadOnly SourceProperty As DependencyProperty = DependencyProperty.Register("Source", GetType(ImageSource), GetType(MenuButton), New PropertyMetadata(Nothing, Sub(o As DependencyObject, args As DependencyPropertyChangedEventArgs) 
-		Dim mButton = TryCast(o, MenuButton)
-		If mButton IsNot Nothing Then
+		Public Shared ReadOnly SourceProperty As DependencyProperty = DependencyProperty.Register("Source", GetType(ImageSource), GetType(MenuButton), New PropertyMetadata(Nothing, Sub(o As DependencyObject, args As DependencyPropertyChangedEventArgs)
+                                                                                                                                                                                         Dim mButton As MenuButton = TryCast(o, MenuButton)
+                                                                                                                                                                                         If mButton IsNot Nothing Then
 			mButton.ImageContent.Source = TryCast(args.NewValue, ImageSource)
 		End If
 

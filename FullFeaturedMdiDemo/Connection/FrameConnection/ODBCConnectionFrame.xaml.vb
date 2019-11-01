@@ -41,18 +41,18 @@ Namespace Connection.FrameConnection
 
 		End Sub
 
-		Public Sub New(connectionString__1 As String)
-			InitializeComponent()
+        Public Sub New(connectionString1 As String)
+            InitializeComponent()
 
-			ConnectionString = connectionString__1
-		End Sub
+            ConnectionString = connectionString1
+        End Sub
 
 		Public Function GetConnectionString() As String
 			Try
-				Dim builder = New OdbcConnectionStringBuilder() With { _
-					.ConnectionString = tbConnectionString.Text _
-				}
-				_connectionString = builder.ConnectionString
+                Dim builder As OdbcConnectionStringBuilder = New OdbcConnectionStringBuilder() With {
+                    .ConnectionString = tbConnectionString.Text
+                }
+                _connectionString = builder.ConnectionString
 			Catch
 			End Try
 
@@ -67,8 +67,8 @@ Namespace Connection.FrameConnection
 			End If
 
 			Try
-				Dim builder = New OdbcConnectionStringBuilder()
-				builder.ConnectionString = _connectionString
+                Dim builder As OdbcConnectionStringBuilder = New OdbcConnectionStringBuilder()
+                builder.ConnectionString = _connectionString
 				_connectionString = builder.ConnectionString
 				tbConnectionString.Text = _connectionString
 			Catch
@@ -97,10 +97,10 @@ Namespace Connection.FrameConnection
 		End Sub
 
 		Private Sub btnTest_Click(sender As Object, e As RoutedEventArgs)
-			Dim metadataProvider = New ODBCMetadataProvider() With { _
-				.Connection = New OdbcConnection(ConnectionString) _
-			}
-			Dim syntaxProviderType As Type = Nothing
+            Dim metadataProvider As ODBCMetadataProvider = New ODBCMetadataProvider() With {
+                .Connection = New OdbcConnection(ConnectionString)
+            }
+            Dim syntaxProviderType As Type = Nothing
 
 			Try
 				syntaxProviderType = Helpers.AutodetectSyntaxProvider(metadataProvider)

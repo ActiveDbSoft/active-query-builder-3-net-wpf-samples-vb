@@ -31,7 +31,7 @@ Public Partial Class QueryParametersWindow
 		InitializeComponent()
 
         For i As Int32 = 0 To _command.Parameters.Count - 1
-            Dim p = _command.Parameters(i)
+            Dim p As DbParameter = _command.Parameters(i)
 
             _source.Add(New DataGridItem(p.ParameterName, p.DbType, ""))
         Next
@@ -50,37 +50,14 @@ Public Partial Class QueryParametersWindow
 End Class
 
 Class DataGridItem
-	Public Property ParameterName() As String
-		Get
-			Return m_ParameterName
-		End Get
-		Set
-			m_ParameterName = Value
-		End Set
-	End Property
-	Private m_ParameterName As String
-	Public Property DataType() As DbType
-		Get
-			Return m_DataType
-		End Get
-		Set
-			m_DataType = Value
-		End Set
-	End Property
-	Private m_DataType As DbType
-	Public Property Value() As Object
-		Get
-			Return m_Value
-		End Get
-		Set
-			m_Value = Value
-		End Set
-	End Property
-	Private m_Value As Object
+    Public Property ParameterName As String
+    Public Property DataType As DbType
 
-	Public Sub New(parametrName As String, dataType1 As DbType, value2 As Object)
-		ParameterName = parametrName
-		DataType = dataType1
-		Value = value2
-	End Sub
+    Public Property Value As Object
+
+    Public Sub New(parametrName As String, dataType1 As DbType, value2 As Object)
+        ParameterName = parametrName
+        DataType = dataType1
+        Value = value2
+    End Sub
 End Class

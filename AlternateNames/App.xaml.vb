@@ -9,10 +9,8 @@
 '*******************************************************************'
 
 Imports System.Windows.Threading
-Imports AlternateNames.AlternateNames.Common
 
-
-    Public Partial Class App
+Public Partial Class App
         Private Sub App_OnDispatcherUnhandledException(ByVal sender As Object, ByVal e As DispatcherUnhandledExceptionEventArgs)
             Dim errorWindow = New ExceptionWindow With {
                 .Owner = Current.MainWindow,

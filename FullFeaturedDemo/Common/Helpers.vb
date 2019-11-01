@@ -35,7 +35,7 @@ Namespace Common
                 }
                 command.Parameters.Add(parameter)
             Next
-            Dim qpf = New QueryParametersWindow(command)
+            Dim qpf As QueryParametersWindow = New QueryParametersWindow(command)
             qpf.ShowDialog()
             Return command
         End Function
@@ -61,11 +61,11 @@ Namespace Common
                 sqlQuery.SQLContext.MetadataProvider.Connect()
             End If
 
-            Dim command = CreateSqlCommand(sqlCommand, sqlQuery)
+            Dim command As DbCommand = CreateSqlCommand(sqlCommand, sqlQuery)
 
             Dim table As New DataTable("result")
 
-            Using dbReader = command.ExecuteReader()
+            Using dbReader As DbDataReader = command.ExecuteReader()
 
                 For i As Integer = 0 To dbReader.FieldCount - 1
                     table.Columns.Add(dbReader.GetName(i))

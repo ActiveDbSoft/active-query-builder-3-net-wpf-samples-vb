@@ -81,10 +81,10 @@ Namespace Common
 		End Sub
 
 		Public Shadows Function Show() As Boolean
-			Return ShowDialog() = True
-		End Function
+            Return CBool(ShowDialog() = True)
+        End Function
 
-        Protected Overridable Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
+        Protected Overridable Overloads Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
         End Sub
 

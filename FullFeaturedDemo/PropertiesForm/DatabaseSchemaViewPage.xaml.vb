@@ -61,8 +61,8 @@ Namespace PropertiesForm
 			SetExpandType(queryBuilder.DatabaseSchemaView.Options.DefaultExpandMetadataType)
 		End Sub
 		Private Sub FillComboBox(enumType As Type)
-			Dim flags = GetFlagsFromType(enumType)
-			For Each flag As Object In flags
+            Dim flags As List(Of [Enum]) = GetFlagsFromType(enumType)
+            For Each flag As Object In flags
 				cmbDefaultExpandLevel.Items.Add(New SelectableItem(flag))
 			Next
 		End Sub

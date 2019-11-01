@@ -17,14 +17,14 @@ Namespace MdiControl.Converters
 		Implements IValueConverter
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
 			If parameter IsNot Nothing Then
-				Dim h = SystemParameters.ResizeFrameVerticalBorderWidth
+                Dim h As Double = SystemParameters.ResizeFrameVerticalBorderWidth
 
-				Return New Thickness(h, 0, h, 0)
+                Return New Thickness(h, 0, h, 0)
 			End If
 
-			Dim w = SystemParameters.ResizeFrameVerticalBorderWidth
+            Dim w As Double = SystemParameters.ResizeFrameVerticalBorderWidth
 
-			Return New Thickness(w, 0, w, w)
+            Return New Thickness(w, 0, w, w)
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack

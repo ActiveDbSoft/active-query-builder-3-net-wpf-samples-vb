@@ -9,6 +9,7 @@
 '*******************************************************************'
 
 Imports System.Data
+Imports System.Data.Common
 Imports System.Linq
 Imports System.Threading.Tasks
 Imports System.Windows
@@ -22,7 +23,7 @@ Namespace Common
     ''' <summary>
     ''' Interaction logic for CustomDataGrid.xaml
     ''' </summary>
-     Partial Public Class CustomDataGrid
+    Partial Public Class CustomDataGrid
         Public Event RowsLoaded As EventHandler
 
         Private _currentTextSql As String
@@ -90,12 +91,12 @@ Namespace Common
                 SqlQuery.SQLContext.MetadataProvider.Connect()
             End If
 
-            Dim command = Helpers.CreateSqlCommand(sqlCommand, SqlQuery)
+            Dim command As DbCommand = Helpers.CreateSqlCommand(sqlCommand, SqlQuery)
 
             Dim table As New DataTable("result")
 
             Try
-                Using dbReader = command.ExecuteReader()
+                Using dbReader As DbDataReader = command.ExecuteReader()
 
                     For i As Integer = 0 To dbReader.FieldCount - 1
                         table.Columns.Add(dbReader.GetName(i))

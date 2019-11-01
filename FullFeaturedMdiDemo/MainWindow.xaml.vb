@@ -122,28 +122,25 @@ Partial Public Class MainWindow
     Private Sub MdiContainer1_ActiveWindowChanged(sender As Object, args As EventArgs)
         Dim window As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
-        If window Is Nothing Then
-            QueriesView.QueryView = Nothing
-            QueriesView.SQLQuery = Nothing
-        Else
+        If window IsNot Nothing Then
             QueriesView.QueryView = window.QueryView
             QueriesView.SQLQuery = window.SqlQuery
         End If
     End Sub
 
     Private Sub LoadLanguage()
-        For Each language As String In Helpers.Localizer.Languages
-            If language.ToLower() = "auto" OrElse language.ToLower() = "default" Then
+        For Each lng As String In Helpers.Localizer.Languages
+            If lng.ToLower() = "auto" OrElse lng.ToLower() = "default" Then
                 Continue For
             End If
 
-            Dim culture As CultureInfo= New CultureInfo(language)
+            Dim culture As CultureInfo = New CultureInfo(lng)
 
-            Dim stroke as String = String.Format("{0}", culture.DisplayName)
+            Dim stroke As String = String.Format("{0}", culture.DisplayName)
 
-            Dim menuItem as MenuItem = New MenuItem() With {
+            Dim menuItem As MenuItem = New MenuItem() With {
                 .Header = stroke,
-                .Tag = language,
+                .Tag = lng,
                 .IsCheckable = True
             }
 
@@ -194,11 +191,12 @@ Partial Public Class MainWindow
 
         Dim title As String = If(String.IsNullOrEmpty(caption), "New Query", caption)
         If MdiContainer1.Children.Any(Function(x) x.Title = title) Then
-            For i As Int32 = 1 To 999
-                If MdiContainer1.Children.Any(Function(x) x.Title = title & " (" & i & ")") Then
+            For i As Integer = 1 To 999 Step 1
+                Dim z As Integer = i
+                If MdiContainer1.Children.Any(Function(x) x.Title = title & $" ({z})") Then
                     Continue For
                 End If
-                title += " (" & i & ")"
+                title += $" ({i})"
                 Exit For
             Next
         End If
@@ -332,7 +330,7 @@ Partial Public Class MainWindow
         Dim sb As StringBuilder = New StringBuilder()
 
         Using sr As StreamReader = New StreamReader(openFileDialog1.FileName)
-            Dim s As String
+            Dim s As String = Nothing
 
             While (InlineAssignHelper(s, sr.ReadLine())) IsNot Nothing
                 sb.AppendLine(s)
@@ -397,7 +395,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandUndo_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
         If child Is Nothing Then
             Return
@@ -407,7 +405,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandRedo_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
         If child Is Nothing Then
             Return
@@ -417,7 +415,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandCopy_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
         If child Is Nothing Then
             Return
@@ -427,7 +425,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandPaste_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
         If child Is Nothing Then
             Return
@@ -437,7 +435,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandCut_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
         If child Is Nothing Then
             Return
@@ -447,7 +445,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandSelectAll_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
 
         If child Is Nothing Then
             Return
@@ -459,7 +457,7 @@ Partial Public Class MainWindow
 
 #Region "MenuItem ckick"
     Private Sub MenuItemQueryStatistics_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim child = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim child As ChildWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
         If child IsNot Nothing Then
             child.ShowQueryStatistics()
         End If
@@ -481,7 +479,7 @@ Partial Public Class MainWindow
         If MdiContainer1.ActiveChild Is Nothing Then
             Return
         End If
-        Dim window = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim window As ChildWindow = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
         window.AddDerivedTable()
     End Sub
 
@@ -489,7 +487,7 @@ Partial Public Class MainWindow
         If MdiContainer1.ActiveChild Is Nothing Then
             Return
         End If
-        Dim window = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim window As ChildWindow = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
         window.CopyUnionSubQuery()
     End Sub
 
@@ -497,7 +495,7 @@ Partial Public Class MainWindow
         If MdiContainer1.ActiveChild Is Nothing Then
             Return
         End If
-        Dim window = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim window As ChildWindow = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
         window.AddUnionSubQuery()
     End Sub
 
@@ -505,7 +503,7 @@ Partial Public Class MainWindow
         If MdiContainer1.ActiveChild Is Nothing Then
             Return
         End If
-        Dim window = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
+        Dim window As ChildWindow = DirectCast(MdiContainer1.ActiveChild, ChildWindow)
         window.PropertiesQuery()
     End Sub
 
@@ -766,14 +764,13 @@ Partial Public Class MainWindow
                 Continue Do
             End If
 
-            Dim atItem As MetadataStructureItem = If(QueriesView.SelectedItem, QueriesView.MetadataStructure)
+            Dim atItem As MetadataStructureItem = If(TryCast(QueriesView.FocusedItem, MetadataStructure), QueriesView.MetadataStructure)
 
             If Not UserQueries.IsFolder(atItem) Then
                 atItem = atItem.Parent
             End If
 
             newItem = UserQueries.AddUserQuery(childWindow.SqlQuery.SQLContext.MetadataContainer, atItem, title, childWindow.FormattedQueryText, CInt(DefaultImageListImageIndices.VirtualObject), ActiveQueryBuilder.View.Helpers.GetLayout(childWindow.SqlQuery.QueryRoot))
-
 
             Exit Do
         Loop While True
@@ -855,23 +852,23 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub MenuItemExecuteUserQuery_OnClick(sender As Object, e As RoutedEventArgs)
-        If QueriesView.SelectedItem Is Nothing Then
+        If QueriesView.FocusedItem Is Nothing Then
             Return
         End If
 
-        Dim window As ChildWindow = CreateChildWindow(QueriesView.SelectedItem.MetadataItem.Name)
+        Dim window As ChildWindow = CreateChildWindow(QueriesView.FocusedItem.MetadataItem.Name)
 
-        window.UserMetadataStructureItem = QueriesView.SelectedItem
+        window.UserMetadataStructureItem = QueriesView.FocusedItem
         window.SqlSourceType = Common.Helpers.SourceType.UserQueries
         MdiContainer1.Children.Add(window)
         MdiContainer1.ActiveChild = window
 
-        window.QueryText = DirectCast(QueriesView.SelectedItem.MetadataItem, MetadataObject).Expression
+        window.QueryText = DirectCast(QueriesView.FocusedItem.MetadataItem, MetadataObject).Expression
         window.OpenExecuteTab()
     End Sub
 
     Private Sub QueriesView_OnSelectedItemChanged(sender As Object, e As EventArgs)
-        MenuItemExecuteUserQuery.IsEnabled = QueriesView.SelectedItem IsNot Nothing AndAlso Not QueriesView.SelectedItem.IsFolder()
+        MenuItemExecuteUserQuery.IsEnabled = QueriesView.FocusedItem IsNot Nothing AndAlso Not QueriesView.FocusedItem.IsFolder()
     End Sub
     Private Shared Function InlineAssignHelper(Of T)(ByRef target As T, value As T) As T
         target = value

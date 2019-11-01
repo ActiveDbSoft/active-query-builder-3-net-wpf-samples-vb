@@ -70,11 +70,11 @@ Namespace Connection.FrameConnection
 				Return
 			End If
 			Try
-                Dim builder = New MySqlConnectionStringBuilder() With {
-                    .ConnectionString = _connectionString _
+                Dim builder As MySqlConnectionStringBuilder = New MySqlConnectionStringBuilder() With {
+                    .ConnectionString = _connectionString
                 }
 
-				tbServer.Text = builder.Server
+                tbServer.Text = builder.Server
 				tbDatabase.Text = builder.Database
 				tbUserID.Text = builder.UserID
 				tbPassword.Password = builder.Password
@@ -85,9 +85,9 @@ Namespace Connection.FrameConnection
 		End Sub
 
 		Private Sub btnEditConnectionString_Click(sender As Object, e As EventArgs)
-			Dim csef = New ConnectionStringEditWindow()
+            Dim csef As ConnectionStringEditWindow = New ConnectionStringEditWindow()
 
-			If True Then
+            If True Then
 				csef.ConnectionString = Me.ConnectionString
 
 				If csef.ShowDialog() <> True Then

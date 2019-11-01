@@ -284,9 +284,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("Firebird 2.0")
 				BoxServerVersion.Items.Add("Firebird 2.5")
 
-				Dim firebirdSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider)
+                Dim firebirdSyntaxProvider As FirebirdSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, FirebirdSyntaxProvider)
 
-				Select Case firebirdSyntaxProvider.ServerVersion
+                Select Case firebirdSyntaxProvider.ServerVersion
 					Case FirebirdVersion.Firebird10
 						BoxServerVersion.SelectedItem = "Firebird 1.0"
 						Exit Select
@@ -309,9 +309,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("Informix 10")
 				BoxServerVersion.Items.Add("Informix 11")
 
-				Dim informixSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, InformixSyntaxProvider)
+                Dim informixSyntaxProvider As InformixSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, InformixSyntaxProvider)
 
-				Select Case informixSyntaxProvider.ServerVersion
+                Select Case informixSyntaxProvider.ServerVersion
 					Case InformixVersion.DS8
 						BoxServerVersion.SelectedItem = "Informix 8"
 						Exit Select
@@ -330,9 +330,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("Access 97")
 				BoxServerVersion.Items.Add("Access 2000 and newer")
 
-				Dim accessSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider)
+                Dim accessSyntaxProvider As MSAccessSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSAccessSyntaxProvider)
 
-				BoxServerVersion.SelectedItem = If(accessSyntaxProvider.ServerVersion = MSAccessServerVersion.MSJET3, "Access 97", "Access 2000 and newer")
+                BoxServerVersion.SelectedItem = If(accessSyntaxProvider.ServerVersion = MSAccessServerVersion.MSJET3, "Access 97", "Access 2000 and newer")
 			ElseIf TypeOf _connectionInfo.SyntaxProvider Is MSSQLSyntaxProvider Then
 				BoxServerVersion.IsEnabled = True
 				BoxServerVersion.Items.Add("Auto")
@@ -345,9 +345,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("SQL Server 2017")
 				BoxServerVersion.Items.Add("SQL Server 2019")
 
-				Dim mssqlSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider)
+                Dim mssqlSyntaxProvider As MSSQLSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MSSQLSyntaxProvider)
 
-				Select Case mssqlSyntaxProvider.ServerVersion
+                Select Case mssqlSyntaxProvider.ServerVersion
 					Case MSSQLServerVersion.MSSQL7
 						BoxServerVersion.SelectedItem = "SQL Server 7"
 						Exit Select
@@ -383,9 +383,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("5.0")
 				BoxServerVersion.Items.Add("8.0+")
 
-				Dim mySqlSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider)
+                Dim mySqlSyntaxProvider As MySQLSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, MySQLSyntaxProvider)
 
-				If mySqlSyntaxProvider.ServerVersionInt < 40000 Then
+                If mySqlSyntaxProvider.ServerVersionInt < 40000 Then
 					BoxServerVersion.SelectedItem = "3.0"
 				ElseIf mySqlSyntaxProvider.ServerVersionInt < 50000 Then
 					BoxServerVersion.SelectedItem = "4.0"
@@ -405,9 +405,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("Oracle 18c")
 				BoxServerVersion.Items.Add("Oracle 19c")
 
-				Dim oracleSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider)
+                Dim oracleSyntaxProvider As OracleSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, OracleSyntaxProvider)
 
-				Select Case oracleSyntaxProvider.ServerVersion
+                Select Case oracleSyntaxProvider.ServerVersion
 					Case OracleServerVersion.Oracle7
 						BoxServerVersion.SelectedItem = "Oracle 7"
 						Exit Select
@@ -447,9 +447,9 @@ Namespace Connection
 				BoxServerVersion.Items.Add("SQL Anywhere")
 				BoxServerVersion.Items.Add("SAP IQ")
 
-				Dim sybaseSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider)
+                Dim sybaseSyntaxProvider As SybaseSyntaxProvider = DirectCast(_connectionInfo.SyntaxProvider, SybaseSyntaxProvider)
 
-				Select Case sybaseSyntaxProvider.ServerVersion
+                Select Case sybaseSyntaxProvider.ServerVersion
 					Case SybaseServerVersion.SybaseASE
 						BoxServerVersion.SelectedItem = "ASE"
 						Exit Select
@@ -472,9 +472,9 @@ Namespace Connection
 				Return
 			End If
 
-			Dim connectionType = ConnectionTypes.MSSQL
+            Dim connectionType As ConnectionTypes = ConnectionTypes.MSSQL
 
-			If Equals(sender, rbMSSQL) Then
+            If Equals(sender, rbMSSQL) Then
 				connectionType = ConnectionTypes.MSSQL
 			ElseIf Equals(sender, rbMSAccess) Then
 				connectionType = ConnectionTypes.MSAccess
@@ -567,8 +567,8 @@ Namespace Connection
 		End Sub
 
 		Private Sub CurrentConnectionFrame_SyntaxProviderDetected(syntaxType As Type)
-			Dim syntaxProvider = TryCast(Activator.CreateInstance(syntaxType), BaseSyntaxProvider)
-			BoxSyntaxProvider.SelectedItem = SyntaxToString(syntaxProvider)
+            Dim syntaxProvider As BaseSyntaxProvider = TryCast(Activator.CreateInstance(syntaxType), BaseSyntaxProvider)
+            BoxSyntaxProvider.SelectedItem = SyntaxToString(syntaxProvider)
 			FillVersions()
 		End Sub
 

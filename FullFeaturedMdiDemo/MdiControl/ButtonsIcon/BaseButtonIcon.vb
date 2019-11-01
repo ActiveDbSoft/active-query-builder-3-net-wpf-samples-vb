@@ -36,32 +36,24 @@ Namespace MdiControl.ButtonsIcon
 
 		Private Shared Sub CallbackIsMaximized(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
             Dim sender As BaseButtonIcon = TryCast(d, BaseButtonIcon)
-			Dim value = CBool(e.NewValue)
-			If sender IsNot Nothing Then
+            Dim value As Boolean = CBool(e.NewValue)
+            If sender IsNot Nothing Then
 				sender.SizeContent = If(value, New Size(8, 8), New Size(11, 9))
 			End If
 		End Sub
 
-		Protected Property SizeContent() As Size
-			Get
-				Return m_SizeContent
-			End Get
-			Set
-				m_SizeContent = Value
-			End Set
-		End Property
-		Private m_SizeContent As Size
+        Protected Property SizeContent As Size
 
-		Public Property Stroke() As Brush Implements IBaseButtonIcon.Stroke
-			Get
-				Return DirectCast(GetValue(StrokeProperty), Brush)
-			End Get
-			Set
-				SetValue(StrokeProperty, value)
-			End Set
-		End Property
+        Public Property Stroke() As Brush Implements IBaseButtonIcon.Stroke
+            Get
+                Return DirectCast(GetValue(StrokeProperty), Brush)
+            End Get
+            Set
+                SetValue(StrokeProperty, Value)
+            End Set
+        End Property
 
-		Public Property IsMaximized() As Boolean Implements IBaseButtonIcon.IsMaximized
+        Public Property IsMaximized() As Boolean Implements IBaseButtonIcon.IsMaximized
 			Get
 				Return CBool(GetValue(IsMaximizedProperty))
 			End Get

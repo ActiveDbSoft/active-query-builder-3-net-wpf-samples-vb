@@ -16,10 +16,10 @@ Namespace MdiControl
 	Public Class CustomCanvas
 		Inherits Canvas
 		Protected Overrides Function MeasureOverride(constraint As Size) As Size
-			Dim defaultValue = MyBase.MeasureOverride(constraint)
-			Dim desiredSize = New Size()
+            Dim defaultValue As Size = MyBase.MeasureOverride(constraint)
+            Dim desiredSize As Size = New Size()
 
-			desiredSize = Children.Cast(Of UIElement)().Aggregate(desiredSize, Function(current, child) New Size(Math.Max(current.Width, GetLeft(child) + child.DesiredSize.Width), Math.Max(current.Height, GetTop(child) + child.DesiredSize.Height)))
+            desiredSize = Children.Cast(Of UIElement)().Aggregate(desiredSize, Function(current, child) New Size(Math.Max(current.Width, GetLeft(child) + child.DesiredSize.Width), Math.Max(current.Height, GetTop(child) + child.DesiredSize.Height)))
 
 			Return If((Double.IsNaN(desiredSize.Width) OrElse Double.IsNaN(desiredSize.Height)), defaultValue, desiredSize)
 		End Function

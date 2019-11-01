@@ -61,7 +61,7 @@ Namespace Common
 
         Private Sub ComboBoxSyntaxProvider_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
             If Not _allowChangedSyntax Then Return
-            Dim syntaxProvider = (CType(ComboBoxSyntaxProvider.SelectedItem, ComboBoxItem)).SyntaxProvider
+            Dim syntaxProvider As BaseSyntaxProvider = (CType(ComboBoxSyntaxProvider.SelectedItem, ComboBoxItem)).SyntaxProvider
             OnSyntaxProviderChanged(New SelectionChangedEventArgs(e.RoutedEvent, New List(Of BaseSyntaxProvider)(), New List(Of BaseSyntaxProvider) From {
                                                                      syntaxProvider
                                                                      }))

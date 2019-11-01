@@ -142,13 +142,13 @@ Namespace Frames
 
 		Public Shared Function FindParent(Of T As Class)(from As DependencyObject) As T
 			Dim result As T = Nothing
-			Dim parent = VisualTreeHelper.GetParent(from)
+            Dim parent As Object = VisualTreeHelper.GetParent(from)
 
-			If TypeOf parent Is T Then
+            If TypeOf parent Is T Then
 				result = TryCast(parent, T)
 			ElseIf parent IsNot Nothing Then
-				result = FindParent(Of T)(parent)
-			End If
+                result = FindParent(Of T)(TryCast(parent, DependencyObject))
+            End If
 
 			Return result
 		End Function

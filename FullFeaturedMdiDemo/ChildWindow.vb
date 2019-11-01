@@ -139,17 +139,17 @@ Public Class ChildWindow
         AddHandler _content.SaveAsNewUserQueryEvent,AddressOf  RaiseSaveAsNewUserQueryEvent
     End Sub
 
-    Private Function RaiseSaveAsNewUserQueryEvent() As EventHandler
+    Private Sub RaiseSaveAsNewUserQueryEvent()
         RaiseEvent SaveAsNewUserQueryEvent(_content, Nothing)
-    End Function
+    End Sub
 
-    Private Function RaiseSaveAsInFileEvent() As EventHandler
+    Private Sub RaiseSaveAsInFileEvent()
         RaiseEvent SaveAsInFileEvent(_content, Nothing)
-    End Function
+    End Sub
 
-    Private Function RaiseSaveQueryEvent() As EventHandler
-       RaiseEvent SaveQueryEvent(_content, Nothing)
-    End Function
+    Private Sub RaiseSaveQueryEvent()
+        RaiseEvent SaveQueryEvent(_content, Nothing)
+    End Sub
 
 
     Public Function CanRedo() As Boolean

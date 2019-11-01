@@ -305,15 +305,15 @@ Partial Public Class MainWindow
             Yield Nothing
 		End If
 
-        For i As Int32 = 0 To VisualTreeHelper.GetChildrenCount(depObj) - 1
-            Dim child = VisualTreeHelper.GetChild(depObj, i)
+        For i As Integer = 0 To VisualTreeHelper.GetChildrenCount(depObj) - 1
+            Dim child As DependencyObject = VisualTreeHelper.GetChild(depObj, i)
             If child IsNot Nothing AndAlso TypeOf child Is T Then
-                yield child
+                Yield CType(child, T)
             End If
 
             For Each childOfChild As T In FindVisualChildren(Of T)(child)
-                yield  childOfChild
-			Next
+                Yield childOfChild
+            Next
         Next
     End Function
 

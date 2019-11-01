@@ -45,14 +45,14 @@ Namespace Connection.FrameConnection
 			End Set
 		End Property
 
-		Public Sub New(connectionString__1 As String)
-			InitializeComponent()
+        Public Sub New(connectionString1 As String)
+            InitializeComponent()
 
-			If [String].IsNullOrEmpty(connectionString__1) Then
-				tbUserID.Text = "Admin"
-			Else
-				ConnectionString = connectionString__1
-			End If
+            If [String].IsNullOrEmpty(connectionString1) Then
+                tbUserID.Text = "Admin"
+            Else
+                ConnectionString = connectionString1
+            End If
 		End Sub
 
 		Public Sub New()
@@ -64,9 +64,9 @@ Namespace Connection.FrameConnection
 		End Sub
 
 		Private Shared Function GetProvidersList() As List(Of String)
-			Dim reader = OleDbEnumerator.GetRootEnumerator()
-			Dim result = New List(Of String)()
-			While reader.Read()
+            Dim reader As OleDbDataReader = OleDbEnumerator.GetRootEnumerator()
+            Dim result As List(Of String) = New List(Of String)()
+            While reader.Read()
 				For i As Integer = 0 To reader.FieldCount - 1
 					If reader.GetName(i) = "SOURCES_NAME" Then
 						result.Add(reader.GetValue(i).ToString())
@@ -79,11 +79,11 @@ Namespace Connection.FrameConnection
 		End Function
 
 		Private Function DetectProvider() As String
-			Dim providersList = GetProvidersList()
-			Dim provider = String.Empty
+            Dim providersList As List(Of String) = GetProvidersList()
+            Dim provider As String = String.Empty
 
-			Dim ext = Path.GetExtension(tbDataSource.Text)
-			If ext = ".accdb" Then
+            Dim ext As String = Path.GetExtension(tbDataSource.Text)
+            If ext = ".accdb" Then
 				For i As Integer = 0 To _knownAceProviders.Count - 1
 					If providersList.Contains(_knownAceProviders(i)) Then
 						provider = _knownAceProviders(i)
@@ -131,11 +131,11 @@ Namespace Connection.FrameConnection
 
 			If Not String.IsNullOrEmpty(_connectionString) Then
 				Try
-					Dim builder = New OleDbConnectionStringBuilder() With { _
-						.ConnectionString = _connectionString _
-					}
+                    Dim builder As OleDbConnectionStringBuilder = New OleDbConnectionStringBuilder() With {
+                        .ConnectionString = _connectionString
+                    }
 
-					tbDataSource.Text = builder.DataSource
+                    tbDataSource.Text = builder.DataSource
 					tbUserID.Text = builder("User ID").ToString()
 					tbPassword.Password = builder("Password").ToString()
 
@@ -154,12 +154,12 @@ Namespace Connection.FrameConnection
 		End Sub
 
 		Private Sub BtnEditConnectionString_OnClick(sender As Object, e As EventArgs)
-			Dim csef = New ConnectionStringEditWindow() With { _
-				.ConnectionString = ConnectionString _
-			}
+            Dim csef As ConnectionStringEditWindow = New ConnectionStringEditWindow() With {
+                .ConnectionString = ConnectionString
+            }
 
 
-			If csef.ShowDialog() <> True Then
+            If csef.ShowDialog() <> True Then
 				Return
 			End If
 
@@ -172,8 +172,8 @@ Namespace Connection.FrameConnection
 			Mouse.OverrideCursor = Cursors.Wait
 
 			Try
-				Dim connection = New OleDbConnection(ConnectionString)
-				connection.Open()
+                Dim connection As OleDbConnection = New OleDbConnection(ConnectionString)
+                connection.Open()
 				connection.Close()
 			Catch e As Exception
 				MessageBox.Show(e.Message, Assembly.GetEntryAssembly().GetName().Name)

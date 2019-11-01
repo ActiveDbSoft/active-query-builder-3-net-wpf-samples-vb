@@ -382,7 +382,7 @@ Partial Public Class MainWindow
         Dim sb As StringBuilder = New StringBuilder()
 
         Using sr As StreamReader = New StreamReader(openFileDialog1.FileName)
-            Dim s As String
+            Dim s As String = Nothing
 
             While (InlineAssignHelper(s, sr.ReadLine())) IsNot Nothing
                 sb.AppendLine(s)
@@ -578,7 +578,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub MenuItem_SaveMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim fileDialog = New SaveFileDialog() With {
+        Dim fileDialog As SaveFileDialog = New SaveFileDialog() With {
             .Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*",
             .FileName = "Metadata.xml"
         }
@@ -592,7 +592,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub MenuItem_About_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim f = New AboutForm() With {
+        Dim f As AboutForm = New AboutForm() With {
             .Owner = Me
         }
 
@@ -763,7 +763,7 @@ Partial Public Class MainWindow
         If ButtonRefreshFastResult Is Nothing OrElse CheckBoxAutoRefresh Is Nothing Then
             Return
         End If
-        ButtonRefreshFastResult.IsEnabled = CheckBoxAutoRefresh.IsChecked = False
+        ButtonRefreshFastResult.IsEnabled = CBool(CheckBoxAutoRefresh.IsChecked = False)
     End Sub
 
     Private Sub CloseImage_OnMouseUp(sender As Object, e As MouseButtonEventArgs)

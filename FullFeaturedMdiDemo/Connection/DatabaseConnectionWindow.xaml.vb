@@ -23,16 +23,16 @@ Namespace Connection
 			Get
 				If TabControl1.SelectedIndex = 0 Then
 					If LvConnections.SelectedItems.Count > 0 Then
-						Dim item = DirectCast(LvConnections.SelectedItem, ConnectionListItem)
-						Return DirectCast(item.Tag, ConnectionInfo)
+                        Dim item As ConnectionListItem = DirectCast(LvConnections.SelectedItem, ConnectionListItem)
+                        Return DirectCast(item.Tag, ConnectionInfo)
 					End If
 
 					Return Nothing
 				End If
 
 				If LvXmlFiles.SelectedItems.Count > 0 Then
-					Dim item = DirectCast(LvXmlFiles.SelectedItem, ConnectionListItem)
-					Return DirectCast(item.Tag, ConnectionInfo)
+                    Dim item As ConnectionListItem = DirectCast(LvXmlFiles.SelectedItem, ConnectionListItem)
+                    Return DirectCast(item.Tag, ConnectionInfo)
 				End If
 
 				Return Nothing
@@ -44,9 +44,9 @@ Namespace Connection
 
 			GridHint.Visibility = If(showHint, Visibility.Visible, Visibility.Collapsed)
 
-			Dim sourcelvConnection = New ObservableCollection(Of ConnectionListItem)()
+            Dim sourcelvConnection As ObservableCollection(Of ConnectionListItem) = New ObservableCollection(Of ConnectionListItem)()
 
-			' fill connection list
+            ' fill connection list
             For i As Int32 = 0 To App.Connections.Count - 1
                 sourcelvConnection.Add(New ConnectionListItem() With {
                     .Name = App.Connections(i).ConnectionName, _
@@ -62,9 +62,9 @@ Namespace Connection
             End If
 
             ' add preset
-            Dim found = False
-            Dim northwind = New ConnectionInfo(ConnectionTypes.MSSQL, "Northwind.xml", "Northwind.xml", True, Nothing, "") With {
-                .SyntaxProvider = New MSSQLSyntaxProvider() _
+            Dim found As Boolean = False
+            Dim northwind As ConnectionInfo = New ConnectionInfo(ConnectionTypes.MSSQL, "Northwind.xml", "Northwind.xml", True, Nothing, "") With {
+                .SyntaxProvider = New MSSQLSyntaxProvider()
             }
 
             For i As Int32 = 0 To App.XmlFiles.Count - 1
@@ -77,7 +77,7 @@ Namespace Connection
                 App.XmlFiles.Insert(0, northwind)
             End If
 
-            Dim sourceXmlfiles = New ObservableCollection(Of ConnectionListItem)()
+            Dim sourceXmlfiles As ObservableCollection(Of ConnectionListItem) = New ObservableCollection(Of ConnectionListItem)()
 
             ' fill XML files list
             For i As Int32 = 0 To App.XmlFiles.Count - 1
@@ -116,7 +116,7 @@ Namespace Connection
         End Sub
 
         Private Shared Function GetNewConnectionEntryName() As String
-            Dim x = 0
+            Dim x As Integer = 0
             Dim found As Boolean
             Dim name As String
 
@@ -125,7 +125,7 @@ Namespace Connection
                 found = False
                 name = String.Format("Connection {0}", x)
 
-                For i As Int32 = 0 To App.Connections.Count - 1
+                For i As Integer = 0 To App.Connections.Count - 1
                     If App.Connections(i).ConnectionName <> name Then
                         Continue For
                     End If
@@ -139,7 +139,7 @@ Namespace Connection
         End Function
 
         Private Shared Function GetNewXmlFileEntryName() As String
-            Dim x = 0
+            Dim x As Integer = 0
             Dim found As Boolean
             Dim name As String
 
@@ -161,10 +161,10 @@ Namespace Connection
         End Function
 
         Private Sub ButtonAddConnection_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim ci = New ConnectionInfo(ConnectionTypes.MSSQL, GetNewConnectionEntryName(), Nothing, False, Nothing, "")
+            Dim ci As ConnectionInfo = New ConnectionInfo(ConnectionTypes.MSSQL, GetNewConnectionEntryName(), Nothing, False, Nothing, "")
 
-            Dim cef = New AddConnectionWindow(ci) With {
-                .Owner = Me _
+            Dim cef As AddConnectionWindow = New AddConnectionWindow(ci) With {
+                .Owner = Me
             }
 
             If cef.ShowDialog() = True Then
@@ -174,7 +174,7 @@ Namespace Connection
                     .Tag = ci _
                 }
 
-                Dim source = TryCast(LvConnections.ItemsSource, ObservableCollection(Of ConnectionListItem))
+                Dim source As ObservableCollection(Of ConnectionListItem) = TryCast(LvConnections.ItemsSource, ObservableCollection(Of ConnectionListItem))
                 If source IsNot Nothing Then
                     source.Add(item)
                 End If
@@ -191,13 +191,13 @@ Namespace Connection
         End Sub
 
         Private Sub ButtonRemoveConnection_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim item = DirectCast(LvConnections.SelectedItem, ConnectionListItem)
+            Dim item As ConnectionListItem = DirectCast(LvConnections.SelectedItem, ConnectionListItem)
 
             If item Is Nothing Then
                 Return
             End If
 
-            Dim source = TryCast(LvConnections.ItemsSource, ObservableCollection(Of ConnectionListItem))
+            Dim source As ObservableCollection(Of ConnectionListItem) = TryCast(LvConnections.ItemsSource, ObservableCollection(Of ConnectionListItem))
             If source IsNot Nothing Then
                 source.Remove(item)
             End If
@@ -210,11 +210,11 @@ Namespace Connection
             If LvConnections.SelectedItem Is Nothing Then
                 Return
             End If
-            Dim item = DirectCast(LvConnections.SelectedItem, ConnectionListItem)
+            Dim item As ConnectionListItem = DirectCast(LvConnections.SelectedItem, ConnectionListItem)
 
-            Dim ci = DirectCast(item.Tag, ConnectionInfo)
+            Dim ci As ConnectionInfo = DirectCast(item.Tag, ConnectionInfo)
 
-            Dim cef = New AddConnectionWindow(ci)
+            Dim cef As AddConnectionWindow = New AddConnectionWindow(ci)
 
             If cef.ShowDialog() = True Then
                 item.Name = ci.ConnectionName
@@ -225,20 +225,20 @@ Namespace Connection
         End Sub
 
         Private Sub ButtonAddXml_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim ci = New ConnectionInfo(ConnectionTypes.MSSQL, GetNewXmlFileEntryName(), Nothing, True, Nothing, "")
+            Dim ci As ConnectionInfo = New ConnectionInfo(ConnectionTypes.MSSQL, GetNewXmlFileEntryName(), Nothing, True, Nothing, "")
 
-            Dim cef = New AddConnectionWindow(ci) With {
-                .Owner = Me _
+            Dim cef As AddConnectionWindow = New AddConnectionWindow(ci) With {
+                .Owner = Me
             }
 
             If cef.ShowDialog() = True Then
-                Dim item = New ConnectionListItem() With {
-                    .Name = ci.ConnectionType.ToString(), _
-                    .Type = ci.ConnectionType.ToString(), _
-                    .Tag = ci _
+                Dim item As ConnectionListItem = New ConnectionListItem() With {
+                    .Name = ci.ConnectionType.ToString(),
+                    .Type = ci.ConnectionType.ToString(),
+                    .Tag = ci
                 }
 
-                Dim source = TryCast(LvXmlFiles.ItemsSource, ObservableCollection(Of ConnectionListItem))
+                Dim source As ObservableCollection(Of ConnectionListItem) = TryCast(LvXmlFiles.ItemsSource, ObservableCollection(Of ConnectionListItem))
                 If source IsNot Nothing Then
                     source.Add(item)
                 End If
@@ -255,13 +255,13 @@ Namespace Connection
         End Sub
 
 		Private Sub ButtonRemoveXml_OnClick(sender As Object, e As RoutedEventArgs)
-			Dim item = DirectCast(LvXmlFiles.SelectedItem, ConnectionListItem)
-			If item Is Nothing Then
+            Dim item As ConnectionListItem = DirectCast(LvXmlFiles.SelectedItem, ConnectionListItem)
+            If item Is Nothing Then
 				Return
 			End If
 
-			Dim source = TryCast(LvXmlFiles.ItemsSource, ObservableCollection(Of ConnectionListItem))
-			If source Is Nothing Then
+            Dim source As ObservableCollection(Of ConnectionListItem) = TryCast(LvXmlFiles.ItemsSource, ObservableCollection(Of ConnectionListItem))
+            If source Is Nothing Then
 				Return
 			End If
 
@@ -278,16 +278,16 @@ Namespace Connection
 		End Sub
 
 		Private Sub ButtonConfigureXml_OnClick(sender As Object, e As RoutedEventArgs)
-			Dim item = DirectCast(LvXmlFiles.SelectedItem, ConnectionListItem)
-			If item Is Nothing Then
+            Dim item As ConnectionListItem = DirectCast(LvXmlFiles.SelectedItem, ConnectionListItem)
+            If item Is Nothing Then
 				Return
 			End If
 
-			Dim ci = DirectCast(item.Tag, ConnectionInfo)
+            Dim ci As ConnectionInfo = DirectCast(item.Tag, ConnectionInfo)
 
-			Dim cef = New AddConnectionWindow(ci)
+            Dim cef As AddConnectionWindow = New AddConnectionWindow(ci)
 
-			If cef.ShowDialog() = True Then
+            If cef.ShowDialog() = True Then
 				item.Name = ci.ConnectionName
 				item.Type = ci.ConnectionType.ToString()
 			End If

@@ -64,7 +64,7 @@ Public NotInheritable Class MenuBehavior
             Return Nothing
         End If
 
-        Dim optionGroups = GetOptionGroups(menuItem.Parent)
+        Dim optionGroups As Dictionary(Of String, HashSet(Of MenuItem)) = GetOptionGroups(menuItem.Parent)
         If optionGroups Is Nothing Then
             If create Then
                 optionGroups = New Dictionary(Of String, HashSet(Of MenuItem))()
@@ -74,7 +74,7 @@ Public NotInheritable Class MenuBehavior
             End If
         End If
 
-        Dim group As HashSet(Of MenuItem)
+        Dim group As HashSet(Of MenuItem) = Nothing
         If Not optionGroups.TryGetValue(groupName, group) AndAlso create Then
             group = New HashSet(Of MenuItem)()
             optionGroups(groupName) = group
@@ -83,7 +83,7 @@ Public NotInheritable Class MenuBehavior
     End Function
 
     Private Shared Sub AddToOptionGroup(menuItem As MenuItem)
-        Dim group = GetOptionGroup(menuItem, True)
+        Dim group As HashSet(Of MenuItem) = GetOptionGroup(menuItem, True)
         If group Is Nothing Then
             Return
         End If
@@ -97,7 +97,7 @@ Public NotInheritable Class MenuBehavior
     End Sub
 
     Private Shared Sub RemoveFromOptionGroup(menuItem As MenuItem)
-        Dim group = GetOptionGroup(menuItem, False)
+        Dim group As HashSet(Of MenuItem) = GetOptionGroup(menuItem, False)
         If group Is Nothing Then
             Return
         End If
@@ -124,13 +124,13 @@ Public NotInheritable Class MenuBehavior
             Return
         End If
 
-        Dim group = GetOptionGroup(menuItem, False)
+        Dim group As HashSet(Of MenuItem) = GetOptionGroup(menuItem, False)
         If group Is Nothing Then
             Return
         End If
 
         For Each item As MenuItem In group
-            If CStr(item Is menuItem) Then Continue For
+            If CBool(CStr(item Is menuItem)) Then Continue For
 
             item.IsChecked = False
         Next
@@ -152,12 +152,12 @@ Public NotInheritable Class MenuBehavior
             Return
         End If
 
-        Dim group = GetOptionGroup(menuItem, False)
+        Dim group As HashSet(Of MenuItem) = GetOptionGroup(menuItem, False)
         If group Is Nothing Then
             Return
         End If
 
-        If Not Enumerable.Cast(Of MenuItem)(group).Any(Function(item As MenuItem) item.IsChecked = True) Then
+        If Not group.Cast(Of MenuItem)().Any(Function(item As MenuItem) item.IsChecked = True) Then
             menuItem.IsChecked = True
         End If
     End Sub

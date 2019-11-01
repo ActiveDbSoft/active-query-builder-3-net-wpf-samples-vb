@@ -9,7 +9,6 @@
 '*******************************************************************'
 
 Imports System.ComponentModel
-Imports FullFeaturedMdiDemo.Annotations
 
 Namespace Connection
 	Public Class ConnectionListItem

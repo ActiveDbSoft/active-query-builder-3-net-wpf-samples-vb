@@ -24,9 +24,9 @@ Namespace ConnectionWindows
 		End Sub
 
 		Private Sub ButtonConnect_OnClick(sender As Object, e As RoutedEventArgs)
-			Dim builder = New OdbcConnectionStringBuilder()
+            Dim builder As OdbcConnectionStringBuilder = New OdbcConnectionStringBuilder()
 
-			Try
+            Try
 				builder.ConnectionString = textBoxConnectionString.Text
 
 				Mouse.OverrideCursor = Cursors.Wait

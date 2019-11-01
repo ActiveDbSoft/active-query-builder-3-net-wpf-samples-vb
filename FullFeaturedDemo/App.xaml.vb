@@ -8,10 +8,8 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
-Imports System.Windows
 Imports System.Windows.Threading
 Imports FullFeaturedDemo.Common
-Imports FullFeaturedDemo.Properties
 
 ''' <summary>
 ''' Interaction logic for App.xaml
@@ -41,7 +39,7 @@ Public Partial Class App
 	End Sub
 	
 	Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
-        Dim errorWindow = New ExceptionWindow With {
+        Dim errorWindow As ExceptionWindow = New ExceptionWindow With {
                 .Owner = Current.MainWindow,
                 .Message = e.Exception.Message,
                 .StackTrace = e.Exception.StackTrace

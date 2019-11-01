@@ -20,8 +20,8 @@ Friend Class AutoGreyableImage
     End Sub
 
     Private Shared Sub OnAutoGreyScaleImageIsEnabledPropertyChanged(source As DependencyObject, args As DependencyPropertyChangedEventArgs)
-        Dim autoGreyScaleImg = TryCast(source, AutoGreyableImage)
-        Dim isEnable = Convert.ToBoolean(args.NewValue)
+        Dim autoGreyScaleImg As AutoGreyableImage = TryCast(source, AutoGreyableImage)
+        Dim isEnable As Boolean = Convert.ToBoolean(args.NewValue)
         If autoGreyScaleImg Is Nothing Then
             Return
         End If
