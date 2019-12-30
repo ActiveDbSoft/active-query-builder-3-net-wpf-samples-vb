@@ -174,7 +174,7 @@ Partial Public Class MainWindow
         MenuItemProp.IsEnabled = MdiContainer1.ActiveChild IsNot Nothing AndAlso DirectCast(MdiContainer1.ActiveChild, ChildWindow).CanShowProperties()
         MenuItemAddObject.IsEnabled = MdiContainer1.ActiveChild IsNot Nothing AndAlso DirectCast(MdiContainer1.ActiveChild, ChildWindow).CanAddObject()
         MenuItemProperties.IsEnabled = (_sqlFormattingOptions IsNot Nothing AndAlso _sqlContext IsNot Nothing)
-
+        MenuItemProperties.Header = If(MenuItemProperties.IsEnabled, "Properties", "Properties (open a query to edit)")
         For Each item As MenuItem In MetadataItemMenu.Items.Cast(Of FrameworkElement)().Where(Function(x) TypeOf x Is MenuItem).ToList()
             item.IsEnabled = _sqlContext IsNot Nothing
         Next
