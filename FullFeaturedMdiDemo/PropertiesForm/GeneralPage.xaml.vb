@@ -19,23 +19,11 @@ Namespace PropertiesForm
 	Public Partial Class GeneralPage
 		Private ReadOnly _sqlFormattingOptions As SQLFormattingOptions
 
-		Public Property Modified() As Boolean
-			Get
-				Return m_Modified
-			End Get
-			Set
-				m_Modified = Value
-			End Set
-		End Property
-		Private m_Modified As Boolean
-
 		Public Sub New()
-			Modified = False
 			InitializeComponent()
 		End Sub
 
 		Public Sub New(sqlFormattingOptions As SQLFormattingOptions)
-			Modified = False
 			_sqlFormattingOptions = sqlFormattingOptions
 
 			InitializeComponent()
@@ -58,23 +46,19 @@ Namespace PropertiesForm
 		End Sub
 
 		Private Sub comboKeywordsCasing_SelectedIndexChanged(sender As Object, e As EventArgs)
-			Modified = True
+			ApplyChanges()
 		End Sub
 
 		Private Sub checkWordWrap_CheckedChanged(sender As Object, e As EventArgs)
 			updownRightMargin.IsEnabled = cbWordWrap.IsChecked.HasValue AndAlso cbWordWrap.IsChecked.Value
-			Modified = True
+			ApplyChanges()
 		End Sub
 
 		Private Sub updownRightMargin_ValueChanged(sender As Object, e As EventArgs)
-			Modified = True
+			ApplyChanges()
 		End Sub
 
 		Public Sub ApplyChanges()
-			If Not Modified Then
-				Return
-			End If
-
 			If cbWordWrap.IsChecked.HasValue AndAlso cbWordWrap.IsChecked.Value Then
 				_sqlFormattingOptions.RightMargin = updownRightMargin.Value
 			Else

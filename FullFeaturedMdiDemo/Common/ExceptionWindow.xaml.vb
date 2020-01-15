@@ -17,7 +17,7 @@ Namespace Common
             Get
                 Return BlockMessage.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 BlockMessage.Text = value
             End Set
         End Property
@@ -26,7 +26,7 @@ Namespace Common
             Get
                 Return New TextRange(BoxStackTrace.Document.ContentStart, BoxStackTrace.Document.ContentEnd).Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 BoxStackTrace.Document.Blocks.Clear()
                 BoxStackTrace.Document.Blocks.Add(New Paragraph(New Run(value)))
             End Set
@@ -36,7 +36,7 @@ Namespace Common
             InitializeComponent()
         End Sub
 
-        Private Sub ButtonOk_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+        Private Sub ButtonOk_OnClick(sender As Object, e As RoutedEventArgs)
             Close()
         End Sub
     End Class

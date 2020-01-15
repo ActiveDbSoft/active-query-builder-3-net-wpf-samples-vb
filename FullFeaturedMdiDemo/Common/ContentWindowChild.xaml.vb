@@ -18,8 +18,13 @@ Imports System.Windows.Controls
 Imports System.Windows.Input
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.Core.QueryTransformer
+Imports ActiveQueryBuilder.View
+Imports ActiveQueryBuilder.View.ExpressionEditor
+Imports ActiveQueryBuilder.View.QueryView
+Imports ActiveQueryBuilder.View.WPF
 Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports ActiveQueryBuilder.View.WPF.QueryView
+Imports SQLParsingException = ActiveQueryBuilder.Core.SQLParsingException
 
 Namespace Common
     ''' <summary>
@@ -33,20 +38,134 @@ Namespace Common
         Private ReadOnly _transformerSql As QueryTransformer
         Private ReadOnly _timerStartingExecuteSql As Timer
 
-        Private _lastValidSql As String = String.Empty
-        Private _lastValidSqlCurrent As String = String.Empty
-        Private _errorPosition As Integer = -1
-        Private _errorPositionCurrent As Integer = -1
-
         Private _sql As String
+
+        Public Property BehaviorOptions() As BehaviorOptions
+            Get
+                Return SqlQuery.BehaviorOptions
+            End Get
+            Set
+                SqlQuery.BehaviorOptions.Assign(Value)
+            End Set
+        End Property
+
+        Public Property DataSourceOptions() As DataSourceOptions
+            Get
+                Return DirectCast(DPaneControl.DataSourceOptions, DataSourceOptions)
+            End Get
+            Set
+                DPaneControl.DataSourceOptions.Assign(Value)
+            End Set
+        End Property
+
+        Public Property DesignPaneOptions() As DesignPaneOptions
+            Get
+                Return DPaneControl.Options
+            End Get
+            Set
+                DPaneControl.Options.Assign(Value)
+            End Set
+        End Property
+
+        Public Property QueryNavBarOptions() As QueryNavBarOptions
+            Get
+                Return NavigationBar.Options
+            End Get
+            Set
+                RemoveHandler NavigationBar.Options.Updated, AddressOf QueryNavBarOptionsOnUpdated
+                NavigationBar.Options.Assign(Value)
+                AddHandler NavigationBar.Options.Updated, AddressOf QueryNavBarOptionsOnUpdated
+                SubQueryNavBarControl.Options.Assign(CType(NavigationBar.Options, IQueryNavigationBarOptions))
+            End Set
+        End Property
+
+        Private Sub QueryNavBarOptionsOnUpdated(sender As Object, e As EventArgs)
+            SubQueryNavBarControl.Options.Assign(DirectCast(QueryNavBarOptions, IQueryNavigationBarOptions))
+        End Sub
+
+        Public Property MetadataLoadingOptions() As MetadataLoadingOptions
+            Get
+                Return SqlContext.LoadingOptions
+            End Get
+            Set
+                SqlContext.LoadingOptions.Assign(Value)
+            End Set
+        End Property
+
+        Public Property MetadataStructureOptions() As MetadataStructureOptions
+            Get
+                Return SqlContext.MetadataStructureOptions
+            End Get
+            Set
+                SqlContext.MetadataStructureOptions.Assign(Value)
+            End Set
+        End Property
+
+        Public Property UserInterfaceOptions() As UserInterfaceOptions
+            Get
+                Return QView.UserInterfaceOptions
+            End Get
+            Set
+                QView.UserInterfaceOptions.Assign(Value)
+            End Set
+        End Property
+
+        Public Property ExpressionEditorOptions() As ExpressionEditorOptions
+            Get
+                Return ExpressionEditor.Options
+            End Get
+            Set
+                ExpressionEditor.Options.Assign(Value)
+            End Set
+        End Property
+
+        Public Property TextEditorOptions() As TextEditorOptions
+            Get
+                Return BoxSql.Options
+            End Get
+            Set
+                ExpressionEditor.TextEditorOptions.Assign(CType(Value, ITextEditorOptions))
+                BoxSql.Options.Assign(CType(Value, ITextEditorOptions))
+                BoxSqlCurrentSubQuery.Options.Assign(CType(Value, ITextEditorOptions))
+            End Set
+        End Property
+
+        Public Property TextEditorSqlOptions() As SqlTextEditorOptions
+            Get
+                Return BoxSql.SqlOptions
+            End Get
+            Set
+                ExpressionEditor.TextEditorSqlOptions.Assign(CType(Value, ISqlTextEditorOptions))
+                BoxSql.SqlOptions.Assign(CType(Value, ISqlTextEditorOptions))
+                BoxSqlCurrentSubQuery.SqlOptions.Assign(CType(Value, ISqlTextEditorOptions))
+            End Set
+        End Property
+
+        Public Property VisualOptions() As VisualOptions
+            Get
+                Return DockManager.Options
+            End Get
+            Set
+                DockManager.Options.Assign(Value)
+            End Set
+        End Property
+
+        Public Property QueryColumnListOptions() As QueryColumnListOptions
+            Get
+                Return ColumnListControl.Options
+            End Get
+            Set
+                ColumnListControl.Options.Assign(Value)
+            End Set
+        End Property
 
         Public Property IsModified As Boolean
 
         Public Property UserMetadataStructureItem As MetadataStructureItem
-
         Public Property FileSourceUrl As String
 
         Public Property SqlContext As SQLContext
+
 
         Public Property QueryText() As String
             Get
@@ -60,10 +179,51 @@ Namespace Common
             End Set
         End Property
 
-        Public Property SqlFormattingOptions As SQLFormattingOptions
+        Private _sqlFormattingOptions As SQLFormattingOptions
+        Private _errorPosition As Integer = -1
+        Private _lastValidSql As String
+        Private _lastValidSqlCurrentSubQuery As String
+        Private _errorPositionCurrentSubQuery As Integer = -1
 
+        Public Property SqlFormattingOptions() As SQLFormattingOptions
+            Get
+                Return _sqlFormattingOptions
+            End Get
+            Set
+                If _sqlFormattingOptions IsNot Nothing Then
+                    RemoveHandler _sqlFormattingOptions.Updated, AddressOf SqlFormattingOptionsOnUpdated
+                End If
 
-        Public Property SqlGenerationOptions As SQLGenerationOptions
+                If _sqlFormattingOptions Is Nothing Then
+                    _sqlFormattingOptions = Value
+                Else
+                    _sqlFormattingOptions.Assign(Value)
+                End If
+
+                If _sqlFormattingOptions IsNot Nothing Then
+                    AddHandler _sqlFormattingOptions.Updated, AddressOf SqlFormattingOptionsOnUpdated
+                End If
+                If CBuilder.QueryTransformer.SQLGenerationOptions Is Nothing Then
+                    CBuilder.QueryTransformer.SQLGenerationOptions = Value
+                Else
+                    CBuilder.QueryTransformer.SQLGenerationOptions.Assign(Value)
+                End If
+
+            End Set
+        End Property
+
+        Private Sub SqlFormattingOptionsOnUpdated(sender As Object, eventArgs As EventArgs)
+            BoxSql.Text = FormattedQueryText
+        End Sub
+
+        Public Property SqlGenerationOptions() As SQLGenerationOptions
+            Get
+                Return QueryView.SQLGenerationOptions
+            End Get
+            Set
+                QueryView.SQLGenerationOptions.Assign(Value)
+            End Set
+        End Property
 
         Public ReadOnly Property QueryView() As QueryView
             Get
@@ -96,19 +256,24 @@ Namespace Common
             SqlQuery.QueryRoot.AllowSleepMode = True
             AddHandler SqlQuery.QueryAwake, AddressOf SqlQueryOnQueryAwake
             AddHandler SqlQuery.SleepModeChanged, AddressOf SqlQuery_SleepModeChanged
-
+            NavigationBar.QueryView = QueryView
             QueryView.Query = SqlQuery
+
+            AddHandler QueryView.ActiveUnionSubQueryChanged, AddressOf QueryView_ActiveUnionSubQueryChanged
+
             BoxSql.Query = SqlQuery
             BoxSqlCurrentSubQuery.Query = SqlQuery
-
-            BoxSql.ExpressionContext = QueryView.ActiveUnionSubQuery
             BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
 
-            AddHandler QueryView.ActiveUnionSubQueryChanged, AddressOf ActiveUnionSubQueryChanged
+            AddHandler QueryView.ActiveUnionSubQueryChanged, Sub() BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
 
             _transformerSql = New QueryTransformer()
 
             _timerStartingExecuteSql = New Timer(AddressOf TimerStartingExecuteSql_Elapsed)
+
+            CBuilder.QueryTransformer = New QueryTransformer() With {
+                .Query = SqlQuery
+            }
 
             ' Options to present the formatted SQL query text to end-user
             ' Use names of virtual objects, do not replace them with appropriate derived tables
@@ -125,11 +290,6 @@ Namespace Common
             NavigationBar.QueryView = QueryView
             NavigationBar.Query = SqlQuery
 
-            CBuilder.QueryTransformer = New QueryTransformer() With {
-                .Query = SqlQuery,
-                .SQLGenerationOptions = SqlFormattingOptions
-            }
-
             AddHandler CBuilder.QueryTransformer.SQLUpdated, AddressOf QueryTransformer_SQLUpdated
 
             DataGridResult.QueryTransformer = CBuilder.QueryTransformer
@@ -145,13 +305,13 @@ Namespace Common
             UpdateStateButtons()
         End Sub
 
-        Private Sub ActiveUnionSubQueryChanged()
-            BoxSql.ExpressionContext = QueryView.ActiveUnionSubQuery
-            BoxSqlCurrentSubQuery.ExpressionContext = QueryView.ActiveUnionSubQuery
-            ' ReSharper disable once VBWarnings::BC42105,BC42106,BC42107
+        Private Sub QueryView_ActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
+            SetSqlTextCurrentSubQuery()
         End Sub
 
         Private Sub SqlQuery_SQLUpdated(sender As Object, e As EventArgs)
+            _lastValidSql = FormattedQueryText
+
             IsModified = _sql <> QueryText
 
             BoxSql.Text = FormattedQueryText
@@ -159,14 +319,37 @@ Namespace Common
             SetSqlTextCurrentSubQuery()
 
             UpdateStateButtons()
+            CheckParameters()
 
             If Not TabItemFastResult.IsSelected OrElse CheckBoxAutoRefreash.IsChecked = False Then
                 Return
             End If
 
             _timerStartingExecuteSql.Change(600, Timeout.Infinite)
+        End Sub
 
+        Private Sub CheckParameters()
+            If Helpers.CheckParameters(SqlContext.MetadataProvider, SqlContext.SyntaxProvider, SqlQuery.QueryParameters) Then
+                HideParametersErrorPanel()
+            Else
+                Dim acceptableFormats As List(Of String) = Helpers.GetAcceptableParametersFormats(SqlContext.MetadataProvider, SqlContext.SyntaxProvider)
+                ShowParametersErrorPanel(acceptableFormats)
+            End If
+        End Sub
 
+        Private Sub ShowParametersErrorPanel(acceptableFormats As List(Of String))
+            Dim formats As IEnumerable(Of Object) = acceptableFormats.[Select](Function(x)
+                                                                                   Dim s As String = x.Replace("n", "<number>")
+                                                                                   Return s.Replace("s", "<name>")
+
+                                                                               End Function)
+
+            lbParamsError.Text = "Unsupported parameter notation detected. For this type of connection and database server use " & String.Join(", ", formats)
+            pnlParamsError.Visibility = Visibility.Visible
+        End Sub
+
+        Private Sub HideParametersErrorPanel()
+            pnlParamsError.Visibility = Visibility.Collapsed
         End Sub
 
         Public Sub OpenExecuteTab()
@@ -177,13 +360,13 @@ Namespace Common
             Dim qs As QueryStatistics = QueryView.Query.QueryStatistics
 
             Dim stats As String = "Used Objects (" & qs.UsedDatabaseObjects.Count & "):" & vbCr & vbLf
-            stats = qs.UsedDatabaseObjects.Aggregate(stats, Function(current, t) current & (vbCr & vbLf & t.ObjectName.QualifiedName))
+            stats += qs.UsedDatabaseObjects.Aggregate(stats, Function(current, t) current & (vbCr & vbLf & t.ObjectName.QualifiedName))
 
             stats += vbCr & vbLf & vbCr & vbLf & "Used Columns (" & qs.UsedDatabaseObjectFields.Count & "):" & vbCr & vbLf
-            stats = qs.UsedDatabaseObjectFields.Aggregate(stats, Function(current, t) current & (vbCr & vbLf & t.ObjectName.QualifiedName))
+            stats += qs.UsedDatabaseObjectFields.Aggregate(stats, Function(current, t) current & (vbCr & vbLf & t.ObjectName.QualifiedName))
 
             stats += vbCr & vbLf & vbCr & vbLf & "Output Expressions (" & qs.OutputColumns.Count & "):" & vbCr & vbLf
-            stats = qs.OutputColumns.Aggregate(stats, Function(current, t) current & (vbCr & vbLf & t.Expression))
+            stats += qs.OutputColumns.Aggregate(stats, Function(current, t) current & (vbCr & vbLf & t.Expression))
 
             Dim f As QueryStatisticsWindow = New QueryStatisticsWindow()
             f.textBox.Text = stats
@@ -297,19 +480,19 @@ Namespace Common
 
         Public Sub AddDerivedTable()
             Using New UpdateRegion(QueryView.ActiveUnionSubQuery.FromClause)
-                Dim sqlContext1 As SQLContext = QueryView.ActiveUnionSubQuery.SQLContext
+                Dim mySqlContext As SQLContext = QueryView.ActiveUnionSubQuery.SQLContext
 
-                Dim fq As SQLFromQuery = New SQLFromQuery(sqlContext1) With {
-                    .[Alias] = New SQLAliasObjectAlias(sqlContext1) With {
+                Dim fq As SQLFromQuery = New SQLFromQuery(mySqlContext) With {
+                    .[Alias] = New SQLAliasObjectAlias(mySqlContext) With {
                         .[Alias] = QueryView.ActiveUnionSubQuery.QueryRoot.CreateUniqueSubQueryName()
                     },
-                    .SubQuery = New SQLSubSelectStatement(sqlContext1)
+                    .SubQuery = New SQLSubSelectStatement(mySqlContext)
                 }
 
-                Dim sqse As SQLSubQuerySelectExpression = New SQLSubQuerySelectExpression(sqlContext1)
+                Dim sqse As SQLSubQuerySelectExpression = New SQLSubQuerySelectExpression(mySqlContext)
                 fq.SubQuery.Add(sqse)
-                sqse.SelectItems = New SQLSelectItems(sqlContext1)
-                sqse.From = New SQLFromClause(sqlContext1)
+                sqse.SelectItems = New SQLSelectItems(mySqlContext)
+                sqse.From = New SQLFromClause(mySqlContext)
 
                 NavigationBar.Query.AddObject(QueryView.ActiveUnionSubQuery, fq, GetType(DataSourceQuery))
             End Using
@@ -352,12 +535,11 @@ Namespace Common
                 SqlQuery.SQL = BoxSql.Text
 
                 ' Hide error banner if any
-                ErrorBox.Visibility = Visibility.Collapsed
-                _lastValidSql = SqlQuery.SQL
+                ErrorBox.Show(Nothing, QView.Query.SQLContext.SyntaxProvider)
             Catch ex As SQLParsingException
                 ' Show banner with error text
+                ErrorBox.Show(ex.Message, QView.Query.SQLContext.SyntaxProvider)
                 _errorPosition = ex.ErrorPos.pos
-                ErrorBox.Show(ex.Message, SqlContext.SyntaxProvider)
             End Try
         End Sub
 
@@ -397,6 +579,8 @@ Namespace Common
             AddHandler Loaded, AddressOf ContentWindowChild_Loaded
             Dim langProperty As DependencyPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(LanguageProperty, GetType(ContentWindowChild))
             langProperty.AddValueChanged(Me, AddressOf LanguageChanged)
+
+            AddHandler QueryNavBarOptions.Updated, AddressOf QueryNavBarOptionsOnUpdated
         End Sub
 
         Private Sub QueryTransformer_SQLUpdated(sender As Object, e As EventArgs)
@@ -413,21 +597,13 @@ Namespace Common
         End Sub
 
         Private Sub LanguageChanged(sender As Object, e As EventArgs)
-            DockPanelPropertiesBar.Title = ActiveQueryBuilder.View.WPF.Helpers.Localizer.GetString("strPropertiesBarCaption",
-                                                                                                   ActiveQueryBuilder.View.WPF.Helpers.ConvertLanguageFromNative(Language),
-                                                                                                   LocalizableConstantsUI.strPropertiesBarCaption)
-            DockPanelSubQueryNavBar.Title = ActiveQueryBuilder.View.WPF.Helpers.Localizer.GetString("strSubQueryStructureBarCaption",
-                                                                                                    ActiveQueryBuilder.View.WPF.Helpers.ConvertLanguageFromNative(Language),
-                                                                                                    LocalizableConstantsUI.strSubQueryStructureBarCaption)
+            DockPanelPropertiesBar.Title = WPF.Helpers.Localizer.GetString("strPropertiesBarCaption", WPF.Helpers.ConvertLanguageFromNative(Language), LocalizableConstantsUI.strPropertiesBarCaption)
+            DockPanelSubQueryNavBar.Title = WPF.Helpers.Localizer.GetString("strSubQueryStructureBarCaption", WPF.Helpers.ConvertLanguageFromNative(Language), LocalizableConstantsUI.strSubQueryStructureBarCaption)
         End Sub
 
         Private Sub ContentWindowChild_Loaded(sender As Object, e As RoutedEventArgs)
-            DockPanelPropertiesBar.Title = ActiveQueryBuilder.View.WPF.Helpers.Localizer.GetString("strPropertiesBarCaption",
-                                                                                                   ActiveQueryBuilder.View.WPF.Helpers.ConvertLanguageFromNative(Language),
-                                                                                                   LocalizableConstantsUI.strPropertiesBarCaption)
-            DockPanelSubQueryNavBar.Title = ActiveQueryBuilder.View.WPF.Helpers.Localizer.GetString("strSubQueryStructureBarCaption",
-                                                                                                    ActiveQueryBuilder.View.WPF.Helpers.ConvertLanguageFromNative(Language),
-                                                                                                    LocalizableConstantsUI.strSubQueryStructureBarCaption)
+            DockPanelPropertiesBar.Title = WPF.Helpers.Localizer.GetString("strPropertiesBarCaption", WPF.Helpers.ConvertLanguageFromNative(Language), LocalizableConstantsUI.strPropertiesBarCaption)
+            DockPanelSubQueryNavBar.Title = WPF.Helpers.Localizer.GetString("strSubQueryStructureBarCaption", WPF.Helpers.ConvertLanguageFromNative(Language), LocalizableConstantsUI.strSubQueryStructureBarCaption)
         End Sub
 
 #Region "Menu buttons event method"
@@ -469,7 +645,7 @@ Namespace Common
 #End Region
 
         Private Sub BoxSql_OnTextChanged(sender As Object, eventArgs As EventArgs)
-            ErrorBox.Visibility = Visibility.Collapsed
+            ErrorBox.Show(Nothing, SqlContext.SyntaxProvider)
         End Sub
 
         Private Sub ResetPagination()
@@ -502,24 +678,26 @@ Namespace Common
         End Sub
 
         Private Sub SetSqlTextCurrentSubQuery()
-            ErrorBoxCurrent.Visibility = Visibility.Collapsed
+            ErrorBoxCurrentSunQuery.Show(Nothing, QView.Query.SQLContext.SyntaxProvider)
             If _transformerSql Is Nothing Then
                 Return
             End If
 
-            If QueryView.ActiveUnionSubQuery Is Nothing Or SqlQuery.SleepMode Then
+            If QueryView.ActiveUnionSubQuery Is Nothing OrElse SqlQuery.SleepMode Then
                 BoxSqlCurrentSubQuery.Text = String.Empty
                 _transformerSql.Query = Nothing
                 Return
             End If
 
+
+            Dim sqlForDataPreview As String = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetSqlForDataPreview()
             _transformerSql.Query = New SQLQuery(QueryView.ActiveUnionSubQuery.SQLContext) With {
-                .SQL = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetSqlForDataPreview()
+                .SQL = sqlForDataPreview
             }
 
             Dim sql As String = QueryView.ActiveUnionSubQuery.ParentSubQuery.GetResultSQL(SqlFormattingOptions)
             BoxSqlCurrentSubQuery.Text = sql
-            _lastValidSqlCurrent = sql
+            _lastValidSqlCurrentSubQuery = sql
         End Sub
 
         Private Sub FillFastResult()
@@ -565,7 +743,7 @@ Namespace Common
                 Return
             End If
             Try
-                ErrorBoxCurrent.Visibility = Visibility.Collapsed
+                ErrorBoxCurrentSunQuery.Show(Nothing, SqlContext.SyntaxProvider)
 
                 QView.ActiveUnionSubQuery.ParentSubQuery.SQL = DirectCast(sender, SqlTextEditor).Text
 
@@ -575,8 +753,8 @@ Namespace Common
                     .SQL = sql
                 }
             Catch ex As SQLParsingException
-                ErrorBoxCurrent.Show(ex.Message, SqlContext.SyntaxProvider)
-                _errorPositionCurrent = ex.ErrorPos.pos
+                ErrorBoxCurrentSunQuery.Show(ex.Message, SqlContext.SyntaxProvider)
+                _errorPositionCurrentSubQuery = ex.ErrorPos.pos
             End Try
         End Sub
 
@@ -607,7 +785,7 @@ Namespace Common
             End If
 
             BorderBlockPagination.Visibility = Visibility.Visible
-            DataGridResult.FillDataGrid(BoxSql.Text)
+            DataGridResult.FillDataGrid(CBuilder.SQL)
         End Sub
 
         Private Sub TabControlSqlText_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
@@ -624,10 +802,12 @@ Namespace Common
         Private Sub ErrorBox_OnGoToErrorPosition(sender As Object, e As EventArgs)
             BoxSql.Focus()
 
-            If _errorPosition <> -1 Then
-                BoxSql.ScrollToPosition(_errorPosition)
-                BoxSql.CaretOffset = _errorPosition
+            If _errorPosition = -1 Then
+                Return
             End If
+
+            BoxSql.ScrollToPosition((_errorPosition))
+            BoxSql.CaretOffset = _errorPosition
         End Sub
 
         Private Sub ErrorBox_OnRevertValidText(sender As Object, e As EventArgs)
@@ -635,17 +815,19 @@ Namespace Common
             BoxSql.Focus()
         End Sub
 
-        Private Sub ErrorBoxCurrent_OnGoToErrorPosition(sender As Object, e As EventArgs)
+        Private Sub ErrorBoxCurrentSunQuery_OnGoToErrorPosition(sender As Object, e As EventArgs)
             BoxSqlCurrentSubQuery.Focus()
 
-            If _errorPositionCurrent <> -1 Then
-                BoxSqlCurrentSubQuery.ScrollToPosition(_errorPositionCurrent)
-                BoxSqlCurrentSubQuery.CaretOffset = _errorPositionCurrent
+            If _errorPositionCurrentSubQuery = -1 Then
+                Return
             End If
+
+            BoxSqlCurrentSubQuery.ScrollToPosition((_errorPositionCurrentSubQuery))
+            BoxSqlCurrentSubQuery.CaretOffset = _errorPositionCurrentSubQuery
         End Sub
 
-        Private Sub ErrorBoxCurrent_OnRevertValidText(sender As Object, e As EventArgs)
-            BoxSqlCurrentSubQuery.Text = _lastValidSqlCurrent
+        Private Sub ErrorBoxCurrentSunQuery_OnRevertValidText(sender As Object, e As EventArgs)
+            BoxSqlCurrentSubQuery.Text = _lastValidSql
             BoxSqlCurrentSubQuery.Focus()
         End Sub
     End Class

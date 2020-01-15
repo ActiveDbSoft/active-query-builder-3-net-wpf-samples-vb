@@ -26,17 +26,9 @@ Namespace MdiControl
 		Private Const WidthMinimized As Double = 173
 		Private _oldSize As Size = Size.Empty
 		Private _oldPoint As New Point(0, 0)
-		Private Shadows Property Content() As Grid
-			Get
-				Return m_Content
-			End Get
-			Set
-				m_Content = Value
-			End Set
-		End Property
-		Private Shadows m_Content As Grid
+		Private Shadows Property Content As Grid
 
-		Public Event Closing As EventHandler
+        Public Event Closing As EventHandler
 		Public Event Minimize As EventHandler
 		Public Event Maximize As EventHandler
 		Public Event Resize As EventHandler
@@ -50,7 +42,7 @@ Namespace MdiControl
 
 		Public Shared ReadOnly TitleProperty As DependencyProperty = DependencyProperty.Register("Title", GetType(String), GetType(MdiChildWindow), New PropertyMetadata("Window"))
 
-		Public Shared Shadows ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(MdiChildWindow), New PropertyMetadata(Brushes.White, AddressOf CallBackBackgound))
+		Public Shared Shadows ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(MdiChildWindow), New PropertyMetadata(Brushes.White, AddressOf CallBackBackground))
 
 		Public Shared ReadOnly StateProperty As DependencyProperty = DependencyProperty.Register("State", GetType(StateWindow), GetType(MdiChildWindow), New PropertyMetadata(StateWindow.Normal, AddressOf CallbackStateChange))
 
@@ -106,17 +98,9 @@ Namespace MdiControl
 			End Set
 		End Property
 
-		Public Property Children() As ObservableCollection(Of Visual)
-			Get
-				Return m_Children
-			End Get
-			Set
-				m_Children = Value
-			End Set
-		End Property
-		Private m_Children As ObservableCollection(Of Visual)
+		Public Property Children As ObservableCollection(Of Visual)
 
-		Public Property IsActive() As Boolean
+        Public Property IsActive() As Boolean
 			Get
 				Return CBool(GetValue(IsActiveProperty))
 			End Get
@@ -214,7 +198,7 @@ Namespace MdiControl
 			End If
 		End Sub
 
-		Private Shared Sub CallBackBackgound(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
+		Private Shared Sub CallBackBackground(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
             Dim obj As MdiChildWindow = TryCast(d, MdiChildWindow)
 			If obj IsNot Nothing Then
 				If obj.Content Is Nothing Then

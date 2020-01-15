@@ -21,7 +21,7 @@ Namespace Common
 	''' </summary>
 	Public Partial Class WindowMessage
 		Implements INotifyPropertyChanged
-		Public Property ContetnAlignment() As HorizontalAlignment
+		Public Property ContentAlignment() As HorizontalAlignment
 			Get
 				Return TextBlockContent.HorizontalAlignment
 			End Get

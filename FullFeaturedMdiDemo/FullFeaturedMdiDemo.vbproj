@@ -88,6 +88,8 @@
     
     
     
+    
+    
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>True</Private>
@@ -149,6 +151,7 @@
     <Compile Include="Common\MenuButton.xaml.vb">
       <DependentUpon>MenuButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Options.vb" />
     <Compile Include="Common\PaginationPanel.xaml.vb">
       <DependentUpon>PaginationPanel.xaml</DependentUpon>
     </Compile>
@@ -158,41 +161,13 @@
     <Compile Include="Common\WindowNameQuery.xaml.vb">
       <DependentUpon>WindowNameQuery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Connection\AddConnectionWindow.xaml.vb">
-      <DependentUpon>AddConnectionWindow.xaml</DependentUpon>
+    <Compile Include="ConnectionEditWindow.xaml.vb">
+      <DependentUpon>ConnectionEditWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Connection\ConnectionListItem.vb" />
-    <Compile Include="Connection\ConnectionStringEditWindow.xaml.vb">
-      <DependentUpon>ConnectionStringEditWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\DatabaseConnectionWindow.xaml.vb">
+    <Compile Include="ConnectionListItem.vb" />
+    <Compile Include="DatabaseConnectionWindow.xaml.vb">
       <DependentUpon>DatabaseConnectionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Connection\FrameConnection\MSAccessConnectionFrame.xaml.vb">
-      <DependentUpon>MSAccessConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\MSSQLConnectionFrame.xaml.vb">
-      <DependentUpon>MSSQLConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\MySQLConnectionFrame.xaml.vb">
-      <DependentUpon>MySQLConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\ODBCConnectionFrame.xaml.vb">
-      <DependentUpon>ODBCConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\OLEDBConnectionFrame.xaml.vb">
-      <DependentUpon>OLEDBConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\OracleConnectionFrame.xaml.vb">
-      <DependentUpon>OracleConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\PostgreSQLConnectionFrame.xaml.vb">
-      <DependentUpon>PostgreSQLConnectionFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\FrameConnection\XmlFileFrame.xaml.vb">
-      <DependentUpon>XmlFileFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Connection\IConnectionFrame.vb" />
     <Compile Include="ErrorMessageBox.vb" />
     <Compile Include="MainWindow.xaml.vb">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -217,22 +192,31 @@
       <DependentUpon>GeneralPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PropertiesForm\GroupLabel.vb" />
-    <Compile Include="PropertiesForm\OfflineModePage.xaml.vb">
-      <DependentUpon>OfflineModePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PropertiesForm\QueryPropertiesWindow.xaml.vb">
       <DependentUpon>QueryPropertiesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PropertiesForm\SqlFormattingPage.xaml.vb">
       <DependentUpon>SqlFormattingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PropertiesForm\SqlSyntaxPage.xaml.vb">
-      <DependentUpon>SqlSyntaxPage.xaml</DependentUpon>
+    <Compile Include="PropertiesForm\SqlGenerationPage.xaml.vb">
+      <DependentUpon>SqlGenerationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertiesForm\Tabs\CommonTab.xaml.vb">
+      <DependentUpon>CommonTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertiesForm\Tabs\ExpressionsTab.xaml.vb">
+      <DependentUpon>ExpressionsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertiesForm\Tabs\MainQueryTab.xaml.vb">
+      <DependentUpon>MainQueryTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertiesForm\Tabs\SubQueryTab.xaml.vb">
+      <DependentUpon>SubQueryTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources1.Designer.vb">
+    <Compile Include="Properties\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -248,7 +232,9 @@
     <Compile Include="QueryStatisticsWindow.xaml.vb">
       <DependentUpon>QueryStatisticsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.vb" />
+    <Compile Include="XmlConnectionEditWindow.xaml.vb">
+      <DependentUpon>XmlConnectionEditWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="AboutForm.xaml">
@@ -299,49 +285,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Connection\AddConnectionWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ConnectionEditWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Connection\ConnectionStringEditWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="DatabaseConnectionWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\DatabaseConnectionWindow.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\MSAccessConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\MSSQLConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\MySQLConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\ODBCConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\OLEDBConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\OracleConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\PostgreSQLConnectionFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Connection\FrameConnection\XmlFileFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -359,10 +309,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PropertiesForm\OfflineModePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="PropertiesForm\QueryPropertiesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -371,7 +317,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PropertiesForm\SqlSyntaxPage.xaml">
+    <Page Include="PropertiesForm\SqlGenerationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertiesForm\Tabs\CommonTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertiesForm\Tabs\ExpressionsTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertiesForm\Tabs\MainQueryTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertiesForm\Tabs\SubQueryTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertiesForm\Tabs\TabStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -383,13 +349,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
+    <Page Include="XmlConnectionEditWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources1.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -439,6 +402,13 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

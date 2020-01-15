@@ -40,6 +40,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="190"/>
                     </Grid.RowDefinitions>
@@ -83,8 +84,12 @@
 
                         </StackPanel>
                     </Border>
-
-                    <Grid Grid.Row="1">
+                    <Border x:Name="pnlParamsError" Visibility="Collapsed" BorderThickness="1" BorderBrush="Black" Grid.Row="1">
+                        <Grid Background="Pink" Height="25">
+                            <TextBlock x:Name="lbParamsError"  Background="Pink" VerticalAlignment="Center" Margin="5, 0, 0, 0" Text=""></TextBlock>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
@@ -97,11 +102,14 @@
                                 <RowDefinition Height="150"/>
                             </Grid.RowDefinitions>
 
-                            <queryView:QueryView.ExpressionEditor>
-                                <expressionEditor:ExpressionEditor/>
-                            </queryView:QueryView.ExpressionEditor>
+                            <queryView:QueryView.AddObjectDialog>
+                                <queryView:AddObjectDialog/>
+                            </queryView:QueryView.AddObjectDialog>
 
-                            <dockManager:DockManager Grid.Row="0">
+                            <queryView:QueryView.ExpressionEditor>
+                                <expressionEditor:ExpressionEditor x:Name="ExpressionEditor"/>
+                            </queryView:QueryView.ExpressionEditor>
+                            <dockManager:DockManager x:Name="DockManager" Grid.Row="0">
                                 <dockManager:DockManager.DockPanels>
                                     <dockManager:DockPanel Title="Properties" x:Name="DockPanelPropertiesBar" Position="Right">
                                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -111,7 +119,7 @@
 
                                     <dockManager:DockPanel Title="SubQuery Structure" x:Name="DockPanelSubQueryNavBar" Position="Left">
                                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                            <navigationBar:SubQueryNavBar/>
+                                            <navigationBar:SubQueryNavBar x:Name="SubQueryNavBarControl"/>
                                         </ScrollViewer>
                                     </dockManager:DockPanel>
                                 </dockManager:DockManager.DockPanels>
@@ -120,12 +128,12 @@
                             </dockManager:DockManager>
 
                             <GridSplitter Grid.Row="1" VerticalAlignment="Top" Margin="0,0,0,0" Height="2"  HorizontalAlignment="Stretch"  Background="Transparent" Style="{x:Null}" Panel.ZIndex="9999"/>
-                            <queryView:QueryColumnListControl Grid.Row="1"/>
+                            <queryView:QueryColumnListControl x:Name="ColumnListControl" Grid.Row="1"/>
                         </queryView:QueryView>
                     </Grid>
 
-                    <GridSplitter Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,0" Height="2"  HorizontalAlignment="Stretch"  Background="Transparent" Style="{x:Null}"/>
-                    <Grid Grid.Row="2" Margin="0,3,0,0">
+                    <GridSplitter Grid.Row="3" VerticalAlignment="Top" Margin="0,0,0,0" Height="2"  HorizontalAlignment="Stretch"  Background="Transparent" Style="{x:Null}"/>
+                    <Grid Grid.Row="3" Margin="0,3,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
@@ -152,13 +160,13 @@
                                          x:Name="BoxSql" 
                                          Background="#535353" 
                                          Foreground="White" 
-                                         Padding="5"
+                                         Padding="5,5,0,0"
                                          FontFamily="Courier New"
+                                         KeywordBrush="#FFFF9700"
                                          LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
                                          TextChanged="BoxSql_OnTextChanged"/>
-
-                                    <common:ErrorBox Grid.Row="1" HorizontalAlignment="Right" 
-                                                     VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"
+                                    
+                                    <common:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"
                                                      GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
                                                      RevertValidText="ErrorBox_OnRevertValidText"/>
                                 </Grid>
@@ -180,14 +188,15 @@
                                         LostKeyboardFocus="BoxSqlCurrentSubQuery_OnLostKeyboardFocus" 
                                         Background="#535353" 
                                         Foreground="White" 
-                                        Padding="5"
+                                        Padding="5,5,0,0"
                                         FontFamily="Courier New"
+                                        KeywordBrush="#FFFF9700"
                                         TextChanged="BoxSql_OnTextChanged">
                                         </expressionEditor:SqlTextEditor>
 
-                                        <common:ErrorBox x:Name="ErrorBoxCurrent" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="4,5,4,0"
-                                                         GoToErrorPosition="ErrorBoxCurrent_OnGoToErrorPosition"
-                                                         RevertValidText="ErrorBoxCurrent_OnRevertValidText"/>
+                                        <common:ErrorBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBoxCurrentSunQuery"
+                                                         GoToErrorPosition="ErrorBoxCurrentSunQuery_OnGoToErrorPosition"
+                                                         RevertValidText="ErrorBoxCurrentSunQuery_OnRevertValidText"/>
                                     </Grid>
 
                                 </Grid>
@@ -232,7 +241,7 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-
+                    
                 </Grid>
             </TabItem>
             <TabItem Header="Data" x:Name="TabItemData">

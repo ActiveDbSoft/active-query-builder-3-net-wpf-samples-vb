@@ -8,6 +8,7 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System.Collections.Generic
 Imports System.Data
 Imports System.Data.Common
 Imports System.Data.SqlClient
@@ -21,6 +22,192 @@ Namespace Common
     Public NotInheritable Class Helpers
         Private Sub New()
         End Sub
+        Public Shared ReadOnly ConnectionDescriptorList As New List(Of Type)() From {
+            GetType(MSAccessConnectionDescriptor),
+            GetType(ExcelConnectionDescriptor),
+            GetType(MSSQLConnectionDescriptor),
+            GetType(MSSQLAzureConnectionDescriptor),
+            GetType(MySQLConnectionDescriptor),
+            GetType(OracleNativeConnectionDescriptor),
+            GetType(PostgreSQLConnectionDescriptor),
+            GetType(ODBCConnectionDescriptor),
+            GetType(OLEDBConnectionDescriptor),
+            GetType(SQLiteConnectionDescriptor),
+            GetType(FirebirdConnectionDescriptor)
+        }
+
+        Public Shared ReadOnly ConnectionDescriptorNames As New List(Of String)() From {
+            "MS Access",
+            "Excel",
+            "MS SQL Server",
+            "MS SQL Server Azure",
+            "MySQL",
+            "Oracle Native",
+            "PostgreSQL",
+            "Generic ODBC Connection",
+            "Generic OLEDB Connection",
+            "SQLite",
+            "Firebird"
+        }
+
+        Private Const AtNameParamFormat As String = "@s"
+        Private Const ColonNameParamFormat As String = ":s"
+        Private Const QuestionParamFormat As String = "?"
+        Private Const QuestionNumberParamFormat As String = "?n"
+        Private Const QuestionNameParamFormat As String = "?s"
+
+        Public Shared Function GetAcceptableParametersFormats(metadataProvider As BaseMetadataProvider, syntaxProvider As BaseSyntaxProvider) As List(Of String)
+            If TypeOf metadataProvider Is MSSQLMetadataProvider Then
+                Return New List(Of String)() From {
+                    AtNameParamFormat
+                }
+            End If
+
+            If TypeOf metadataProvider Is OracleNativeMetadataProvider Then
+                Return New List(Of String)() From {
+                    ColonNameParamFormat
+                }
+            End If
+
+            If TypeOf metadataProvider Is PostgreSQLMetadataProvider Then
+                Return New List(Of String)() From {
+                    ColonNameParamFormat
+                }
+            End If
+
+            If TypeOf metadataProvider Is MySQLMetadataProvider Then
+                Return New List(Of String)() From {
+                    AtNameParamFormat,
+                    QuestionParamFormat,
+                    QuestionNumberParamFormat,
+                    QuestionNameParamFormat
+                }
+            End If
+
+            If TypeOf metadataProvider Is OLEDBMetadataProvider Then
+                If TypeOf syntaxProvider Is MSAccessSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        AtNameParamFormat,
+                        ColonNameParamFormat,
+                        QuestionParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is MSSQLSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is OracleSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        ColonNameParamFormat,
+                        QuestionParamFormat,
+                        QuestionNumberParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is DB2SyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+            End If
+
+            If TypeOf metadataProvider Is ODBCMetadataProvider Then
+                If TypeOf syntaxProvider Is MSAccessSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is MSSQLSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is MySQLSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is PostgreSQLSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is OracleSyntaxProvider Then
+                    Return New List(Of String)() From {
+                        ColonNameParamFormat,
+                        QuestionParamFormat,
+                        QuestionNumberParamFormat
+                    }
+                End If
+
+                If TypeOf syntaxProvider Is DB2SyntaxProvider Then
+                    Return New List(Of String)() From {
+                        QuestionParamFormat
+                    }
+                End If
+            End If
+
+            Return New List(Of String)()
+        End Function
+
+        Public Shared Function CheckParameters(metadataProvider As BaseMetadataProvider, syntaxProvider As BaseSyntaxProvider, parameters As ParameterList) As Boolean
+            Dim acceptableFormats As List(Of String) = GetAcceptableParametersFormats(metadataProvider, syntaxProvider)
+
+            If acceptableFormats.Count = 0 Then
+                Return True
+            End If
+
+            For Each parameter As Parameter In parameters
+                If Not acceptableFormats.Any(Function(x) IsSatisfiesFormat(parameter.FullName, x)) Then
+                    Return False
+                End If
+            Next
+
+            Return True
+        End Function
+
+        Private Shared Function IsSatisfiesFormat(name As String, format As String) As Boolean
+            If String.IsNullOrEmpty(name) OrElse String.IsNullOrEmpty(format) Then
+                Return False
+            End If
+
+            If format(0) <> name(0) Then
+                Return False
+            End If
+
+            Dim lastChar As Char = format.Last()
+            If lastChar = "?"c Then
+                Return name = format
+            End If
+
+            If lastChar = "s"c Then
+                Return name.Length > 1 AndAlso [Char].IsLetter(name(1))
+            End If
+
+            If lastChar = "n"c Then
+                If name.Length = 1 Then
+                    Return False
+                End If
+
+                For Each c As Char In name
+                    If Not [Char].IsDigit(c) Then
+                        Return False
+                    End If
+                Next
+
+                Return True
+            End If
+
+            Return False
+        End Function
+
         Public Enum SourceType
             File
             [New]
@@ -43,7 +230,7 @@ Namespace Common
                 }
                 command.Parameters.Add(parameter)
             Next
-            Dim qpf As QueryParametersWindow = New QueryParametersWindow(command)
+            Dim qpf = New QueryParametersWindow(command)
             qpf.ShowDialog()
             Return command
         End Function
@@ -92,19 +279,19 @@ Namespace Common
 
     Friend Class SaveExistQueryDialog
         Inherits WindowMessage
-        Public Result As Nullable(Of Boolean)
+        Public Result As System.Nullable(Of Boolean)
 
-        Private Const WidthButton As Integer = 90
+        Private Const WIDTH_BUTTON As Integer = 90
 
         Public Sub New()
             Title = "Save dialog"
             Text = "Save changes?"
-            ContetnAlignment = HorizontalAlignment.Center
+            ContentAlignment = HorizontalAlignment.Center
             Result = Nothing
 
             Dim saveButton As Button = New Button() With {
                 .Content = "Save",
-                .Width = WidthButton,
+                .Width = WIDTH_BUTTON,
                 .IsDefault = True
             }
             AddHandler saveButton.Click, Sub()
@@ -116,7 +303,7 @@ Namespace Common
             Dim notSaveButton As Button = New Button() With {
                 .Margin = New Thickness(5, 0, 5, 0),
                 .Content = "Don't save",
-                .Width = WidthButton,
+                .Width = WIDTH_BUTTON,
                 .IsCancel = True
             }
             AddHandler notSaveButton.Click, Sub()
@@ -127,7 +314,7 @@ Namespace Common
 
             Dim continueButton As Button = New Button() With {
                 .Content = "Continue edit",
-                .Width = WidthButton
+                .Width = WIDTH_BUTTON
             }
             AddHandler continueButton.Click, Sub() Close()
 
@@ -148,7 +335,7 @@ Namespace Common
 
         Public Property Action As ActionSave
 
-        Private Const WidthButton As Integer = 120
+        Private Const WIDTH_BUTTON As Integer = 120
 
         Public Sub New(nameQuery As String)
             Background = New SolidColorBrush(SystemColors.ControlColor)
@@ -172,7 +359,7 @@ Namespace Common
             border.Child = root
             Content = border
 
-            Dim messsage As TextBlock = New TextBlock() With {
+            Dim message As TextBlock = New TextBlock() With {
                 .Text = "Save changes to the [" & nameQuery & "]?",
                 .HorizontalAlignment = HorizontalAlignment.Center
             }
@@ -184,7 +371,7 @@ Namespace Common
             }
 
             Dim buttonSaveFile As Button = New Button() With {
-                .Width = WidthButton,
+                .Width = WIDTH_BUTTON,
                 .Content = "Save to file..."
             }
             AddHandler buttonSaveFile.Click, Sub()
@@ -194,7 +381,7 @@ Namespace Common
                                              End Sub
 
             Dim buttonSaveUserQuery As Button = New Button() With {
-                .Width = WidthButton,
+                .Width = WIDTH_BUTTON,
                 .Content = "Save as User Query",
                 .Margin = New Thickness(5, 0, 5, 0)
             }
@@ -205,7 +392,7 @@ Namespace Common
                                                   End Sub
 
             Dim buttonNotSave As Button = New Button() With {
-                .Width = WidthButton,
+                .Width = WIDTH_BUTTON,
                 .Content = "Don't save",
                 .Margin = New Thickness(0, 0, 5, 0)
             }
@@ -217,7 +404,7 @@ Namespace Common
 
 
             Dim buttonCancel As Button = New Button() With {
-                .Width = WidthButton,
+                .Width = WIDTH_BUTTON,
                 .Content = "Cancel"
             }
             AddHandler buttonCancel.Click, Sub()
@@ -226,7 +413,7 @@ Namespace Common
 
                                            End Sub
 
-            root.Children.Add(messsage)
+            root.Children.Add(message)
             root.Children.Add(bottomStack)
 
             bottomStack.Children.Add(buttonSaveFile)

@@ -12,9 +12,6 @@ Imports System.Windows
 Imports System.Windows.Input
 
 Namespace Common
-	''' <summary>
-	''' Логика взаимодействия для ErrorHint.xaml
-	''' </summary>
 	Public Partial Class ErrorHint
 
 	    Public Shared ReadOnly TextProperty As DependencyProperty = DependencyProperty.Register("Text", GetType(String), GetType(ErrorHint), new PropertyMetadata(Nothing))

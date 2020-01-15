@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:Double x:Key="WidthEditorControl">150</system:Double>
+    <system:Double x:Key="WidthLabelDescription">250</system:Double>
+    <system:Double x:Key="MinWidthColumnDescription">150</system:Double>
+
+    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}" x:Key="CheckBoxDefaultStyle">
+        <Setter Property="IsThreeState" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+    </Style>
+
+    <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxDefaultStyle}" x:Key="CheckBoxListStyle">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockDefaultStyle">
+        <Setter Property="Margin" Value="0,3"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+    </Style>
+
+    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockDefaultStyle}" x:Key="TextBlockDescriptionStyle">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}" x:Key="ComboBoxDefaultStyle">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+    </Style>
+
+    <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}" x:Key="GroupBoxDefaultStyle">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+    </Style>
+    
+    <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}" x:Key="RadioButtonDefaultStyle">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+    </Style>
+</ResourceDictionary>

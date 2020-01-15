@@ -8,47 +8,56 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+
 Imports System.Windows
 Imports System.Windows.Threading
+Imports ActiveQueryBuilder.View.WPF
 Imports FullFeaturedMdiDemo.Common
+Imports FullFeaturedMdiDemo.Properties
 
 
-''' <summary>
-''' Interaction logic for App.xaml
-''' </summary>
-Partial Public Class App
-    Inherits Application
-    Public Shared Name As String = "Active Query Builder Demo"
+    Public Partial Class App
+        Inherits Application
 
-    Public Shared Connections As New ConnectionList()
-    Public Shared XmlFiles As New ConnectionList()
+        Public Shared Name As String = "Active Query Builder Demo"
+        Public Shared Connections As ConnectionList = New ConnectionList()
+        Public Shared XmlFiles As ConnectionList = New ConnectionList()
 
-    Public Sub New()
-        'if new version, import upgrade from previous version
-        If Settings.[Default].CallUpgrade Then
-            Settings.[Default].Upgrade()
-            Settings.[Default].CallUpgrade = False
-        End If
+        Public Sub New()
+            Dim i = ControlFactory.Instance
 
-        If Settings.[Default].Connections IsNot Nothing Then
-            Connections = Settings.[Default].Connections
-        End If
+            If Settings.Default.CallUpgrade Then
+                Settings.Default.Upgrade()
+                Settings.Default.CallUpgrade = False
+            End If
 
-        If Settings.[Default].XmlFiles IsNot Nothing Then
-            XmlFiles = Settings.[Default].XmlFiles
-        End If
+            If Settings.Default.Connections IsNot Nothing Then
+                Connections = Settings.Default.Connections
+                Connections.RemoveObsoleteConnectionInfos()
+                Connections.RestoreData()
+            End If
 
-        Settings.[Default].Connections = Connections
-        Settings.[Default].XmlFiles = XmlFiles
-        Settings.[Default].Save()
-    End Sub
-	
-	Private Sub Application_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
-        Dim errorWindow As ExceptionWindow = New ExceptionWindow With {
+            If Settings.Default.XmlFiles IsNot Nothing Then
+                XmlFiles = Settings.Default.XmlFiles
+                XmlFiles.RemoveObsoleteConnectionInfos()
+                XmlFiles.RestoreData()
+            End If
+        End Sub
+
+        Private Sub App_OnExit(sender As Object, e As ExitEventArgs)
+            Connections.SaveData()
+            XmlFiles.SaveData()
+            Settings.Default.Connections = Connections
+            Settings.Default.XmlFiles = XmlFiles
+            Settings.Default.Save()
+        End Sub
+
+        Private Sub App_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
+            Dim errorWindow As ExceptionWindow = New ExceptionWindow With {
                 .Owner = Current.MainWindow,
                 .Message = e.Exception.Message,
                 .StackTrace = e.Exception.StackTrace
-                }
-        errorWindow.ShowDialog()
-    End Sub
-End Class
+            }
+            errorWindow.ShowDialog()
+        End Sub
+    End Class

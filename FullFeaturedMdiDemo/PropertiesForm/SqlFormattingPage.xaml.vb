@@ -13,8 +13,8 @@ Imports ActiveQueryBuilder.Core
 Namespace PropertiesForm
 	Public Enum SqlBuilderOptionsPages
 		MainQuery
-		DerievedQueries
-		ExpressionSubqueries
+		DerivedQueries
+		ExpressionSubQueries
 	End Enum
 	''' <summary>
 	''' Interaction logic for SqlFormattingPage.xaml
@@ -25,29 +25,16 @@ Namespace PropertiesForm
 		Private ReadOnly _format As SQLBuilderSelectFormat
 		Private ReadOnly _sqlFormattingOptions As SQLFormattingOptions
 
-		Public Property Modified() As Boolean
-			Get
-				Return m_Modified
-			End Get
-			Set
-				m_Modified = Value
-			End Set
-		End Property
-		Private m_Modified As Boolean
-
 		Public Sub New(page As SqlBuilderOptionsPages, sqlFormattingOptions As SQLFormattingOptions)
-			Modified = False
 			_page = page
 			_sqlFormattingOptions = sqlFormattingOptions
 
-			_format = New SQLBuilderSelectFormat(Nothing)
-
 			If _page = SqlBuilderOptionsPages.MainQuery Then
-				_format.Assign(_sqlFormattingOptions.MainQueryFormat)
-			ElseIf _page = SqlBuilderOptionsPages.DerievedQueries Then
-				_format.Assign(_sqlFormattingOptions.DerivedQueryFormat)
-			ElseIf _page = SqlBuilderOptionsPages.ExpressionSubqueries Then
-				_format.Assign(_sqlFormattingOptions.ExpressionSubQueryFormat)
+				_format = _sqlFormattingOptions.MainQueryFormat
+			ElseIf _page = SqlBuilderOptionsPages.DerivedQueries Then
+				_format = _sqlFormattingOptions.DerivedQueryFormat
+			ElseIf _page = SqlBuilderOptionsPages.ExpressionSubQueries Then
+				_format = _sqlFormattingOptions.ExpressionSubQueryFormat
 			End If
 
 			InitializeComponent()
@@ -85,7 +72,6 @@ Namespace PropertiesForm
 			AddHandler cbNewLineAfterGroupItem.Checked, AddressOf Changed
 			AddHandler cbNewLineAfterGroupItem.Unchecked, AddressOf Changed
 			AddHandler updownWhereIndent.ValueChanged, AddressOf Changed
-			'updownWhereIndent.TextChanged += Changed;
 			AddHandler cbNewLineWhereRest.Checked, AddressOf checkNewLineWhereRest_CheckedChanged
 			AddHandler cbNewLineWhereRest.Unchecked, AddressOf checkNewLineWhereRest_CheckedChanged
 			AddHandler cbNewLineWhereTop.Checked, AddressOf checkNewLineWhereTop_CheckedChanged
@@ -101,6 +87,7 @@ Namespace PropertiesForm
 			AddHandler cbNewLineAfterKeywords.Checked, AddressOf Changed
 			AddHandler cbNewLineAfterKeywords.Unchecked, AddressOf Changed
 			AddHandler cbPartsOnNewLines.Checked, AddressOf Changed
+			AddHandler cbPartsOnNewLines.Unchecked, AddressOf Changed
 			AddHandler cbPartsOnNewLines.Unloaded, AddressOf Changed
 		End Sub
 
@@ -113,7 +100,7 @@ Namespace PropertiesForm
 			End If
 
 			If sender IsNot Nothing Then
-				Modified = True
+				ApplyChanges()
 			End If
 		End Sub
 
@@ -121,7 +108,7 @@ Namespace PropertiesForm
 			updownWhereIndent.IsEnabled = cbNewLineWhereRest.IsChecked.HasValue AndAlso cbNewLineWhereRest.IsChecked.Value
 
 			If sender IsNot Nothing Then
-				Modified = True
+				ApplyChanges()
 			End If
 		End Sub
 
@@ -129,7 +116,7 @@ Namespace PropertiesForm
 			updownHavingIndent.IsEnabled = cbNewLineHavingRest.IsChecked.HasValue AndAlso cbNewLineHavingRest.IsChecked.Value
 
 			If sender IsNot Nothing Then
-				Modified = True
+				ApplyChanges()
 			End If
 		End Sub
 
@@ -142,19 +129,15 @@ Namespace PropertiesForm
 			End If
 
 			If sender IsNot Nothing Then
-				Modified = True
+				ApplyChanges()
 			End If
 		End Sub
 
 		Private Sub Changed(sender As Object, e As EventArgs)
-			Modified = True
+			ApplyChanges()
 		End Sub
 
-		Public Sub ApplyChanges()
-			If Not Modified Then
-				Return
-			End If
-
+		Private Sub ApplyChanges()
 			_format.MainPartsFromNewLine = cbPartsOnNewLines.IsChecked.HasValue AndAlso cbPartsOnNewLines.IsChecked.Value
 			_format.NewLineAfterPartKeywords = cbNewLineAfterKeywords.IsChecked.HasValue AndAlso cbNewLineAfterKeywords.IsChecked.Value
 			_format.IndentInPart = updownPartIndent.Value
@@ -190,9 +173,9 @@ Namespace PropertiesForm
 
 			If _page = SqlBuilderOptionsPages.MainQuery Then
 				_sqlFormattingOptions.MainQueryFormat.Assign(_format)
-			ElseIf _page = SqlBuilderOptionsPages.DerievedQueries Then
+			ElseIf _page = SqlBuilderOptionsPages.DerivedQueries Then
 				_sqlFormattingOptions.DerivedQueryFormat.Assign(_format)
-			ElseIf _page = SqlBuilderOptionsPages.ExpressionSubqueries Then
+			ElseIf _page = SqlBuilderOptionsPages.ExpressionSubQueries Then
 				_sqlFormattingOptions.ExpressionSubQueryFormat.Assign(_format)
 			End If
 		End Sub
