@@ -22,7 +22,7 @@ Imports System.Windows
 <Assembly: AssemblyConfiguration("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("InterfaceCustomizationDemo")>
-<Assembly: AssemblyCopyright("Copyright © 2006-2019 Active Database Software")>
+<Assembly: AssemblyCopyright("Copyright © 2006-2020 Active Database Software")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: AssemblyCulture("")>
 

@@ -5,6 +5,7 @@
 	xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
 	xmlns:basicDemo="clr-namespace:BasicDemo"
 	xmlns:common="clr-namespace:BasicDemo.Common"
+	xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
 	Title="Active Query Builder for .NET WPF Edition - Basic Demo (C#)" Height="640" Width="800"
     Loaded="Window_Loaded" FontSize="11" WindowStartupLocation="CenterScreen">
     <Grid x:Name="GridRoot">
@@ -58,47 +59,65 @@
 between different SQL dialects. Use the Properties dialog to select the right syntax provider." />
         </Border>
 
-        <TabControl Grid.Row="3" SelectionChanged="Selector_OnSelectionChanged">
-            <TabItem Header="SQL">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="147"/>
-                    </Grid.RowDefinitions>
+        <Grid x:Name="GridContent" Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="120"/>
+            </Grid.RowDefinitions>
 
-                    <aqb:QueryBuilder Background ="#fffaf0" x:Name="queryBuilder" SQLUpdated="QueryBuilder_OnSQLUpdated" Grid.Row="0" BorderBrush="Gray" Padding="3" BorderThickness="1">
-                        <aqb:QueryBuilder.DesignPaneOptions>
-                            <aqb:DesignPaneOptions Background="White"/>
-                        </aqb:QueryBuilder.DesignPaneOptions>
-                        <aqb:QueryBuilder.ExpressionEditor>
-                            <expressionEditor:ExpressionEditor/>
-                        </aqb:QueryBuilder.ExpressionEditor>
-                    </aqb:QueryBuilder>
+            <Grid x:Name="GridAqb" Margin="0,0,0,3">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <Border Grid.Row="1" 
-                            Padding="5" 
-                            Background="Bisque" 
-                            Margin="0,0,0,3" 
-                            BorderBrush="Gray" 
-                            BorderThickness="1" 
-                            x:Name="BorderSleepMode" 
-                            Visibility="Collapsed">
-                        <TextBlock Text="Unsupported SQL statement. Visual Query Builder has been disabled. Either type a SELECT statement or start building a query visually to turn this mode off."/>
-                    </Border>
+                <aqb:QueryBuilder x:Name="queryBuilder" SQLUpdated="QueryBuilder_OnSQLUpdated" Grid.Row="0" BorderBrush="Gray" Padding="3" BorderThickness="1">
+                    <aqb:QueryBuilder.DesignPaneOptions>
+                        <aqb:DesignPaneOptions Background="White"/>
+                    </aqb:QueryBuilder.DesignPaneOptions>
+                    <aqb:QueryBuilder.PanesConfigurationOptions>
+                        <view:PanesConfigurationOptions DatabaseSchemaViewDock="Left"/>
+                    </aqb:QueryBuilder.PanesConfigurationOptions>
+                    <aqb:QueryBuilder.ExpressionEditor>
+                        <expressionEditor:ExpressionEditor/>
+                    </aqb:QueryBuilder.ExpressionEditor>
+                </aqb:QueryBuilder>
 
-                    <expressionEditor:SqlTextEditor Grid.Row="2" x:Name="sqlTextEditor1" Margin="0,4,0,0" BorderThickness="1" BorderBrush="Gray"
+                <Border Grid.Row="1" 
+                        Padding="5" 
+                        Background="Bisque" 
+                        Margin="0,0,0,3" 
+                        BorderBrush="Gray" 
+                        BorderThickness="1" 
+                        x:Name="BorderSleepMode" 
+                        Visibility="Collapsed">
+                    <TextBlock Text="Unsupported SQL statement. Visual Query Builder has been disabled. Either type a SELECT statement or start building a query visually to turn this mode off."/>
+                </Border>
+            </Grid>
+
+            <TabControl Grid.Row="1" SelectionChanged="Selector_OnSelectionChanged" x:Name="TabControl">
+                <TabItem Header="SQL">
+                    <Grid x:Name="GridSqlEditor">
+                        <expressionEditor:SqlTextEditor x:Name="sqlTextEditor1" Margin="0,4,0,0" BorderThickness="1" BorderBrush="Gray"
                                                     LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus"
-                                                    FontFamily="Courier New" Padding="5" FontSize="14" TextChanged="SqlTextEditor1_OnTextChanged"/>
-                    <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" 
-                                     SyntaxProviderChanged="ErrorBox_OnSyntaxProviderChanged" VisibilityCheckSyntaxBlock="Visible"
+                                                    FontFamily="Courier New" TextChanged="SqlTextEditor1_OnTextChanged" Padding="5"/>
+
+                        <common:ErrorBox  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" VisibilityCheckSyntaxBlock="Visible"
+                                     SyntaxProviderChanged="ErrorBox_OnSyntaxProviderChanged" 
                                      GoToErrorPosition="ErrorBox_OnGoToErrorPositionEvent" 
                                      RevertValidText="ErrorBox_OnRevertValidTextEvent"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Data" x:Name="tbData">
-                <DataGrid x:Name="dataGridView1"></DataGrid>
-            </TabItem>
-        </TabControl>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Data" x:Name="tbData">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <DataGrid Grid.Row="1" x:Name="dataGridView1"></DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Window>

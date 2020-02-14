@@ -122,7 +122,7 @@ Partial Public Class MainWindow
             ' Update the query builder with manually edited query text:
             queryBuilder.SQL = sqlTextEditor1.Text
             ErrorBox.Visibility = Visibility.Collapsed
-            
+
         Catch ex As SQLParsingException
             ' Set caret to error position
             sqlTextEditor1.SelectionStart = ex.ErrorPos.pos
@@ -200,6 +200,12 @@ Partial Public Class MainWindow
         sqlTextEditor1.Text = queryBuilder.FormattedSQL
         _lastValidSql = queryBuilder.FormattedSQL
         ErrorBox.Visibility = Visibility.Collapsed
+
+        If Not Equals(TabControl.SelectedItem, tbData) Then
+            Return
+        End If
+
+        ExecuteSql()
     End Sub
 
     Public Sub ResetQueryBuilder()
@@ -434,20 +440,10 @@ Partial Public Class MainWindow
         ' show warning (just for demonstration purposes)
     End Sub
 
-    Private Sub Selector_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-        If e.AddedItems.Count = 0 Then
-            Return
-        End If
-        Dim tab As TabItem = TryCast(e.AddedItems(0), TabItem)
-        If tab Is Nothing Then
-            Return
-        End If
-
-        If tab.Header.ToString() <> "Data" Then
-            Return
-        End If
-
+    Private Sub ExecuteSql()
         dataGridView1.ItemsSource = Nothing
+
+        If String.IsNullOrEmpty(queryBuilder.SQL) Then Return
 
         If queryBuilder.MetadataProvider IsNot Nothing AndAlso queryBuilder.MetadataProvider.Connected Then
             If TypeOf queryBuilder.MetadataProvider Is MSSQLMetadataProvider Then
@@ -570,6 +566,15 @@ Partial Public Class MainWindow
                 End Try
             End If
         End If
+    End Sub
+
+    Private Sub Selector_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+
+        If Not Equals(TabControl.SelectedItem, tbData) Then
+            Return
+        End If
+
+        ExecuteSql()
     End Sub
 
     Private Sub SqlTextEditor1_OnTextChanged(sender As Object, e As EventArgs)

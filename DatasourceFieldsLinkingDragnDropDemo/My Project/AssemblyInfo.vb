@@ -19,7 +19,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("DatasourceFieldsLinkingDragnDropDemo")>
-<Assembly: AssemblyCopyright("Copyright © 2006-2019 Active Database Software")>
+<Assembly: AssemblyCopyright("Copyright © 2006-2020 Active Database Software")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 
