@@ -241,7 +241,9 @@ Partial Public Class MainWindow
             Return
         End If
 
-        BoxLogEvents.Text = "DatasourceFieldRemoved " & Environment.NewLine & BoxLogEvents.Text
+        Dim fieldText As String = if(field Is Nothing, datasource.NameInQuery & ".*", field.Name)
+
+        BoxLogEvents.Text = "DatasourceFieldRemoved " & fieldText & Environment.NewLine & BoxLogEvents.Text
     End Sub
 
     Private Sub QBuilder_OnDataSourceFieldAdded(datasource As DataSource, field As MetadataField, querycolumnlistitem As QueryColumnListItem, isFocused As Boolean)
@@ -249,7 +251,9 @@ Partial Public Class MainWindow
             Return
         End If
 
-        BoxLogEvents.Text = "LinkCreated" & Environment.NewLine & BoxLogEvents.Text
+        Dim fieldText As String = if(field Is Nothing, datasource.NameInQuery & ".*", field.Name)
+
+        BoxLogEvents.Text = "Datasource field " & fieldText & Environment.NewLine & BoxLogEvents.Text
     End Sub
 
     Private Sub QBuilder_OnDataSourceAdded(sender As SQLQuery, addedobject As DataSource)
@@ -257,7 +261,7 @@ Partial Public Class MainWindow
             Return
         End If
 
-        BoxLogEvents.Text = "LinkCreated" & Environment.NewLine & BoxLogEvents.Text
+        BoxLogEvents.Text = "DataSourceAdded " & addedobject.NameInQuery & Environment.NewLine & BoxLogEvents.Text
     End Sub
 
     Private Sub QBuilder_OnLinkCreated(sender As SQLQuery, link As Link)
