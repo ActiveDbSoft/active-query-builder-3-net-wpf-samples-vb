@@ -17,6 +17,7 @@ Namespace MdiControl.ButtonsIcon
 	Public MustInherit Class BaseButtonIcon
 		Inherits Grid
 		Implements IBaseButtonIcon
+
 		Public Event Click As RoutedEventHandler
 
 		Public Shared Shadows ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(BaseButtonIcon), New PropertyMetadata(Brushes.Transparent))
@@ -25,7 +26,7 @@ Namespace MdiControl.ButtonsIcon
 			Get
 				Return DirectCast(GetValue(BackgroundProperty), Brush)
 			End Get
-			Set
+			Set(value As Brush)
 				SetValue(BackgroundProperty, value)
 			End Set
 		End Property
@@ -35,29 +36,29 @@ Namespace MdiControl.ButtonsIcon
 		Public Shared ReadOnly IsMaximizedProperty As DependencyProperty = DependencyProperty.Register("IsMaximized", GetType(Boolean), GetType(BaseButtonIcon), New FrameworkPropertyMetadata(False, FrameworkPropertyMetadataOptions.AffectsRender, AddressOf CallbackIsMaximized))
 
 		Private Shared Sub CallbackIsMaximized(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-            Dim sender As BaseButtonIcon = TryCast(d, BaseButtonIcon)
-            Dim value As Boolean = CBool(e.NewValue)
-            If sender IsNot Nothing Then
+			Dim sender = TryCast(d, BaseButtonIcon)
+			Dim value = DirectCast(e.NewValue, Boolean)
+			If sender IsNot Nothing Then
 				sender.SizeContent = If(value, New Size(8, 8), New Size(11, 9))
 			End If
 		End Sub
 
-        Protected Property SizeContent As Size
+		Protected Property SizeContent() As Size
 
-        Public Property Stroke() As Brush Implements IBaseButtonIcon.Stroke
-            Get
-                Return DirectCast(GetValue(StrokeProperty), Brush)
-            End Get
-            Set
-                SetValue(StrokeProperty, Value)
-            End Set
-        End Property
-
-        Public Property IsMaximized() As Boolean Implements IBaseButtonIcon.IsMaximized
+		Public Property Stroke() As Brush Implements IBaseButtonIcon.Stroke
 			Get
-				Return CBool(GetValue(IsMaximizedProperty))
+				Return DirectCast(GetValue(StrokeProperty), Brush)
 			End Get
-			Set
+			Set(value As Brush)
+				SetValue(StrokeProperty, value)
+			End Set
+		End Property
+
+		Public Property IsMaximized() As Boolean Implements IBaseButtonIcon.IsMaximized
+			Get
+				Return DirectCast(GetValue(IsMaximizedProperty), Boolean)
+			End Get
+			Set(value As Boolean)
 				SetValue(IsMaximizedProperty, value)
 			End Set
 		End Property
@@ -65,9 +66,9 @@ Namespace MdiControl.ButtonsIcon
 		Protected Sub New()
 			SnapsToDevicePixels = True
 			SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased)
-
-
 			SizeContent = New Size(11, 9)
+
+
 		End Sub
 
 		Protected Overrides Sub OnPreviewMouseLeftButtonUp(e As MouseButtonEventArgs)
@@ -85,7 +86,10 @@ Namespace MdiControl.ButtonsIcon
 			'base.OnPreviewMouseDown(e);
 		End Sub
 		Protected Overridable Sub OnClick(e As RoutedEventArgs)
-            RaiseEvent Click(Me, e)
+			Dim handler = ClickEvent
+			If handler IsNot Nothing Then
+				handler(Me, e)
+			End If
 		End Sub
 	End Class
 End Namespace

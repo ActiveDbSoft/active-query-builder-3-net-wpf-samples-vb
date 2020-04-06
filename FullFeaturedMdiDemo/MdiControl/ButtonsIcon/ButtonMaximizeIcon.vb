@@ -15,22 +15,23 @@ Imports System.Windows.Media
 Namespace MdiControl.ButtonsIcon
 	Public Class ButtonMaximizeIcon
 		Inherits BaseButtonIcon
+
 		Protected Overrides Sub OnRender(drawingContext As DrawingContext)
 			MinHeight = SizeContent.Height
 			MinWidth = SizeContent.Width
 
-            Dim x As Double = (ActualWidth - SizeContent.Width) / 2
-            Dim y As Double = (ActualHeight - SizeContent.Height) / 2
+			Dim x = (ActualWidth - SizeContent.Width)/2
+			Dim y = (ActualHeight - SizeContent.Height)/2
 
-            Dim pen As Pen = New Pen(Stroke, 1)
+			Dim pen = New Pen(Stroke, 1)
 
-            Dim brushPressed As SolidColorBrush = New SolidColorBrush(CType(ColorConverter.ConvertFromString("#3d6099"), Color))
+			Dim brushPressed = New SolidColorBrush(DirectCast(ColorConverter.ConvertFromString("#3d6099"), Color))
 
-            Dim pressed As Boolean = IsMouseOver AndAlso Mouse.LeftButton = MouseButtonState.Pressed
+			Dim pressed = IsMouseOver AndAlso Mouse.LeftButton = MouseButtonState.Pressed
 
-            Dim brush As Brush = If(pressed, brushPressed, (If(IsMouseOver, Background, Brushes.Transparent)))
+			Dim brush = If(pressed, brushPressed, (If(IsMouseOver, Background, Brushes.Transparent)))
 
-            drawingContext.DrawRectangle(brush, Nothing, New Rect(New Point(0, 0), New Size(ActualWidth, ActualHeight)))
+			drawingContext.DrawRectangle(brush, Nothing, New Rect(New Point(0, 0), New Size(ActualWidth, ActualHeight)))
 
 			If Not IsMaximized Then
 				drawingContext.DrawRectangle(Nothing, pen, New Rect(New Point(x, y), SizeContent))

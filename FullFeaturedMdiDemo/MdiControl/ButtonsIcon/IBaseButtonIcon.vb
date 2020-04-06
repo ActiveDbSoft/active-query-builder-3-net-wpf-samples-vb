@@ -11,7 +11,7 @@
 Imports System.Windows.Media
 
 Namespace MdiControl.ButtonsIcon
-	Interface IBaseButtonIcon
+	Friend Interface IBaseButtonIcon
 		Property Stroke() As Brush
 		Property IsMaximized() As Boolean
 	End Interface

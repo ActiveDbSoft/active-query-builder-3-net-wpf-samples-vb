@@ -6,18 +6,18 @@
         xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:navigationBar="clr-namespace:ActiveQueryBuilder.View.WPF.NavigationBar;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:SubQueryTextEditingDemo.Common"
+        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly_ext"
         mc:Ignorable="d"
         Title="SubQuery Text Editing Demo" Height="800" Width="1100">
-
+    
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
-
+        
         <aqb:QueryBuilder Grid.Row="0" x:Name="Builder" SQLUpdated="Builder_OnSQLUpdated"/>
-
+        
         <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" Margin="0,0,0,0" SnapsToDevicePixels="True"/>
 
         <Grid Grid.Row="1"  Margin="0,5,0,0" x:Name="BottomGrid">
@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
@@ -52,17 +52,13 @@
             </Popup>
 
             <navigationBar:SubQueryBreadcrumbsBar Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Background="#F0F0F0" x:Name="Breadcrumb" BorderThickness="1" BorderBrush="LightGray"/>
-
+            
             <Border  SnapsToDevicePixels="True" Grid.Column="1" Grid.Row="1" Margin="0,3,0,0">
-                <Grid>
-                    <expressionEditor:SqlTextEditor x:Name="TextEditor"
-                                                LostFocus="TextEditor_OnPreviewLostFocus"/>
-                    <common:ErrorBox x:Name="ErrorBox" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                     GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
-                                     RevertValidText="ErrorBox_OnRevertValidText"/>
-                </Grid>
+                <expressionEditor:SqlTextEditor x:Name="TextEditor"
+                                                TextChanged="TextEditor_OnTextChanged" LostFocus="TextEditor_OnPreviewLostKeyboardFocus"/>
             </Border>
-
+            <common:SqlErrorBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
+                             RevertValidText="ErrorBox_OnRevertValidText"/>
         </Grid>
     </Grid>
 </Window>

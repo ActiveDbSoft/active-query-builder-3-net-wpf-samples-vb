@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:criteriaBuilder="clr-namespace:ActiveQueryBuilder.View.WPF.CriteriaBuilder;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:FullFeaturedDemo.Common"
-        xmlns:fullFeaturedDemo="clr-namespace:FullFeaturedDemo"
+        xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
+        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly"
+        xmlns:dataViewerFastResultControl="clr-namespace:Common.DataViewerFastResultControl;assembly=GeneralAssembly"
+        xmlns:dataViewerControl="clr-namespace:Common.DataViewerControl;assembly=GeneralAssembly"
         mc:Ignorable="d"
-        Title="Active Query Builder for .NET Standard WPF Edition - Full Featured Demo (VB)" Height="680" Width="840" Icon="Resources/App.ico">
+        Title="Active Query Builder for .NET Standard WPF Edition - Full Featured Demo (C#)" Height="900" Width="1000" Icon="Resources/App.ico">
 
     <Window.Resources>
         <Style TargetType="MenuItem" x:Key="MenuItemStyleCustom">
@@ -156,6 +158,7 @@
                     </MenuItem.Resources>
                 </MenuItem>
                 <MenuItem Header="Properties" x:Name="MenuItemProperties" Click="MenuItemProperties_OnClick"/>
+                <MenuItem Header="Edit user expression" x:Name="MenuItemUserExpression" Click="MenuItemUserExpression_OnClick"/>
             </MenuItem>
             <MenuItem Header="About..." Click="MenuItem_About_OnClick"/>
         </Menu>
@@ -258,7 +261,11 @@
                         <RowDefinition Height="250"/>
                     </Grid.RowDefinitions>
 
-                    <wpf:QueryBuilder x:Name="QBuilder" Grid.Row="0" SQLUpdated="QBuilder_OnSQLUpdated" ActiveUnionSubQueryChanged="QBuilder_OnActiveUnionSubQueryChanged"/>
+                    <wpf:QueryBuilder x:Name="QBuilder" Grid.Row="0" SQLUpdated="QBuilder_OnSQLUpdated" ActiveUnionSubQueryChanged="QBuilder_OnActiveUnionSubQueryChanged">
+                        <wpf:QueryBuilder.PanesConfigurationOptions>
+                            <view:PanesConfigurationOptions DatabaseSchemaViewDock="Left"/>
+                        </wpf:QueryBuilder.PanesConfigurationOptions>
+                    </wpf:QueryBuilder>
 
                     <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2"/>
 
@@ -285,7 +292,8 @@
                                         <TextBlock Text="Text of the entire SQL query." FontWeight="Bold" Foreground="White"/>
                                     </Border>
                                     <TextBox Grid.Row="1"
-                                         Margin="4,5,4,0" 
+                                             AcceptsReturn="True"
+                                             Margin="4,5,4,0" 
                                          x:Name="BoxSql" 
                                          LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
                                          Background="#535353" 
@@ -294,12 +302,10 @@
                                          FontFamily="Courier New"
                                          VerticalScrollBarVisibility="Auto" 
                                          HorizontalScrollBarVisibility="Auto"
-                                         TextChanged="BoxSql_OnTextChanged"
-                                         AcceptsReturn="True"/>
-
-                                    <common:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                                     Margin="0,0,6,3" x:Name="ErrorBox"
-                                                     GoToErrorPosition="ErrorBox_OnGoToErrorPosition" 
+                                         TextChanged="BoxSql_OnTextChanged">
+                                    </TextBox>
+                                    <common:SqlErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"
+                                                     GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
                                                      RevertValidText="ErrorBox_OnRevertValidText"/>
                                 </Grid>
                             </TabItem>
@@ -314,7 +320,7 @@
                                         <TextBlock Text="Text of the currently visible subquery. May include multiple SELECT statements united with set operators. (UNION, EXCEPT, INTRESECT)" FontWeight="Bold" Foreground="White"/>
                                     </Border>
                                     <Grid Grid.Row="1">
-                                        <TextBox 
+                                        <TextBox AcceptsReturn="True"
                                         Margin="4,5,4,0" 
                                         x:Name="BoxSqlCurrentSubQuery" 
                                         LostKeyboardFocus="BoxSqlCurrentSubQuery_OnLostKeyboardFocus" 
@@ -324,13 +330,12 @@
                                         FontFamily="Courier New"
                                         VerticalScrollBarVisibility="Auto" 
                                         HorizontalScrollBarVisibility="Auto"
-                                        TextChanged="BoxSql_OnTextChanged"
-                                        AcceptsReturn="True"/>
+                                        TextChanged="BoxSql_OnTextChanged">
+                                        </TextBox>
 
-                                        <common:ErrorBox x:Name="ErrorBoxCurrent"
-                                                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                                                         GoToErrorPosition="ErrorBoxCurrent_OnGoToErrorPosition"
-                                                         RevertValidText="ErrorBoxCurrent_OnRevertValidText" Margin="4,5,4,0" />
+                                        <common:SqlErrorBox  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox2" 
+                                                         GoToErrorPosition="ErrorBox_OnGoToErrorPositionEvent" 
+                                                         RevertValidText="ErrorBox_OnRevertValidTextEvent"/>
                                     </Grid>
 
                                 </Grid>
@@ -347,30 +352,12 @@
                                     </Border>
 
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0">
-                                        <CheckBox VerticalAlignment="Center" Content="Auto-refresh preview" Margin="0,0,10,0" x:Name="CheckBoxAutoRefresh"
+                                        <CheckBox VerticalAlignment="Center" Content="Auto-refresh preview" Margin="0,0,10,0" x:Name="CheckBoxAutoRefreash"
                                               Checked="CheckBoxAutoRefresh_OnChecked" Unchecked="CheckBoxAutoRefresh_OnChecked" IsChecked="True"/>
-                                        <Button Content="Refresh" Padding="10,2" x:Name="ButtonRefreshFastResult" Click="ButtonRefreshFastResult_OnClick" IsEnabled="False"/>
+                                        <Button Content="Refresh" Padding="10,2" x:Name="ButtonRefreashFastResult" Click="ButtonRefreshFastResult_OnClick" IsEnabled="False"/>
                                     </StackPanel>
 
-                                    <DataGrid Grid.Row="1" x:Name="ListViewFastResultSql" Margin="0,5,0,0" AutoGenerateColumns="True" 
-                                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" 
-                                          SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="None">
-                                        <DataGrid.CellStyle>
-                                            <Style TargetType="DataGridCell">
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                            </Style>
-                                        </DataGrid.CellStyle>
-                                    </DataGrid>
-
-                                    <Border x:Name="BorderError" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1,1,1,1" CornerRadius="4,4,0,0" Padding="5"
-                                        Visibility="Collapsed" Background="Pink" Margin="3,0,3,0" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" Grid.Row="1">
-                                        <Grid>
-                                            <TextBlock x:Name="LabelError" Foreground="{x:Static SystemColors.InfoTextBrush}" TextOptions.TextFormattingMode="Display" />
-                                            <Image Source="Resources/cancel.png"  HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="None" 
-                                               Cursor="{x:Static Cursors.Hand}" MouseUp="CloseImage_OnMouseUp"/>
-                                        </Grid>
-                                    </Border>
+                                    <dataViewerFastResultControl:DataGridFastResult Grid.Row="1" x:Name="ListViewFastResultSql" Margin="0,5,0,0"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>
@@ -398,14 +385,9 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <common:CustomDataGrid Grid.Row="0" x:Name="DataGridResult" RowsLoaded="DataGridResult_OnRowsLoaded"/>
+                        <dataViewerControl:DataViewer Grid.Row="0" x:Name="DataGridResult"/>
 
-                        <Grid  Grid.Row="1">
-                            <common:PaginationPanel Margin="0,4,0,0" x:Name="PaginationPanel" Visibility="Collapsed" CurrentPageChanged="PaginationPanel_OnCurrentPageChanged"
-                                                    EnabledPaginationChanged="PaginationPanel_OnEnabledPaginationChanged" PageSizeChanged="PaginationPanel_OnPageSizeChanged"/>
-                            <Border x:Name="BorderBlockPagination" Background="Black" Opacity=".2"/>
-                        </Grid>
-
+                       
                     </Grid>
 
                     <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>
@@ -420,7 +402,6 @@
                                  VerticalScrollBarVisibility="Auto" 
                                  HorizontalScrollBarVisibility="Auto"
                                  AcceptsReturn="True">
-                      
                     </TextBox>
                 </Grid>
             </TabItem>

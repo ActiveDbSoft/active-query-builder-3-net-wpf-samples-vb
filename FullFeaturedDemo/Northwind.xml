@@ -380,6 +380,8 @@
 					<referenced_cardinality>One</referenced_cardinality>
 				</foreignkey>
 			</table>
+		    <aggregate name="CustomAgg">
+		    </aggregate>
 		</schema>
 	</database>
 </metadata>

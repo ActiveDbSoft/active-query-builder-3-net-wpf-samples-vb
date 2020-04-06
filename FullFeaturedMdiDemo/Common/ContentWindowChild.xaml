@@ -6,9 +6,11 @@
              xmlns:navigationBar="clr-namespace:ActiveQueryBuilder.View.WPF.NavigationBar;assembly=ActiveQueryBuilder.View.WPF"
              xmlns:queryView="clr-namespace:ActiveQueryBuilder.View.WPF.QueryView;assembly=ActiveQueryBuilder.View.WPF"
              xmlns:dockManager="clr-namespace:ActiveQueryBuilder.View.WPF.CommonControls.DockManager;assembly=ActiveQueryBuilder.View.WPF"
-             xmlns:common="clr-namespace:FullFeaturedMdiDemo.Common"
              xmlns:criteriaBuilder="clr-namespace:ActiveQueryBuilder.View.WPF.CriteriaBuilder;assembly=ActiveQueryBuilder.View.WPF"
              xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
+             xmlns:common="clr-namespace:Common;assembly=GeneralAssembly_ext"
+             xmlns:dataViewerFastResultControl="clr-namespace:Common.DataViewerFastResultControl;assembly=GeneralAssembly_ext"
+             xmlns:dataViewerControl="clr-namespace:Common.DataViewerControl;assembly=GeneralAssembly_ext"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -47,7 +49,7 @@
 
                     <Border Grid.Row="0" Padding="2,2,0,0" Background="#f0f0f0">
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="ButtonPropertise" ToolTip="Properties" Click="ButtonProperties_OnClick" Style="{StaticResource StyleButtonMenu}">
+                            <Button x:Name="ButtonPropertise" ToolTip="Properties" Click="ButtonPropertise_OnClick" Style="{StaticResource StyleButtonMenu}">
                                 <Image Source="../Resources/query_properties.png" Style="{StaticResource StyleImageButton}"/>
                             </Button>
 
@@ -166,7 +168,7 @@
                                          LostKeyboardFocus="BoxSql_OnLostKeyboardFocus" 
                                          TextChanged="BoxSql_OnTextChanged"/>
                                     
-                                    <common:ErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"
+                                    <common:SqlErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBox"
                                                      GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
                                                      RevertValidText="ErrorBox_OnRevertValidText"/>
                                 </Grid>
@@ -194,7 +196,7 @@
                                         TextChanged="BoxSql_OnTextChanged">
                                         </expressionEditor:SqlTextEditor>
 
-                                        <common:ErrorBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBoxCurrentSunQuery"
+                                        <common:SqlErrorBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,3" x:Name="ErrorBoxCurrentSunQuery"
                                                          GoToErrorPosition="ErrorBoxCurrentSunQuery_OnGoToErrorPosition"
                                                          RevertValidText="ErrorBoxCurrentSunQuery_OnRevertValidText"/>
                                     </Grid>
@@ -218,25 +220,7 @@
                                         <Button Content="Refresh" Padding="10,2" x:Name="ButtonRefreashFastResult" Click="ButtonRefreshFastResult_OnClick" IsEnabled="False"/>
                                     </StackPanel>
 
-                                    <DataGrid Grid.Row="1" x:Name="ListViewFastResultSql" Margin="0,5,0,0" AutoGenerateColumns="True" 
-                                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" 
-                                          SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="None">
-                                        <DataGrid.CellStyle>
-                                            <Style TargetType="DataGridCell">
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                            </Style>
-                                        </DataGrid.CellStyle>
-                                    </DataGrid>
-
-                                    <Border x:Name="BorderError" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1,1,1,1" CornerRadius="4,4,0,0" Padding="5"
-                                        Visibility="Collapsed" Background="Pink" Margin="3,0,3,0" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" Grid.Row="1">
-                                        <Grid>
-                                            <TextBlock x:Name="LabelError" Foreground="{x:Static SystemColors.InfoTextBrush}" TextOptions.TextFormattingMode="Display" />
-                                            <Image Source="../Resources/cancel.png"  HorizontalAlignment="Right" VerticalAlignment="Center" Stretch="None" 
-                                               Cursor="{x:Static Cursors.Hand}" MouseUp="CloseImage_OnMouseUp"/>
-                                        </Grid>
-                                    </Border>
+                                    <dataViewerFastResultControl:DataGridFastResult Grid.Row="1" x:Name="dataViewerFastResultSql" Margin="0,5,0,0" />
                                 </Grid>
                             </TabItem>
                         </TabControl>
@@ -259,19 +243,7 @@
                     <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>
 
                     <Grid Grid.Row="1" Margin="0,6,0,0" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <common:CustomDataGrid Grid.Row="0" x:Name="DataGridResult" RowsLoaded="DataGridResult_OnRowsLoaded"/>
-
-                        <Grid  Grid.Row="1">
-                            <common:PaginationPanel Margin="0,4,0,0" x:Name="PaginationPanel" Visibility="Collapsed" CurrentPageChanged="PaginationPanel_OnCurrentPageChanged"
-                                                    EnabledPaginationChanged="PaginationPanel_OnEnabledPaginationChanged" PageSizeChanged="PaginationPanel_OnPageSizeChanged"/>
-                            <Border x:Name="BorderBlockPagination" Background="Black" Opacity=".2"/>
-                        </Grid>
-
+                        <dataViewerControl:DataViewer x:Name="DataViewerResult"/>
                     </Grid>
 
                     <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>

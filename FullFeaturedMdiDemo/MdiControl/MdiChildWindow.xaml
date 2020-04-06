@@ -3,13 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:FullFeaturedMdiDemo.MdiControl.Converters"
-             xmlns:buttonsIcon="clr-namespace:FullFeaturedMdiDemo.MdiControl.ButtonsIcon"
+             xmlns:converters="clr-namespace:MdiControl.Converters"
+             xmlns:buttonsIcon="clr-namespace:MdiControl.ButtonsIcon"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" x:Name="MdiChild" Template="{DynamicResource ControlTemplate}" MinWidth="200">
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style x:Key="StyleSeparator" BasedOn="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" TargetType="Separator"/>
             <converters:MaximizeButtonTemplateSelector x:Key="MaximizeButtonTemplateSelector"/>
             <DataTemplate x:Key="MaximizeTemplate">
                 <Grid>

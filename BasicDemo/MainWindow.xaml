@@ -1,11 +1,11 @@
 ﻿<Window x:Class="MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+    xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
 	xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
-	xmlns:basicDemo="clr-namespace:BasicDemo"
-	xmlns:common="clr-namespace:BasicDemo.Common"
 	xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
+	xmlns:common="clr-namespace:Common;assembly=GeneralAssembly_ext"
+	xmlns:dataViewerControl="clr-namespace:Common.DataViewerControl;assembly=GeneralAssembly_ext"
 	Title="Active Query Builder for .NET WPF Edition - Basic Demo (C#)" Height="640" Width="800"
     Loaded="Window_Loaded" FontSize="11" WindowStartupLocation="CenterScreen">
     <Grid x:Name="GridRoot">
@@ -33,12 +33,8 @@
                 </Style>
             </Menu.Resources>
             <MenuItem Header="Connect">
-                <MenuItem Header="Connect to Microsoft SQL Server" Click="connectToMSSQLServer_OnClick"/>
-                <MenuItem Header="Connect to Oracle Server" Click="ConnectToOracle_OnClick"/>
-                <MenuItem Header="Connect to Microsoft Access database" Click="ConnectToAccess_OnClick"/>
+                <MenuItem Header="Connect..." Click="connect_OnClick"/>
                 <Separator Margin="0" Padding="0"></Separator>
-                <MenuItem Header="Connect to database through OLE DB" Click="ConnectToOLEDB_OnClick"/>
-                <MenuItem Header="Connect to database through ODBC" Click="ConnectToODBC_OnClick"/>
                 <MenuItem Header="Fill the query builder programmatically" Click="FillProgrammatically_OnClick"/>
             </MenuItem>
             <MenuItem Header="Metadata">
@@ -53,11 +49,17 @@
             <MenuItem Header="Properties" Click="Properties_OnClick"/>
             <MenuItem Header="About" Click="menuItemAbout_Click"/>
         </Menu>
-
-        <Border Background="#ffffc0" BorderThickness="1" BorderBrush="Black" Padding="5" Grid.Row="2" x:Name="panel1" Visibility="Collapsed">
-            <TextBlock TextWrapping="Wrap" Text="NOTE: You may encounter various problems while using the Generic syntax provider with specific database servers due to a number of incompatibilities
-between different SQL dialects. Use the Properties dialog to select the right syntax provider." />
-        </Border>
+        <StackPanel x:Name="PanelNotifications" Grid.Row="2">
+            <Border Background="#ffffc0" BorderThickness="1" BorderBrush="Black" Padding="5" x:Name="panel1" Visibility="Collapsed">
+                <TextBlock TextWrapping="Wrap" Text="NOTE: You may encounter various problems while using the Generic syntax provider with specific database servers due to a number of incompatibilities
+                           between different SQL dialects. Use the Properties dialog to select the right syntax provider." />
+            </Border>
+            <Border x:Name="pnlParamsError" Visibility="Collapsed" BorderThickness="1" BorderBrush="Black">
+                <Grid Background="Pink" Height="25">
+                    <TextBlock x:Name="lbParamsError"  Background="Pink" VerticalAlignment="Center" Margin="5, 0, 0, 0" Text=""></TextBlock>
+                </Grid>
+            </Border>
+        </StackPanel>
 
         <Grid x:Name="GridContent" Row="3">
             <Grid.RowDefinitions>
@@ -71,17 +73,17 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <aqb:QueryBuilder x:Name="queryBuilder" SQLUpdated="QueryBuilder_OnSQLUpdated" Grid.Row="0" BorderBrush="Gray" Padding="3" BorderThickness="1">
-                    <aqb:QueryBuilder.DesignPaneOptions>
-                        <aqb:DesignPaneOptions Background="White"/>
-                    </aqb:QueryBuilder.DesignPaneOptions>
-                    <aqb:QueryBuilder.PanesConfigurationOptions>
+                <wpf:QueryBuilder x:Name="queryBuilder" SQLUpdated="QueryBuilder_OnSQLUpdated" Grid.Row="0" BorderBrush="Gray" Padding="3" BorderThickness="1">
+                    <wpf:QueryBuilder.DesignPaneOptions>
+                        <wpf:DesignPaneOptions Background="White"/>
+                    </wpf:QueryBuilder.DesignPaneOptions>
+                    <wpf:QueryBuilder.PanesConfigurationOptions>
                         <view:PanesConfigurationOptions DatabaseSchemaViewDock="Left"/>
-                    </aqb:QueryBuilder.PanesConfigurationOptions>
-                    <aqb:QueryBuilder.ExpressionEditor>
+                    </wpf:QueryBuilder.PanesConfigurationOptions>
+                    <wpf:QueryBuilder.ExpressionEditor>
                         <expressionEditor:ExpressionEditor/>
-                    </aqb:QueryBuilder.ExpressionEditor>
-                </aqb:QueryBuilder>
+                    </wpf:QueryBuilder.ExpressionEditor>
+                </wpf:QueryBuilder>
 
                 <Border Grid.Row="1" 
                         Padding="5" 
@@ -102,7 +104,7 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                                                     LostKeyboardFocus="SqlTextEditor_LostKeyboardFocus"
                                                     FontFamily="Courier New" TextChanged="SqlTextEditor1_OnTextChanged" Padding="5"/>
 
-                        <common:ErrorBox  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" VisibilityCheckSyntaxBlock="Visible"
+                        <common:SqlErrorBox  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" VisibilityCheckSyntaxBlock="Visible"
                                      SyntaxProviderChanged="ErrorBox_OnSyntaxProviderChanged" 
                                      GoToErrorPosition="ErrorBox_OnGoToErrorPositionEvent" 
                                      RevertValidText="ErrorBox_OnRevertValidTextEvent"/>
@@ -110,11 +112,7 @@ between different SQL dialects. Use the Properties dialog to select the right sy
                 </TabItem>
                 <TabItem Header="Data" x:Name="tbData">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <DataGrid Grid.Row="1" x:Name="dataGridView1"></DataGrid>
+                        <dataViewerControl:DataViewer Grid.Row="1" x:Name="dataGridView1"/>
                     </Grid>
                 </TabItem>
             </TabControl>

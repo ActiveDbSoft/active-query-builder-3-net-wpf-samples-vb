@@ -2,19 +2,12 @@
 <metadata>
 	<database name="Northwind" default="True">
 		<schema name="dbo" default="True">
-			<procedure name="Categories">
-        <parameter name="catId" />
+			<table name="Categories">
 				<field name="CategoryID" primary_key="True" type_name="int" type="Int32" size="4" precision="10" scale="255" nullable="False" readonly="True" />
 				<field name="CategoryName" type_name="nvarchar" type="String" size="15" precision="255" scale="255" nullable="False" />
 				<field name="Description" type_name="ntext" type="String" size="1073741823" precision="255" scale="255" />
 				<field name="Picture" type_name="image" type="Binary" size="2147483647" precision="255" scale="255" />
-			</procedure>
-      <procedure name="Categories2">
-        <field name="CategoryID" primary_key="True" type_name="int" type="Int32" size="4" precision="10" scale="255" nullable="False" readonly="True" />
-        <field name="CategoryName" type_name="nvarchar" type="String" size="15" precision="255" scale="255" nullable="False" />
-        <field name="Description" type_name="ntext" type="String" size="1073741823" precision="255" scale="255" />
-        <field name="Picture" type_name="image" type="Binary" size="2147483647" precision="255" scale="255" />
-      </procedure>
+			</table>
 			<table name="Customers">
 				<field name="CustomerID" primary_key="True" type_name="nchar" type="String" size="5" precision="255" scale="255" nullable="False" />
 				<field name="CompanyName" type_name="nvarchar" type="String" size="40" precision="255" scale="255" nullable="False" />
@@ -68,7 +61,7 @@
 						<name>dbo</name>
 						<name>Northwind</name>
 					</referenced_object>
-					<referencing_field name="OrderID" referenced_field="CustomerID" />
+					<referencing_field name="CustomerID" referenced_field="CustomerID" />
 					<referencing_cardinality>Many</referencing_cardinality>
 					<referenced_cardinality>One</referenced_cardinality>
 				</foreignkey>

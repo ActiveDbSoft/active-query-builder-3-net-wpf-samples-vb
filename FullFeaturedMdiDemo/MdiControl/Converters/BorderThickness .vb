@@ -8,23 +8,25 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System
 Imports System.Globalization
 Imports System.Windows
 Imports System.Windows.Data
 
 Namespace MdiControl.Converters
-	Class BorderThickness
+	Friend Class BorderThickness
 		Implements IValueConverter
+
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
 			If parameter IsNot Nothing Then
-                Dim h As Double = SystemParameters.ResizeFrameVerticalBorderWidth
+				Dim h = SystemParameters.ResizeFrameVerticalBorderWidth
 
-                Return New Thickness(h, 0, h, 0)
+				Return New Thickness(h, 0, h, 0)
 			End If
 
-            Dim w As Double = SystemParameters.ResizeFrameVerticalBorderWidth
+			Dim w = SystemParameters.ResizeFrameVerticalBorderWidth
 
-            Return New Thickness(w, 0, w, w)
+			Return New Thickness(w, 0, w, w)
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack

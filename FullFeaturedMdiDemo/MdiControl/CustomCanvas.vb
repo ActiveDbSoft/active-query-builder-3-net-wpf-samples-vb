@@ -8,6 +8,7 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System
 Imports System.Linq
 Imports System.Windows
 Imports System.Windows.Controls
@@ -15,13 +16,15 @@ Imports System.Windows.Controls
 Namespace MdiControl
 	Public Class CustomCanvas
 		Inherits Canvas
+
 		Protected Overrides Function MeasureOverride(constraint As Size) As Size
-            Dim defaultValue As Size = MyBase.MeasureOverride(constraint)
-            Dim desiredSize As Size = New Size()
+			Dim defaultValue = MyBase.MeasureOverride(constraint)
+'INSTANT VB NOTE: The variable desiredSize was renamed since Visual Basic does not handle local variables named the same as class members well:
+			Dim desiredSize_Renamed = New Size()
 
-            desiredSize = Children.Cast(Of UIElement)().Aggregate(desiredSize, Function(current, child) New Size(Math.Max(current.Width, GetLeft(child) + child.DesiredSize.Width), Math.Max(current.Height, GetTop(child) + child.DesiredSize.Height)))
+			desiredSize_Renamed = Children.Cast(Of UIElement)().Aggregate(desiredSize_Renamed, Function(current, child) New Size(Math.Max(current.Width, GetLeft(child) + child.DesiredSize.Width), Math.Max(current.Height, GetTop(child) + child.DesiredSize.Height)))
 
-			Return If((Double.IsNaN(desiredSize.Width) OrElse Double.IsNaN(desiredSize.Height)), defaultValue, desiredSize)
+			Return If(Double.IsNaN(desiredSize_Renamed.Width) OrElse Double.IsNaN(desiredSize_Renamed.Height), defaultValue, desiredSize_Renamed)
 		End Function
 	End Class
 End Namespace

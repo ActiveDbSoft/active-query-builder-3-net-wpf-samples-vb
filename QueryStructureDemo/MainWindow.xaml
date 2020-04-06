@@ -1,0 +1,110 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly"
+
+        mc:Ignorable="d" Title="Query Structure Demo" Height="679" Width="898" Icon="App.ico">
+    
+    <Grid Margin="5">
+        <Grid.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="AcceptsReturn" Value="True"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <StackPanel.Resources>
+                <Style TargetType="FrameworkElement" x:Key="MainStyle">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource MainStyle}"/>
+                <Style TargetType="Button" BasedOn="{StaticResource MainStyle}">
+                    <Setter Property="Margin" Value="5,0,0,0"/>
+                    <Setter Property="Padding" Value="10,2"/>
+                    <Setter Property="FontSize" Value="11"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <TextBlock Text="Load sample queries:"/>
+            <Button Content="SELECT" x:Name="btnSampleSelect" Click="btnSampleSelect_Click"/>
+            <Button Content="SELECT FROM WHERE" x:Name="btnSampleSelectFromWhere" Click="btnSampleSelectFromWhere_Click"/>
+            <Button Content="SELECT FROM JOIN" x:Name="btnSampleSelectFromJoin" Click="btnSampleSelectFromJoin_Click"/>
+            <Button Content="SELECT FROM with subqueries" x:Name="btnSampleSelectFromJoinSubqueries" Click="btnSampleSelectFromJoinSubqueries_Click"/>
+            <Button Content="Multiple UNIONs" x:Name="btnSampleUnions" Click="btnSampleUnions_Click"/>
+        </StackPanel>
+        
+        <wpf:QueryBuilder Grid.Row="1" BorderThickness="1" BorderBrush="LightGray" Margin="0,5,0,0" x:Name="Builder"
+                          SQLUpdated="Builder_OnSQLUpdated" ActiveUnionSubQueryChanged="Builder_OnActiveUnionSubQueryChanged"/>
+
+        <TabControl Grid.Row="2" Margin="0,5,0,0" Height="200">
+            <TabItem Header="SQL">
+                <Grid Margin="2">
+                    <TextBox VerticalScrollBarVisibility="Auto" x:Name="tbSQL" LostKeyboardFocus="SqlTextBox_OnLostKeyboardFocus" 
+                             TextChanged="TbSQL_OnTextChanged" HorizontalScrollBarVisibility="Auto"/>
+                    <common:SqlErrorBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3" x:Name="ErrorBox" 
+                                        GoToErrorPosition="ErrorBox_OnGoToErrorPosition" 
+                                        RevertValidText="ErrorBox_OnRevertValidText"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Statistics">
+                <Grid Margin="2">
+                    <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbStatistics"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="SubQueries">
+                <Grid Margin="2">
+                    <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbSubQueries"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="SubQuery structure">
+                <Grid Margin="2">
+                    <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbSubQueryStructure"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="UnionSubQuery">
+                <TabControl Margin="2">
+                    <TabItem Header="Selected Expressions">
+                        <Grid Margin="2">
+                            <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbSelectedExpressions"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="DataSources">
+                        <Grid Margin="2">
+                            <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbDataSources"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Links">
+                        <Grid Margin="2">
+                            <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbLinks"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Where">
+                        <Grid Margin="2">
+                            <TextBox VerticalScrollBarVisibility="Visible" x:Name="tbWhere"/>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+            <TabItem Header="Misc">
+                <StackPanel Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnShowUnlinkedDatasourcesButton" Content="List unlinked DataSources" Padding="10,2" VerticalAlignment="Center"
+                                Click="btnShowUnlinkedDatasourcesButton_Click"/>
+                        <TextBlock Text="List DataSources not reachable by links from first DataSource of the query" VerticalAlignment="Center" Margin="10,0,0,0"
+                                   x:Name="lblShowUnlinkedDatasourcesLegend"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

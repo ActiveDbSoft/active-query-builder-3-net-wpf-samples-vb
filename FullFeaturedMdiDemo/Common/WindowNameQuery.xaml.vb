@@ -15,7 +15,7 @@ Namespace Common
 	''' <summary>
 	''' Interaction logic for WindowNameQuery.xaml
 	''' </summary>
-	Public Partial Class WindowNameQuery
+	Partial Public Class WindowNameQuery
 		Public ReadOnly Property NameQuery() As String
 			Get
 				Return TextBoxNameQuery.Text

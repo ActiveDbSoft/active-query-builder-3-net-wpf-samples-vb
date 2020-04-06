@@ -8,6 +8,7 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
+Imports System
 Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.Windows
@@ -16,24 +17,25 @@ Imports System.Windows.Controls.Primitives
 Imports System.Windows.Input
 Imports System.Windows.Markup
 Imports System.Windows.Media
+Imports Common
 
 Namespace MdiControl
 	''' <summary>
 	''' Interaction logic for MdiChildWindow.xaml
 	''' </summary>
-	<ContentProperty("Children")> _
-	Public Partial Class MdiChildWindow
+	<ContentProperty("Children")>
+	Partial Public Class MdiChildWindow
 		Private Const WidthMinimized As Double = 173
 		Private _oldSize As Size = Size.Empty
 		Private _oldPoint As New Point(0, 0)
-		Private Shadows Property Content As Grid
+		Private Shadows Property Content() As Grid
 
-        Public Event Closing As EventHandler
+		Public Event Closing As EventHandler
 		Public Event Minimize As EventHandler
 		Public Event Maximize As EventHandler
 		Public Event Resize As EventHandler
 
-		#Region "Dependency"
+#Region "Dependency"
 		Public Shared ReadOnly LeftProperty As DependencyProperty = DependencyProperty.Register("Left", GetType(Double), GetType(MdiChildWindow), New PropertyMetadata(0.0, AddressOf CallBackLeft))
 
 		Public Shared ReadOnly TopProperty As DependencyProperty = DependencyProperty.Register("Top", GetType(Double), GetType(MdiChildWindow), New PropertyMetadata(0.0, AddressOf CallBackTop))
@@ -42,40 +44,54 @@ Namespace MdiControl
 
 		Public Shared ReadOnly TitleProperty As DependencyProperty = DependencyProperty.Register("Title", GetType(String), GetType(MdiChildWindow), New PropertyMetadata("Window"))
 
-		Public Shared Shadows ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(MdiChildWindow), New PropertyMetadata(Brushes.White, AddressOf CallBackBackground))
+		Public Shadows Shared ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(MdiChildWindow), New PropertyMetadata(Brushes.White, AddressOf CallBackBackgound))
 
 		Public Shared ReadOnly StateProperty As DependencyProperty = DependencyProperty.Register("State", GetType(StateWindow), GetType(MdiChildWindow), New PropertyMetadata(StateWindow.Normal, AddressOf CallbackStateChange))
 
 		Private Shared Sub CallbackStateChange(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-			If CType(e.NewValue, StateWindow) <> StateWindow.Maximized Then
-				Return
-			End If
+'INSTANT VB NOTE: The variable state was renamed since Visual Basic does not handle local variables named the same as class members well:
+			Dim state_Renamed = DirectCast(e.NewValue, StateWindow)
 
-            Dim obj As MdiChildWindow = TryCast(d, MdiChildWindow)
-            If obj IsNot Nothing Then
-				obj.IsMaximized = True
-				obj.Measure(New Size(Double.PositiveInfinity, Double.PositiveInfinity))
-				obj.Arrange(New Rect(obj.DesiredSize))
+			Dim obj = TryCast(d, MdiChildWindow)
+			If obj IsNot Nothing Then
+				Select Case state_Renamed
+					Case StateWindow.Normal
+						obj.SetSize(If(obj._oldSize = Size.Empty, New Size(300, 200), obj._oldSize))
+						obj.SetLocation(obj._oldPoint)
+					Case StateWindow.Minimized
+						obj.State = StateWindow.Minimized
+						obj._oldSize = New Size(obj.ActualWidth, obj.ActualHeight)
+						obj._oldPoint = New Point(obj.Left, obj.Top)
+						obj.Height = SystemParameters.MinimizedWindowHeight
+						obj.Width = WidthMinimized
+					Case StateWindow.Maximized
+						obj.IsMaximized = True
+						obj.Measure(New Size(Double.PositiveInfinity, Double.PositiveInfinity))
+						obj.Arrange(New Rect(obj.DesiredSize))
+					Case Else
+						Throw New ArgumentOutOfRangeException()
+				End Select
+
 			End If
 		End Sub
 
 		Public Shared ReadOnly IsMaximizedProperty As DependencyProperty = DependencyProperty.Register("IsMaximized", GetType(Boolean), GetType(MdiChildWindow), New PropertyMetadata(False))
-		#End Region
+#End Region
 
 		Public Property IsMaximized() As Boolean
 			Get
-				Return CBool(GetValue(IsMaximizedProperty))
+				Return DirectCast(GetValue(IsMaximizedProperty), Boolean)
 			End Get
-			Set
+			Set(value As Boolean)
 				SetValue(IsMaximizedProperty, value)
 			End Set
 		End Property
 
 		Public Property State() As StateWindow
 			Get
-				Return CType(GetValue(StateProperty), StateWindow)
+				Return DirectCast(GetValue(StateProperty), StateWindow)
 			End Get
-			Set
+			Set(value As StateWindow)
 				SetValue(StateProperty, value)
 			End Set
 		End Property
@@ -84,7 +100,7 @@ Namespace MdiControl
 			Get
 				Return DirectCast(GetValue(BackgroundProperty), Brush)
 			End Get
-			Set
+			Set(value As Brush)
 				SetValue(BackgroundProperty, value)
 			End Set
 		End Property
@@ -93,36 +109,36 @@ Namespace MdiControl
 			Get
 				Return DirectCast(GetValue(TitleProperty), String)
 			End Get
-			Set
+			Set(value As String)
 				SetValue(TitleProperty, value)
 			End Set
 		End Property
 
-		Public Property Children As ObservableCollection(Of Visual)
+		Public Property Children() As ObservableCollection(Of Visual)
 
-        Public Property IsActive() As Boolean
+		Public Property IsActive() As Boolean
 			Get
-				Return CBool(GetValue(IsActiveProperty))
+				Return DirectCast(GetValue(IsActiveProperty), Boolean)
 			End Get
-			Set
+			Set(value As Boolean)
 				SetValue(IsActiveProperty, value)
 			End Set
 		End Property
 
 		Public Property Top() As Double
 			Get
-				Return CDbl(GetValue(TopProperty))
+				Return DirectCast(GetValue(TopProperty), Double)
 			End Get
-			Set
+			Set(value As Double)
 				SetValue(TopProperty, value)
 			End Set
 		End Property
 
 		Public Property Left() As Double
 			Get
-				Return CDbl(GetValue(LeftProperty))
+				Return DirectCast(GetValue(LeftProperty), Double)
 			End Get
-			Set
+			Set(value As Double)
 				SetValue(LeftProperty, value)
 			End Set
 		End Property
@@ -157,18 +173,20 @@ Namespace MdiControl
 		End Sub
 
 		Public Function IsContainsPoint(point As Point) As Boolean
-            Dim left As Double = Canvas.GetLeft(Me)
-            Dim top As Double = Canvas.GetTop(Me)
+'INSTANT VB NOTE: The variable left was renamed since Visual Basic does not handle local variables named the same as class members well:
+			Dim left_Renamed = Canvas.GetLeft(Me)
+'INSTANT VB NOTE: The variable top was renamed since Visual Basic does not handle local variables named the same as class members well:
+			Dim top_Renamed = Canvas.GetTop(Me)
 
-			If Double.IsNaN(left) Then
-				left = TranslatePoint(New Point(0, 0), DirectCast(Parent, UIElement)).X
+			If Double.IsNaN(left_Renamed) Then
+				left_Renamed = TranslatePoint(New Point(0, 0), CType(Parent, UIElement)).X
 			End If
 
-			If Double.IsNaN(top) Then
-				top = TranslatePoint(New Point(0, 0), DirectCast(Parent, UIElement)).Y
+			If Double.IsNaN(top_Renamed) Then
+				top_Renamed = TranslatePoint(New Point(0, 0), CType(Parent, UIElement)).Y
 			End If
 
-            Dim rect As Rect = New Rect(left, top, ActualWidth, ActualHeight)
+			Dim rect = New Rect(left_Renamed, top_Renamed, ActualWidth, ActualHeight)
 			Return rect.Contains(point)
 		End Function
 
@@ -183,23 +201,23 @@ Namespace MdiControl
 		End Sub
 
 		Private Shared Sub CallBackLeft(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-            Dim obj As MdiChildWindow = TryCast(d, MdiChildWindow)
+			Dim obj = TryCast(d, MdiChildWindow)
 
 			If obj IsNot Nothing Then
-				obj.SetValue(Canvas.LeftProperty, CDbl(e.NewValue))
+				obj.SetValue(Canvas.LeftProperty, DirectCast(e.NewValue, Double))
 			End If
 		End Sub
 
 		Private Shared Sub CallBackTop(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-            Dim obj As MdiChildWindow = TryCast(d, MdiChildWindow)
+			Dim obj = TryCast(d, MdiChildWindow)
 
 			If obj IsNot Nothing Then
-				obj.SetValue(Canvas.TopProperty, CDbl(e.NewValue))
+				obj.SetValue(Canvas.TopProperty, DirectCast(e.NewValue, Double))
 			End If
 		End Sub
 
-		Private Shared Sub CallBackBackground(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
-            Dim obj As MdiChildWindow = TryCast(d, MdiChildWindow)
+		Private Shared Sub CallBackBackgound(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
+			Dim obj = TryCast(d, MdiChildWindow)
 			If obj IsNot Nothing Then
 				If obj.Content Is Nothing Then
 					obj.ApplyTemplate()
@@ -216,27 +234,37 @@ Namespace MdiControl
 			Select Case args.Action
 				Case NotifyCollectionChangedAction.Add
 					Content.Children.Add(DirectCast(args.NewItems(0), FrameworkElement))
-					Exit Select
 				Case NotifyCollectionChangedAction.Remove
 					Content.Children.Remove(DirectCast(args.NewItems(0), FrameworkElement))
-					Exit Select
 			End Select
 		End Sub
 
 		Protected Overridable Sub OnClose()
-            RaiseEvent Closing(Me, EventArgs.Empty)
+			Dim handler = ClosingEvent
+			If handler IsNot Nothing Then
+				handler(Me, EventArgs.Empty)
+			End If
 		End Sub
 
 		Protected Overridable Sub OnMinimize()
-            RaiseEvent Minimize(Me, EventArgs.Empty)
+			Dim handler = MinimizeEvent
+			If handler IsNot Nothing Then
+				handler(Me, EventArgs.Empty)
+			End If
 		End Sub
 
 		Protected Overridable Sub OnMaximize()
-            RaiseEvent Maximize(Me, EventArgs.Empty)
+			Dim handler = MaximizeEvent
+			If handler IsNot Nothing Then
+				handler(Me, EventArgs.Empty)
+			End If
 		End Sub
 
 		Protected Overridable Sub OnResize()
-            RaiseEvent Resize(Me, EventArgs.Empty)
+			Dim handler = ResizeEvent
+			If handler IsNot Nothing Then
+				handler(Me, EventArgs.Empty)
+			End If
 		End Sub
 
 		Private Sub ThumbHeight_OnDragDelta(sender As Object, e As DragDeltaEventArgs)
@@ -246,7 +274,7 @@ Namespace MdiControl
 			If ActualHeight + e.VerticalChange < 30 Then
 				Return
 			End If
-            Dim newSize As Size = New Size(ActualWidth, ActualHeight + e.VerticalChange)
+			Dim newSize = New Size(ActualWidth, ActualHeight + e.VerticalChange)
 
 			Height = newSize.Height
 
@@ -261,7 +289,7 @@ Namespace MdiControl
 			If ActualWidth + e.HorizontalChange < 140 Then
 				Return
 			End If
-            Dim newSize As Size = New Size(ActualWidth + e.HorizontalChange, ActualHeight)
+			Dim newSize = New Size(ActualWidth + e.HorizontalChange, ActualHeight)
 
 			Width = newSize.Width
 			OnResize()
@@ -271,8 +299,8 @@ Namespace MdiControl
 			If IsMaximized OrElse State = StateWindow.Minimized Then
 				Return
 			End If
-            Dim nWidth As Double = ActualWidth
-            Dim nHeight As Double = ActualHeight
+			Dim nWidth = ActualWidth
+			Dim nHeight = ActualHeight
 
 			If ActualHeight + e.VerticalChange > 30 Then
 				nHeight += e.VerticalChange
@@ -305,7 +333,7 @@ Namespace MdiControl
 			If State = StateWindow.Maximized Then
 				IsMaximized = False
 				State = StateWindow.Normal
-				SetSize(If(_oldSize = Size.Empty, New Size(300, 200), _oldSize))
+				SetSize(If(_oldSize = Size.Empty, New Size(300,200), _oldSize))
 				SetLocation(_oldPoint)
 			Else
 				IsMaximized = True

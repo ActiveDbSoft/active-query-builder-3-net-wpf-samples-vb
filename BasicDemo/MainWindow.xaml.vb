@@ -8,24 +8,20 @@
 '       RESTRICTIONS.                                               '
 '*******************************************************************'
 
-Imports System.Data
-Imports System.Data.Odbc
-Imports System.Data.OleDb
-Imports Oracle.ManagedDataAccess.Client
-Imports System.Data.SqlClient
 Imports System.Text
 Imports System.Threading
-Imports System.Windows
-Imports System.Windows.Controls
 Imports System.Windows.Markup
-Imports System.Windows.Media
+Imports Windows.QueryInformationWindows
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.WPF
 Imports BasicDemo.ConnectionWindow
-Imports BasicDemo.PropertiesForm
 Imports Microsoft.Win32
 Imports Helpers = ActiveQueryBuilder.View.Helpers
 Imports Timer = System.Timers.Timer
+Imports BuildInfo = ActiveQueryBuilder.Core.BuildInfo
+Imports QueryBuilderPropertiesWindow = QueryBuilderProperties.QueryBuilderPropertiesWindow
+Imports Brushes = System.Windows.Media.Brushes
+Imports Image = System.Windows.Controls.Image
 
 ''' <summary>
 ''' Interaction logic for Window1.xaml
@@ -33,81 +29,84 @@ Imports Timer = System.Timers.Timer
 Partial Public Class MainWindow
     Private ReadOnly _openFileDialog As New OpenFileDialog()
     Private ReadOnly _saveFileDialog As New SaveFileDialog()
-
-    Private ReadOnly _mssqlMetadataProvider1 As MSSQLMetadataProvider
-    Private ReadOnly _mssqlSyntaxProvider1 As MSSQLSyntaxProvider
-    Private ReadOnly _oledbMetadataProvider1 As OLEDBMetadataProvider
-    Private ReadOnly _msaccessSyntaxProvider1 As MSAccessSyntaxProvider
-    Private ReadOnly _oracleMetadataProvider1 As OracleNativeMetadataProvider
-    Private ReadOnly _oracleSyntaxProvider1 As OracleSyntaxProvider
-    Private ReadOnly _genericSyntaxProvider1 As GenericSyntaxProvider
-    Private ReadOnly _odbcMetadataProvider1 As ODBCMetadataProvider
     Private _errorPosition As Integer = -1
     Private _lastValidSql As String
 
     Public Sub New()
         InitializeComponent()
 
-        _mssqlMetadataProvider1 = New MSSQLMetadataProvider()
-        _mssqlSyntaxProvider1 = New MSSQLSyntaxProvider()
-        _oledbMetadataProvider1 = New OLEDBMetadataProvider()
-        _msaccessSyntaxProvider1 = New MSAccessSyntaxProvider()
-        _oracleMetadataProvider1 = New OracleNativeMetadataProvider()
-        _oracleSyntaxProvider1 = New OracleSyntaxProvider()
-        _genericSyntaxProvider1 = New GenericSyntaxProvider()
-        _odbcMetadataProvider1 = New ODBCMetadataProvider()
-
         _openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
         _saveFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
 
-        sqlTextEditor1.QueryProvider = queryBuilder
-        sqlTextEditor1.ExpressionContext = queryBuilder.ActiveUnionSubQuery
-        AddHandler queryBuilder.ActiveUnionSubQueryChanged, AddressOf ActiveUnionSubQueryChanged
+        sqlTextEditor1.QueryProvider = QueryBuilder
+        AddHandler QueryBuilder.SleepModeChanged, AddressOf QueryBuilder_SleepModeChanged
+        AddHandler QueryBuilder.QueryAwake, AddressOf QueryBuilder_QueryAwake
 
-        queryBuilder.SQLQuery.QueryRoot.AllowSleepMode = True
-        AddHandler queryBuilder.SleepModeChanged, AddressOf QueryBuilder_OnSleepModeChanged
-        AddHandler queryBuilder.QueryAwake, AddressOf QueryBuilder_OnQueryAwake
+        dataGridView1.SqlQuery = QueryBuilder.SQLQuery
+        dataGridView1.SqlGenerationOptions = QueryBuilder.SQLGenerationOptions
 
         ' DEMO WARNING
-        Dim trialNoticePanel As Border = New Border() With {
-            .SnapsToDevicePixels = True,
-            .BorderBrush = Brushes.Black,
-            .BorderThickness = New Thickness(1),
-            .Background = Brushes.LightGreen,
-            .Padding = New Thickness(5),
-            .Margin = New Thickness(0, 0, 0, 2)
-        }
-        trialNoticePanel.SetValue(Grid.RowProperty, 1)
+        If BuildInfo.GetEdition() = BuildInfo.Edition.Trial Then
+            Dim grid = New Grid()
 
-        Dim label As TextBlock = New TextBlock() With {
-            .Text = "Generation of random aliases for the query output columns is the limitation of the trial version. The full version is free from this behavior.",
-            .HorizontalAlignment = HorizontalAlignment.Left,
-            .VerticalAlignment = VerticalAlignment.Top
-        }
+            Dim trialNoticePanel = New Border With {
+                .BorderBrush = Brushes.Black,
+                .BorderThickness = New Thickness(1),
+                .Background = Brushes.LightGreen,
+                .Padding = New Thickness(5),
+                .Margin = New Thickness(0, 0, 0, 2)
+            }
+            trialNoticePanel.SetValue(System.Windows.Controls.Grid.RowProperty, 0)
 
-        trialNoticePanel.Child = label
-        GridRoot.Children.Add(trialNoticePanel)
+            Dim label = New TextBlock With {
+                .Text = "Generation of random aliases for the query output columns is the limitation of the trial version. The full version is free from this behavior.",
+                .HorizontalAlignment = HorizontalAlignment.Left,
+                .VerticalAlignment = VerticalAlignment.Top
+            }
+
+            Dim button = New Button With {
+                .Background = Brushes.Transparent,
+                .Padding = New Thickness(0),
+                .BorderThickness = New Thickness(0),
+                .Cursor = Cursors.Hand,
+                .Margin = New Thickness(0, 0, 5, 0),
+                .HorizontalAlignment = HorizontalAlignment.Right,
+                .VerticalAlignment = VerticalAlignment.Center,
+                .Content = New Image With {
+                    .Source = My.Resources.cancel.GetImageSource(),
+                    .Stretch = Stretch.None
+                }
+            }
+
+            AddHandler button.Click, Sub()
+                                         PanelNotifications.Children.Remove(grid)
+                                     End Sub
+
+            button.SetValue(System.Windows.Controls.Grid.RowProperty, 0)
+
+            trialNoticePanel.Child = label
+            grid.Children.Add(trialNoticePanel)
+            grid.Children.Add(button)
+
+            PanelNotifications.Children.Add(grid)
+        End If
     End Sub
 
-    Private Shared Sub QueryBuilder_OnQueryAwake(sender As QueryRoot, ByRef abort As Boolean)
+    Private Sub QueryBuilder_QueryAwake(sender As QueryRoot, ByRef abort As Boolean)
         If MessageBox.Show("You had typed something that is not a SELECT statement in the text editor and continued with visual query building." & "Whatever the text in the editor is, it will be replaced with the SQL generated by the component. Is it right?", "Active Query Builder .NET Demo", MessageBoxButton.YesNo) = MessageBoxResult.No Then
             abort = True
         End If
     End Sub
 
-    Private Sub QueryBuilder_OnSleepModeChanged(sender As Object, e As EventArgs)
-        BorderSleepMode.Visibility = If(queryBuilder.SleepMode, Visibility.Visible, Visibility.Collapsed)
-        tbData.IsEnabled = Not queryBuilder.SleepMode
-    End Sub
-
-    Private Sub ActiveUnionSubQueryChanged(sender As Object, e As EventArgs)
-        sqlTextEditor1.ExpressionContext = queryBuilder.ActiveUnionSubQuery
+    Private Sub QueryBuilder_SleepModeChanged(sender As Object, e As EventArgs)
+        BorderSleepMode.Visibility = If(QueryBuilder.SleepMode, Visibility.Visible, Visibility.Collapsed)
+        tbData.IsEnabled = Not QueryBuilder.SleepMode
     End Sub
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        queryBuilder.SyntaxProvider = _genericSyntaxProvider1
-
-        Dim currentLang As String = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName
+        QueryBuilder.SyntaxProvider = New GenericSyntaxProvider()
+        QueryBuilder.SQLQuery.QueryRoot.AllowSleepMode = True
+        Dim currentLang = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName
 
         Language = XmlLanguage.GetLanguage(If(Helpers.Localizer.Languages.Contains(currentLang.ToLower()), currentLang, "en"))
     End Sub
@@ -117,37 +116,39 @@ Partial Public Class MainWindow
     End Sub
 
     ' TextBox lost focus by keyboard
-    Private Sub SqlTextEditor_LostKeyboardFocus(sender As Object, e As System.Windows.Input.KeyboardFocusChangedEventArgs)
+    Private Sub SqlTextEditor_LostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)
         Try
             ' Update the query builder with manually edited query text:
-            queryBuilder.SQL = sqlTextEditor1.Text
-            ErrorBox.Visibility = Visibility.Collapsed
-
+            QueryBuilder.SQL = sqlTextEditor1.Text
+            ErrorBox.Show(Nothing, QueryBuilder.SyntaxProvider)
+            _lastValidSql = QueryBuilder.FormattedSQL
         Catch ex As SQLParsingException
             ' Set caret to error position
             sqlTextEditor1.SelectionStart = ex.ErrorPos.pos
             _errorPosition = ex.ErrorPos.pos
             ' Report error
-            ErrorBox.Show(ex.Message, queryBuilder.SyntaxProvider)
+            ErrorBox.Show(ex.Message, QueryBuilder.SyntaxProvider)
         End Try
     End Sub
 
     Private Sub WarnAboutGenericSyntaxProvider()
-        If TypeOf queryBuilder.SyntaxProvider Is GenericSyntaxProvider Then
+        If TypeOf QueryBuilder.SyntaxProvider Is GenericSyntaxProvider Then
             panel1.Visibility = Visibility.Visible
 
             ' setup the panel to hide automatically
-            Dim timer As Timer = New Timer()
+            Dim timer = New Timer()
             AddHandler timer.Elapsed, AddressOf TimerEvent
             timer.Interval = 10000
             timer.Start()
         End If
     End Sub
 
-    Private Sub TimerEvent(source As [Object], args As EventArgs)
-        Dispatcher.Invoke(DirectCast(Sub() panel1.Visibility = Visibility.Collapsed, Action))
+    Private Sub TimerEvent(source As Object, args As EventArgs)
+        Dispatcher?.Invoke(Sub()
+                               panel1.Visibility = Visibility.Collapsed
+                           End Sub)
 
-        DirectCast(source, Timer).[Stop]()
+        DirectCast(source, Timer).Stop()
         DirectCast(source, Timer).Dispose()
     End Sub
 
@@ -155,196 +156,98 @@ Partial Public Class MainWindow
         ' Force the query builder to refresh metadata from current connection
         ' to refresh metadata, just clear MetadataContainer and reinitialize metadata tree
 
-        If queryBuilder.MetadataProvider Is Nothing OrElse Not queryBuilder.MetadataProvider.Connected Then
+        If QueryBuilder.MetadataProvider Is Nothing OrElse Not QueryBuilder.MetadataProvider.Connected Then
             Return
         End If
 
-        queryBuilder.ClearMetadata()
-        queryBuilder.InitializeDatabaseSchemaTree()
+        QueryBuilder.ClearMetadata()
+        QueryBuilder.InitializeDatabaseSchemaTree()
     End Sub
 
     Private Sub ClearMetadata_OnClick(sender As Object, e As RoutedEventArgs)
         ' Clear the metadata
 
         If MessageBox.Show("Clear Metadata Container?", "Confirmation", MessageBoxButton.YesNo) = MessageBoxResult.Yes Then
-            queryBuilder.ClearMetadata()
+            QueryBuilder.ClearMetadata()
         End If
     End Sub
 
     Private Sub LoadMetadata_OnClick(sender As Object, e As RoutedEventArgs)
         ' Load metadata from XML file
-        If _openFileDialog.ShowDialog() <> True Then
+        If Not _openFileDialog.ShowDialog().Equals(True) Then
             Return
         End If
 
-        queryBuilder.MetadataLoadingOptions.OfflineMode = True
-        queryBuilder.MetadataContainer.ImportFromXML(_openFileDialog.FileName)
-        queryBuilder.InitializeDatabaseSchemaTree()
+        QueryBuilder.MetadataLoadingOptions.OfflineMode = True
+        QueryBuilder.MetadataContainer.ImportFromXML(_openFileDialog.FileName)
+        QueryBuilder.InitializeDatabaseSchemaTree()
     End Sub
 
     Private Sub SaveMetadata_OnClick(sender As Object, e As RoutedEventArgs)
         ' Save metadata to XML file
         _saveFileDialog.FileName = "Metadata.xml"
 
-        If _saveFileDialog.ShowDialog() <> True Then
+        If Not _saveFileDialog.ShowDialog().Equals(True) Then
             Return
         End If
 
-        queryBuilder.MetadataContainer.LoadAll(True)
-        queryBuilder.MetadataContainer.ExportToXML(_saveFileDialog.FileName)
+        QueryBuilder.MetadataContainer.LoadAll(True)
+        QueryBuilder.MetadataContainer.ExportToXML(_saveFileDialog.FileName)
     End Sub
 
     Private Sub QueryBuilder_OnSQLUpdated(sender As Object, e As EventArgs)
         ' Handle the event raised by SQL Builder object that the text of SQL query is changed
         ' update the text box
-        sqlTextEditor1.Text = queryBuilder.FormattedSQL
-        _lastValidSql = queryBuilder.FormattedSQL
-        ErrorBox.Visibility = Visibility.Collapsed
+        sqlTextEditor1.Text = QueryBuilder.FormattedSQL
+        CheckParameters()
 
         If Not Equals(TabControl.SelectedItem, tbData) Then
             Return
         End If
 
-        ExecuteSql()
+        ExecuteQuery()
+    End Sub
+
+    Private Sub CheckParameters()
+        If SqlHelpers.CheckParameters(QueryBuilder.MetadataProvider, QueryBuilder.SyntaxProvider, QueryBuilder.Parameters) Then
+            HideParametersErrorPanel()
+        Else
+            Dim acceptableFormats = SqlHelpers.GetAcceptableParametersFormats(QueryBuilder.MetadataProvider, QueryBuilder.SyntaxProvider)
+            ShowParametersErrorPanel(acceptableFormats)
+        End If
+    End Sub
+
+    Private Sub ShowParametersErrorPanel(acceptableFormats As List(Of String))
+        Dim formats = acceptableFormats.Select(Function(x)
+                                                   Dim s = x.Replace("n", "<number>")
+                                                   Return s.Replace("s", "<name>")
+                                               End Function)
+
+        lbParamsError.Text = "Unsupported parameter notation detected. For this type of connection and database server use " & String.Join(", ", formats)
+        pnlParamsError.Visibility = Visibility.Visible
+    End Sub
+
+    Private Sub HideParametersErrorPanel()
+        pnlParamsError.Visibility = Visibility.Collapsed
     End Sub
 
     Public Sub ResetQueryBuilder()
-        queryBuilder.ClearMetadata()
-        queryBuilder.MetadataProvider = Nothing
-        queryBuilder.SyntaxProvider = Nothing
-        queryBuilder.MetadataLoadingOptions.OfflineMode = False
+        QueryBuilder.ClearMetadata()
+        QueryBuilder.MetadataProvider = Nothing
+        QueryBuilder.SyntaxProvider = Nothing
+        QueryBuilder.MetadataLoadingOptions.OfflineMode = False
     End Sub
 
-    Private Sub connectToMSSQLServer_OnClick(sender As Object, e As RoutedEventArgs)
-        ' Connect to MS SQL Server
-
-        ' show the connection form
-        Dim f As MSSQLConnectionWindow = New MSSQLConnectionWindow() With {
-            .Owner = Me
-        }
-
-        If f.ShowDialog() <> True Then
-            Return
+    Private Sub connect_OnClick(sender As Object, e As RoutedEventArgs)
+        Dim form = New ConnectionEditWindow() With {.Owner = Me}
+        Dim result = form.ShowDialog()
+        If result.HasValue AndAlso result.Value Then
+            Try
+                QueryBuilder.SQLContext.Assign(form.Connection.GetSqlContext())
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+            End Try
         End If
-
-        ResetQueryBuilder()
-
-        ' create new SqlConnection object using the connections string from the connection form
-        _mssqlMetadataProvider1.Connection = New SqlConnection(f.ConnectionString)
-
-        ' setup the query builder with metadata and syntax providers
-        queryBuilder.MetadataProvider = _mssqlMetadataProvider1
-        queryBuilder.SyntaxProvider = _mssqlSyntaxProvider1
-
-        ' kick the query builder to fill metadata tree
-        queryBuilder.InitializeDatabaseSchemaTree()
-    End Sub
-
-    Private Sub ConnectToAccess_OnClick(sender As Object, e As RoutedEventArgs)
-        ' Connect to MS Access database using OLE DB provider
-
-        ' show the connection form
-        Dim f As AccessConnectionWindow = New AccessConnectionWindow() With {
-            .Owner = Me
-        }
-
-        If f.ShowDialog() <> True Then
-            Return
-        End If
-
-        ResetQueryBuilder()
-
-        ' create new OleDbConnection object using the connections string from the connection form
-        _oledbMetadataProvider1.Connection = New OleDbConnection(f.ConnectionString)
-
-        ' setup the query builder with metadata and syntax providers
-        queryBuilder.MetadataProvider = _oledbMetadataProvider1
-        queryBuilder.SyntaxProvider = _msaccessSyntaxProvider1
-
-        ' kick the query builder to fill metadata tree
-        queryBuilder.InitializeDatabaseSchemaTree()
-    End Sub
-
-    Private Sub ConnectToOracle_OnClick(sender As Object, e As RoutedEventArgs)
-        ' Connect to Oracle Server.
-        ' Connect using a metadata provider based on the native Oracle Data Provider for .NET (Oracle.DataAccess.Client).
-
-        ' show the connection form
-        Dim f As OracleConnectionWindow = New OracleConnectionWindow() With {
-            .Owner = Me
-        }
-
-        If f.ShowDialog() <> True Then
-            Return
-        End If
-
-        ResetQueryBuilder()
-
-        ' create new OracleConnection object using the connections string from the connection form
-        _oracleMetadataProvider1.Connection = New OracleConnection(f.ConnectionString)
-
-        ' setup the query builder with metadata and syntax providers
-        queryBuilder.MetadataProvider = _oracleMetadataProvider1
-        queryBuilder.SyntaxProvider = _oracleSyntaxProvider1
-
-        ' kick the query builder to fill metadata tree
-        queryBuilder.InitializeDatabaseSchemaTree()
-    End Sub
-
-    Private Sub ConnectToOLEDB_OnClick(sender As Object, e As RoutedEventArgs)
-        ' Connect to a database through the OLE DB provider
-
-        ' show the connection form
-        Dim f As OLEDBConnectionWindow = New OLEDBConnectionWindow() With {
-            .Owner = Me
-        }
-
-        If f.ShowDialog() <> True Then
-            Return
-        End If
-
-        ResetQueryBuilder()
-
-        ' create new OleDbConnection object using the connections string from the connection form
-        _oledbMetadataProvider1.Connection = New OleDbConnection(f.ConnectionString)
-
-        ' setup the query builder with metadata and syntax providers
-        queryBuilder.MetadataProvider = _oledbMetadataProvider1
-        queryBuilder.SyntaxProvider = _genericSyntaxProvider1
-
-        ' kick the query builder to fill metadata tree
-        queryBuilder.InitializeDatabaseSchemaTree()
-
-        WarnAboutGenericSyntaxProvider()
-        ' show warning (just for demonstration purposes)
-    End Sub
-
-    Private Sub ConnectToODBC_OnClick(sender As Object, e As RoutedEventArgs)
-        ' Connect to a database through the ODBC provider
-
-        ' show the connection form
-        Dim f As ODBCConnectionWindow = New ODBCConnectionWindow() With {
-            .Owner = Me
-        }
-
-        If f.ShowDialog() <> True Then
-            Return
-        End If
-
-        ResetQueryBuilder()
-
-        ' create new OdbcConnection object using the connections string from the connection form
-        _odbcMetadataProvider1.Connection = New OdbcConnection(f.ConnectionString)
-
-        ' setup the query builder with metadata and syntax providers
-        queryBuilder.MetadataProvider = _odbcMetadataProvider1
-        queryBuilder.SyntaxProvider = _genericSyntaxProvider1
-
-        ' kick the query builder to fill metadata tree
-        queryBuilder.InitializeDatabaseSchemaTree()
-
-        WarnAboutGenericSyntaxProvider()
-        ' show warning (just for demonstration purposes)
     End Sub
 
     Private Sub FillProgrammatically_OnClick(sender As Object, e As RoutedEventArgs)
@@ -353,14 +256,14 @@ Partial Public Class MainWindow
         ' Fill the query builder metadata programmatically
 
         ' setup the query builder with metadata and syntax providers
-        queryBuilder.SyntaxProvider = _genericSyntaxProvider1
-        queryBuilder.MetadataLoadingOptions.OfflineMode = True
-        ' prevent querying obejects from database
+        QueryBuilder.SyntaxProvider = New GenericSyntaxProvider()
+        QueryBuilder.MetadataLoadingOptions.OfflineMode = True ' prevent querying obejects from database
+
         ' create database and schema
-        Dim database As MetadataNamespace = queryBuilder.MetadataContainer.AddDatabase("MyDB")
-        database.[Default] = True
+        Dim database As MetadataNamespace = QueryBuilder.MetadataContainer.AddDatabase("MyDB")
+        database.Default = True
         Dim schema As MetadataNamespace = database.AddSchema("MySchema")
-        schema.[Default] = True
+        schema.Default = True
 
         ' create table
         Dim tableOrders As MetadataObject = schema.AddTable("Orders")
@@ -387,14 +290,13 @@ Partial Public Class MainWindow
         viewResellers.AddField("ResellerName")
 
         ' kick the query builder to fill metadata tree
-        queryBuilder.InitializeDatabaseSchemaTree()
+        QueryBuilder.InitializeDatabaseSchemaTree()
 
-        WarnAboutGenericSyntaxProvider()
-        ' show warning (just for demonstration purposes)
+        WarnAboutGenericSyntaxProvider() ' show warning (just for demonstration purposes)
     End Sub
 
     Private Sub QueryStatistic_OnClick(sender As Object, e As RoutedEventArgs)
-        Dim queryStatistics As QueryStatistics = queryBuilder.QueryStatistics
+        Dim queryStatistics As QueryStatistics = QueryBuilder.QueryStatistics
         Dim builder As New StringBuilder()
 
         builder.Append("Used Objects (").Append(queryStatistics.UsedDatabaseObjects.Count).AppendLine("):")
@@ -402,7 +304,7 @@ Partial Public Class MainWindow
 
         For i As Integer = 0 To queryStatistics.UsedDatabaseObjects.Count - 1
             builder.AppendLine(queryStatistics.UsedDatabaseObjects(i).ObjectName.QualifiedName)
-        Next
+        Next i
 
         builder.AppendLine().AppendLine()
         builder.Append("Used Columns (").Append(queryStatistics.UsedDatabaseObjectFields.Count).AppendLine("):")
@@ -410,7 +312,7 @@ Partial Public Class MainWindow
 
         For i As Integer = 0 To queryStatistics.UsedDatabaseObjectFields.Count - 1
             builder.AppendLine(queryStatistics.UsedDatabaseObjectFields(i).FullName.QualifiedName)
-        Next
+        Next i
 
         builder.AppendLine().AppendLine()
         builder.Append("Output Expressions (").Append(queryStatistics.OutputColumns.Count).AppendLine("):")
@@ -418,178 +320,49 @@ Partial Public Class MainWindow
 
         For i As Integer = 0 To queryStatistics.OutputColumns.Count - 1
             builder.AppendLine(queryStatistics.OutputColumns(i).Expression)
-        Next
+        Next i
 
-        Dim f As QueryStatisticsWindow = New QueryStatisticsWindow() With {
-            .Owner = Me
-        }
-        f.textBox.Text = builder.ToString()
+        Dim f = New QueryStatisticsWindow(builder.ToString()) With {.Owner = Me}
         f.ShowDialog()
     End Sub
 
     Private Sub Properties_OnClick(sender As Object, e As RoutedEventArgs)
         ' Show Properties form
-        Dim f As QueryBuilderPropertiesWindow = New QueryBuilderPropertiesWindow(queryBuilder) With {
-            .Owner = Me
-        }
+        Dim f = New QueryBuilderPropertiesWindow(QueryBuilder) With {.Owner = Me}
 
         f.ShowDialog()
-
-
-        WarnAboutGenericSyntaxProvider()
-        ' show warning (just for demonstration purposes)
+        WarnAboutGenericSyntaxProvider() ' show warning (just for demonstration purposes)
     End Sub
 
-    Private Sub ExecuteSql()
-        dataGridView1.ItemsSource = Nothing
-
-        If String.IsNullOrEmpty(queryBuilder.SQL) Then Return
-
-        If queryBuilder.MetadataProvider IsNot Nothing AndAlso queryBuilder.MetadataProvider.Connected Then
-            If TypeOf queryBuilder.MetadataProvider Is MSSQLMetadataProvider Then
-                Dim command As SqlCommand = DirectCast(queryBuilder.MetadataProvider.Connection.CreateCommand(), SqlCommand)
-                command.CommandText = queryBuilder.SQL
-
-                ' handle the query parameters
-                If queryBuilder.Parameters.Count > 0 Then
-                    For i As Integer = 0 To queryBuilder.Parameters.Count - 1
-                        If Not command.Parameters.Contains(queryBuilder.Parameters(i).FullName) Then
-                            Dim parameter As New SqlParameter()
-                            parameter.ParameterName = queryBuilder.Parameters(i).FullName
-                            parameter.DbType = queryBuilder.Parameters(i).DataType
-                            command.Parameters.Add(parameter)
-                        End If
-                    Next
-
-                    Dim qpf As New QueryParametersWindow(command)
-                    qpf.ShowDialog()
-                End If
-
-                Dim adapter As New SqlDataAdapter(command)
-                Dim dataset As New DataSet()
-
-                Try
-                    adapter.Fill(dataset, "QueryResult")
-                    dataGridView1.ItemsSource = dataset.Tables("QueryResult").DefaultView
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message, "SQL query error")
-                End Try
-            ElseIf TypeOf queryBuilder.MetadataProvider Is OracleNativeMetadataProvider Then
-                Dim command As OracleCommand = DirectCast(queryBuilder.MetadataProvider.Connection.CreateCommand(), OracleCommand)
-                command.CommandText = queryBuilder.SQL
-
-                ' handle the query parameters
-                If queryBuilder.Parameters.Count > 0 Then
-                    For Each t As Parameter In queryBuilder.Parameters
-                        If command.Parameters.Contains(t.FullName) Then
-                            Continue For
-                        End If
-
-                        Dim parameter As OracleParameter = New OracleParameter()
-                        parameter.ParameterName = t.FullName
-                        parameter.DbType = t.DataType
-                        command.Parameters.Add(parameter)
-                    Next
-
-                    Dim qpf As New QueryParametersWindow(command)
-
-                    qpf.ShowDialog()
-                End If
-
-                Dim adapter As OracleDataAdapter = New OracleDataAdapter(command)
-                Dim dataset As DataSet = New DataSet()
-
-                Try
-                    adapter.Fill(dataset, "QueryResult")
-                    dataGridView1.ItemsSource = dataset.Tables("QueryResult").DefaultView
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message, "SQL query error")
-                End Try
-            ElseIf TypeOf queryBuilder.MetadataProvider Is OLEDBMetadataProvider Then
-                Dim command As OleDbCommand = DirectCast(queryBuilder.MetadataProvider.Connection.CreateCommand(), OleDbCommand)
-                command.CommandText = queryBuilder.SQL
-
-                ' handle the query parameters
-                If queryBuilder.Parameters.Count > 0 Then
-                    For i As Integer = 0 To queryBuilder.Parameters.Count - 1
-                        If Not command.Parameters.Contains(queryBuilder.Parameters(i).FullName) Then
-                            Dim parameter As New OleDbParameter()
-                            parameter.ParameterName = queryBuilder.Parameters(i).FullName
-                            parameter.DbType = queryBuilder.Parameters(i).DataType
-                            command.Parameters.Add(parameter)
-                        End If
-                    Next
-
-                    Dim qpf As New QueryParametersWindow(command)
-
-
-                    qpf.ShowDialog()
-                End If
-
-                Dim adapter As New OleDbDataAdapter(command)
-                Dim dataset As New DataSet()
-
-                Try
-                    adapter.Fill(dataset, "QueryResult")
-                    dataGridView1.ItemsSource = dataset.Tables("QueryResult").DefaultView
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message, "SQL query error")
-                End Try
-            ElseIf TypeOf queryBuilder.MetadataProvider Is ODBCMetadataProvider Then
-                Dim command As OdbcCommand = DirectCast(queryBuilder.MetadataProvider.Connection.CreateCommand(), OdbcCommand)
-                command.CommandText = queryBuilder.SQL
-
-                ' handle the query parameters
-                If queryBuilder.Parameters.Count > 0 Then
-                    For i As Integer = 0 To queryBuilder.Parameters.Count - 1
-                        If Not command.Parameters.Contains(queryBuilder.Parameters(i).FullName) Then
-                            Dim parameter As New OdbcParameter()
-                            parameter.ParameterName = queryBuilder.Parameters(i).FullName
-                            parameter.DbType = queryBuilder.Parameters(i).DataType
-                            command.Parameters.Add(parameter)
-                        End If
-                    Next
-
-                    Dim qpf As New QueryParametersWindow(command)
-
-                    qpf.ShowDialog()
-                End If
-
-                Dim adapter As New OdbcDataAdapter(command)
-                Dim dataset As New DataSet()
-
-                Try
-                    adapter.Fill(dataset, "QueryResult")
-                    dataGridView1.ItemsSource = dataset.Tables("QueryResult").DefaultView
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message, "SQL query error")
-                End Try
-            End If
+    Private Sub ExecuteQuery()
+        If sqlTextEditor1.Text <> QueryBuilder.FormattedSQL Then
+            QueryBuilder.SQL = sqlTextEditor1.Text
         End If
+
+        dataGridView1.FillData(QueryBuilder.SQL)
     End Sub
 
     Private Sub Selector_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
-
         If Not Equals(TabControl.SelectedItem, tbData) Then
             Return
         End If
 
-        ExecuteSql()
+        ExecuteQuery()
     End Sub
 
     Private Sub SqlTextEditor1_OnTextChanged(sender As Object, e As EventArgs)
-        ErrorBox.Visibility = Visibility.Collapsed
+        ErrorBox.Show(Nothing, QueryBuilder.SyntaxProvider)
     End Sub
 
     Private Sub MenuItemEditMetadata_OnClick(sender As Object, e As RoutedEventArgs)
-        QueryBuilder.EditMetadataContainer(queryBuilder.SQLContext)
+        QueryBuilder.EditMetadataContainer(QueryBuilder.SQLContext)
     End Sub
 
     Private Sub ErrorBox_OnSyntaxProviderChanged(sender As Object, e As SelectionChangedEventArgs)
-        Dim oldSql As String = sqlTextEditor1.Text
-        Dim caretPosition As Int32 = sqlTextEditor1.CaretOffset
+        Dim oldSql = sqlTextEditor1.Text
+        Dim caretPosition = sqlTextEditor1.CaretOffset
 
-        queryBuilder.SyntaxProvider = CType(e.AddedItems(0), BaseSyntaxProvider)
+        QueryBuilder.SyntaxProvider = DirectCast(e.AddedItems(0), BaseSyntaxProvider)
         sqlTextEditor1.Text = oldSql
         sqlTextEditor1.Focus()
         sqlTextEditor1.CaretOffset = caretPosition
@@ -598,10 +371,12 @@ Partial Public Class MainWindow
     Private Sub ErrorBox_OnGoToErrorPositionEvent(sender As Object, e As EventArgs)
         sqlTextEditor1.Focus()
 
-        If _errorPosition <> -1 Then
-            sqlTextEditor1.CaretOffset = _errorPosition
-            sqlTextEditor1.ScrollToPosition(_errorPosition)
+        If _errorPosition = -1 Then
+            Return
         End If
+
+        sqlTextEditor1.ScrollToPosition(_errorPosition)
+        sqlTextEditor1.CaretOffset = _errorPosition
     End Sub
 
     Private Sub ErrorBox_OnRevertValidTextEvent(sender As Object, e As EventArgs)
