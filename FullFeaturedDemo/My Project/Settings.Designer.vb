@@ -28,7 +28,7 @@ Namespace My
 			Get
 				Return (DirectCast(Me("IsMaximized"), Boolean))
 			End Get
-			Set(ByVal value As Boolean)
+			Set(value As Boolean)
 				Me("IsMaximized") = value
 			End Set
 		End Property
@@ -38,7 +38,7 @@ Namespace My
 			Get
 				Return (DirectCast(Me("CallUpgrade"), Boolean))
 			End Get
-			Set(ByVal value As Boolean)
+			Set(value As Boolean)
 				Me("CallUpgrade") = value
 			End Set
 		End Property
@@ -48,7 +48,7 @@ Namespace My
 			Get
 				Return (DirectCast(Me("Language"), String))
 			End Get
-			Set(ByVal value As String)
+			Set(value As String)
 				Me("Language") = value
 			End Set
 		End Property
@@ -58,7 +58,7 @@ Namespace My
 			Get
 				Return (DirectCast(Me("XmlFiles"), Global.ConnectionList))
 			End Get
-			Set(ByVal value As ConnectionList)
+			Set(value As ConnectionList)
 				Me("XmlFiles") = value
 			End Set
 		End Property
@@ -68,7 +68,7 @@ Namespace My
 			Get
 				Return (DirectCast(Me("Connections"), Global.ConnectionList))
 			End Get
-			Set(ByVal value As ConnectionList)
+			Set(value As ConnectionList)
 				Me("Connections") = value
 			End Set
 		End Property

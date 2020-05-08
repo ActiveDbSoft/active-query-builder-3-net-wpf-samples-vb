@@ -135,7 +135,7 @@ Namespace Annotations
 	''' <param name="formatParameterName">
 	''' Specifies which parameter of an annotated method should be treated as the format string
 	''' </param>
-	Public Sub New(<NotNull> ByVal formatParameterName As String)
+	Public Sub New(<NotNull> formatParameterName As String)
 	  Me.FormatParameterName = formatParameterName
 	End Sub
 
@@ -174,7 +174,7 @@ Namespace Annotations
   Public NotInheritable Class ValueProviderAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal name As String)
+	Public Sub New(<NotNull> name As String)
 	  Me.Name = name
 	End Sub
 
@@ -243,7 +243,7 @@ Namespace Annotations
 
 	Public Sub New()
 	End Sub
-	Public Sub New(<NotNull> ByVal parameterName As String)
+	Public Sub New(<NotNull> parameterName As String)
 	  Me.ParameterName = parameterName
 	End Sub
 
@@ -299,11 +299,11 @@ Namespace Annotations
   Public NotInheritable Class ContractAnnotationAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal contract As String)
+	Public Sub New(<NotNull> contract As String)
 		Me.New(contract, False)
 	End Sub
 
-	Public Sub New(<NotNull> ByVal contract As String, ByVal forceFullStates As Boolean)
+	Public Sub New(<NotNull> contract As String, forceFullStates As Boolean)
 	  Me.Contract = contract
 	  Me.ForceFullStates = forceFullStates
 	End Sub
@@ -331,7 +331,7 @@ Namespace Annotations
 		Me.New(True)
 	End Sub
 
-	Public Sub New(ByVal required As Boolean)
+	Public Sub New(required As Boolean)
 	  Me.Required = required
 	End Sub
 
@@ -379,7 +379,7 @@ Namespace Annotations
   Public NotInheritable Class BaseTypeRequiredAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal baseType As Type)
+	Public Sub New(<NotNull> baseType As Type)
 	  Me.BaseType = baseType
 	End Sub
 
@@ -399,15 +399,15 @@ Namespace Annotations
 		Me.New(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
 	End Sub
 
-	Public Sub New(ByVal useKindFlags As ImplicitUseKindFlags)
+	Public Sub New(useKindFlags As ImplicitUseKindFlags)
 		Me.New(useKindFlags, ImplicitUseTargetFlags.Default)
 	End Sub
 
-	Public Sub New(ByVal targetFlags As ImplicitUseTargetFlags)
+	Public Sub New(targetFlags As ImplicitUseTargetFlags)
 		Me.New(ImplicitUseKindFlags.Default, targetFlags)
 	End Sub
 
-	Public Sub New(ByVal useKindFlags As ImplicitUseKindFlags, ByVal targetFlags As ImplicitUseTargetFlags)
+	Public Sub New(useKindFlags As ImplicitUseKindFlags, targetFlags As ImplicitUseTargetFlags)
 	  Me.UseKindFlags = useKindFlags
 	  Me.TargetFlags = targetFlags
 	End Sub
@@ -431,15 +431,15 @@ Namespace Annotations
 		Me.New(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
 	End Sub
 
-	Public Sub New(ByVal useKindFlags As ImplicitUseKindFlags)
+	Public Sub New(useKindFlags As ImplicitUseKindFlags)
 		Me.New(useKindFlags, ImplicitUseTargetFlags.Default)
 	End Sub
 
-	Public Sub New(ByVal targetFlags As ImplicitUseTargetFlags)
+	Public Sub New(targetFlags As ImplicitUseTargetFlags)
 		Me.New(ImplicitUseKindFlags.Default, targetFlags)
 	End Sub
 
-	Public Sub New(ByVal useKindFlags As ImplicitUseKindFlags, ByVal targetFlags As ImplicitUseTargetFlags)
+	Public Sub New(useKindFlags As ImplicitUseKindFlags, targetFlags As ImplicitUseTargetFlags)
 	  Me.UseKindFlags = useKindFlags
 	  Me.TargetFlags = targetFlags
 	End Sub
@@ -496,7 +496,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull> ByVal comment As String)
+	Public Sub New(<NotNull> comment As String)
 	  Me.Comment = comment
 	End Sub
 
@@ -550,7 +550,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull> ByVal justification As String)
+	Public Sub New(<NotNull> justification As String)
 	  Me.Justification = justification
 	End Sub
 
@@ -590,7 +590,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull, PathReference> ByVal basePath As String)
+	Public Sub New(<NotNull, PathReference> basePath As String)
 	  Me.BasePath = basePath
 	End Sub
 
@@ -688,7 +688,7 @@ Namespace Annotations
   Public NotInheritable Class AspMvcAreaMasterLocationFormatAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal format As String)
+	Public Sub New(<NotNull> format As String)
 	  Me.Format = format
 	End Sub
 
@@ -700,7 +700,7 @@ Namespace Annotations
   Public NotInheritable Class AspMvcAreaPartialViewLocationFormatAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal format As String)
+	Public Sub New(<NotNull> format As String)
 	  Me.Format = format
 	End Sub
 
@@ -712,7 +712,7 @@ Namespace Annotations
   Public NotInheritable Class AspMvcAreaViewLocationFormatAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal format As String)
+	Public Sub New(<NotNull> format As String)
 	  Me.Format = format
 	End Sub
 
@@ -724,7 +724,7 @@ Namespace Annotations
   Public NotInheritable Class AspMvcMasterLocationFormatAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal format As String)
+	Public Sub New(<NotNull> format As String)
 	  Me.Format = format
 	End Sub
 
@@ -736,7 +736,7 @@ Namespace Annotations
   Public NotInheritable Class AspMvcPartialViewLocationFormatAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal format As String)
+	Public Sub New(<NotNull> format As String)
 	  Me.Format = format
 	End Sub
 
@@ -748,7 +748,7 @@ Namespace Annotations
   Public NotInheritable Class AspMvcViewLocationFormatAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal format As String)
+	Public Sub New(<NotNull> format As String)
 	  Me.Format = format
 	End Sub
 
@@ -769,7 +769,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull> ByVal anonymousProperty As String)
+	Public Sub New(<NotNull> anonymousProperty As String)
 	  Me.AnonymousProperty = anonymousProperty
 	End Sub
 
@@ -789,7 +789,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull> ByVal anonymousProperty As String)
+	Public Sub New(<NotNull> anonymousProperty As String)
 	  Me.AnonymousProperty = anonymousProperty
 	End Sub
 
@@ -810,7 +810,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull> ByVal anonymousProperty As String)
+	Public Sub New(<NotNull> anonymousProperty As String)
 	  Me.AnonymousProperty = anonymousProperty
 	End Sub
 
@@ -948,7 +948,7 @@ Namespace Annotations
 	Public Sub New()
 	End Sub
 
-	Public Sub New(<NotNull> ByVal name As String)
+	Public Sub New(<NotNull> name As String)
 	  Me.Name = name
 	End Sub
 
@@ -960,7 +960,7 @@ Namespace Annotations
   Public NotInheritable Class HtmlAttributeValueAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal name As String)
+	Public Sub New(<NotNull> name As String)
 	  Me.Name = name
 	End Sub
 
@@ -1010,7 +1010,7 @@ Namespace Annotations
   Public NotInheritable Class CollectionAccessAttribute
 	  Inherits Attribute
 
-	Public Sub New(ByVal collectionAccessType As CollectionAccessType)
+	Public Sub New(collectionAccessType As CollectionAccessType)
 	  Me.CollectionAccessType = collectionAccessType
 	End Sub
 
@@ -1053,7 +1053,7 @@ Namespace Annotations
   Public NotInheritable Class AssertionConditionAttribute
 	  Inherits Attribute
 
-	Public Sub New(ByVal conditionType As AssertionConditionType)
+	Public Sub New(conditionType As AssertionConditionType)
 	  Me.ConditionType = conditionType
 	End Sub
 
@@ -1168,7 +1168,7 @@ Namespace Annotations
   Public NotInheritable Class AspChildControlTypeAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal tagName As String, <NotNull> ByVal controlType As Type)
+	Public Sub New(<NotNull> tagName As String, <NotNull> controlType As Type)
 	  Me.TagName = tagName
 	  Me.ControlType = controlType
 	End Sub
@@ -1202,7 +1202,7 @@ Namespace Annotations
   Public NotInheritable Class AspRequiredAttributeAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal attribute As String)
+	Public Sub New(<NotNull> attribute As String)
 	  Me.Attribute = attribute
 	End Sub
 
@@ -1216,7 +1216,7 @@ Namespace Annotations
 
 	Public ReadOnly Property CreateConstructorReferences() As Boolean
 
-	Public Sub New(ByVal createConstructorReferences As Boolean)
+	Public Sub New(createConstructorReferences As Boolean)
 	  Me.CreateConstructorReferences = createConstructorReferences
 	End Sub
   End Class
@@ -1225,7 +1225,7 @@ Namespace Annotations
   Public NotInheritable Class RazorImportNamespaceAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal name As String)
+	Public Sub New(<NotNull> name As String)
 	  Me.Name = name
 	End Sub
 
@@ -1237,7 +1237,7 @@ Namespace Annotations
   Public NotInheritable Class RazorInjectionAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal type As String, <NotNull> ByVal fieldName As String)
+	Public Sub New(<NotNull> type As String, <NotNull> fieldName As String)
 	  Me.Type = type
 	  Me.FieldName = fieldName
 	End Sub
@@ -1253,7 +1253,7 @@ Namespace Annotations
   Public NotInheritable Class RazorDirectiveAttribute
 	  Inherits Attribute
 
-	Public Sub New(<NotNull> ByVal directive As String)
+	Public Sub New(<NotNull> directive As String)
 	  Me.Directive = directive
 	End Sub
 
@@ -1265,10 +1265,10 @@ Namespace Annotations
   Public NotInheritable Class RazorPageBaseTypeAttribute
 	  Inherits Attribute
 
-	  Public Sub New(<NotNull> ByVal baseType As String)
+	  Public Sub New(<NotNull> baseType As String)
 		Me.BaseType = baseType
 	  End Sub
-	  Public Sub New(<NotNull> ByVal baseType As String, ByVal pageName As String)
+	  Public Sub New(<NotNull> baseType As String, pageName As String)
 		  Me.BaseType = baseType
 		  Me.PageName = pageName
 	  End Sub

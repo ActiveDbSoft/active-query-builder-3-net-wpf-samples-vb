@@ -202,6 +202,7 @@ Partial Public Class MainWindow
         MenuItemProp.IsEnabled = MdiContainer1.ActiveChild IsNot Nothing AndAlso CType(MdiContainer1.ActiveChild, ChildWindow).CanShowProperties()
 
         MenuItemAddObject.IsEnabled = MdiContainer1.ActiveChild IsNot Nothing AndAlso CType(MdiContainer1.ActiveChild, ChildWindow).CanAddObject()
+        MenuItemUserExpression.IsEnabled = MdiContainer1.ActiveChild IsNot Nothing
         MenuItemProperties.IsEnabled = MdiContainer1.ActiveChild IsNot Nothing
         MenuItemProperties.Header = If(MenuItemProperties.IsEnabled, "Properties", "Properties (open a query to edit)")
 
@@ -921,5 +922,17 @@ Partial Public Class MainWindow
 
     Private Sub QueriesView_OnSelectedItemChanged(sender As Object, e As EventArgs)
         MenuItemExecuteUserQuery.IsEnabled = QueriesView.FocusedItem IsNot Nothing AndAlso Not QueriesView.FocusedItem.IsFolder()
+    End Sub
+
+    Private Sub MenuItemUserExpression_OnClick(sender As Object, e As RoutedEventArgs)
+        Dim childWindow = TryCast(MdiContainer1.ActiveChild, ChildWindow)
+
+        if childWindow Is Nothing then return
+
+        Dim window = new EditUserExpressionWindow With {
+                .Owner = Me, 
+                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+        window.Load(childWindow.QueryView)
+        window.ShowDialog()
     End Sub
 End Class

@@ -55,7 +55,7 @@ Namespace My.Resources
 			Get
 				Return resourceCulture
 			End Get
-			Set(ByVal value As System.Globalization.CultureInfo)
+			Set(value As System.Globalization.CultureInfo)
 				resourceCulture = value
 			End Set
 		End Property

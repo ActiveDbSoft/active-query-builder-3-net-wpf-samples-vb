@@ -354,10 +354,28 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\disk.ico" />
+    <Resource Include="Resources\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\cancel.png" />
+    <Resource Include="Resources\arrowDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrowUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disk.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pencil.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -38,7 +38,7 @@ Namespace Connection
 			End Get
 		End Property
 
-		Public Sub New(Optional ByVal showHint As Boolean = False)
+		Public Sub New(Optional showHint As Boolean = False)
 			InitializeComponent()
 
 			GridHint.Visibility = If(showHint, Visibility.Visible, Visibility.Collapsed)
@@ -94,12 +94,12 @@ Namespace Connection
 			AddHandler Dispatcher.CurrentDispatcher.Hooks.DispatcherInactive, AddressOf Hooks_DispatcherInactive
 		End Sub
 
-		Protected Overrides Sub OnClosing(ByVal e As CancelEventArgs)
+		Protected Overrides Sub OnClosing(e As CancelEventArgs)
 			MyBase.OnClosing(e)
 			RemoveHandler Dispatcher.CurrentDispatcher.Hooks.DispatcherInactive, AddressOf Hooks_DispatcherInactive
 		End Sub
 
-		Private Sub Hooks_DispatcherInactive(ByVal sender As Object, ByVal e As EventArgs)
+		Private Sub Hooks_DispatcherInactive(sender As Object, e As EventArgs)
 			ButtonRemoveConnection.IsEnabled = (LvConnections.SelectedItems.Count > 0)
 			ButtonConfigureConnection.IsEnabled = (LvConnections.SelectedItems.Count > 0)
 			ButtonConfigureXml.IsEnabled = (LvXmlFiles.SelectedItems.Count > 0)
@@ -158,7 +158,7 @@ Namespace Connection
 			Return name_Renamed
 		End Function
 
-		Private Sub ButtonAddConnection_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonAddConnection_OnClick(sender As Object, e As RoutedEventArgs)
 			Dim ci = New ConnectionInfo(ConnectionTypes.MSSQL, GetNewConnectionEntryName(), Nothing, False, "")
 
 			Dim cef = New AddConnectionWindow(ci) With {.Owner = Me}
@@ -186,7 +186,7 @@ Namespace Connection
 			My.Settings.Default.Save()
 		End Sub
 
-		Private Sub ButtonRemoveConnection_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonRemoveConnection_OnClick(sender As Object, e As RoutedEventArgs)
 			Dim item = CType(LvConnections.SelectedItem, ConnectionListItem)
 
 			If item Is Nothing Then
@@ -202,7 +202,7 @@ Namespace Connection
 			LvConnections.Focus()
 		End Sub
 
-		Private Sub ButtonConfigureConnection_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonConfigureConnection_OnClick(sender As Object, e As RoutedEventArgs)
 			If LvConnections.SelectedItem Is Nothing Then
 				Return
 			End If
@@ -220,7 +220,7 @@ Namespace Connection
 			LvConnections.Focus()
 		End Sub
 
-		Private Sub ButtonAddXml_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonAddXml_OnClick(sender As Object, e As RoutedEventArgs)
 			Dim ci = New ConnectionInfo(ConnectionTypes.MSSQL, GetNewXmlFileEntryName(), Nothing, True, "")
 
 			Dim cef = New AddConnectionWindow(ci) With {.Owner = Me}
@@ -249,7 +249,7 @@ Namespace Connection
 			My.Settings.Default.Save()
 		End Sub
 
-		Private Sub ButtonRemoveXml_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonRemoveXml_OnClick(sender As Object, e As RoutedEventArgs)
 			Dim item = CType(LvXmlFiles.SelectedItem, ConnectionListItem)
 			If item Is Nothing Then
 				Return
@@ -272,7 +272,7 @@ Namespace Connection
 			My.Settings.Default.Save()
 		End Sub
 
-		Private Sub ButtonConfigureXml_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonConfigureXml_OnClick(sender As Object, e As RoutedEventArgs)
 			Dim item = CType(LvXmlFiles.SelectedItem, ConnectionListItem)
 			If item Is Nothing Then
 				Return
@@ -290,7 +290,7 @@ Namespace Connection
 			LvXmlFiles.Focus()
 		End Sub
 
-		Private Sub BtnOk_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub BtnOk_OnClick(sender As Object, e As RoutedEventArgs)
 			If SelectedConnection.SyntaxProvider Is Nothing Then
 				Select Case SelectedConnection.SyntaxProviderName
 					Case "ANSI SQL-2003"
@@ -329,7 +329,7 @@ Namespace Connection
 			Close()
 		End Sub
 
-		Private Sub ButtonBaseClose_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+		Private Sub ButtonBaseClose_OnClick(sender As Object, e As RoutedEventArgs)
 			Close()
 		End Sub
 	End Class

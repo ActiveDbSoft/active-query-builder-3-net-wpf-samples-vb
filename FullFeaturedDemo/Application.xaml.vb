@@ -38,7 +38,7 @@ Partial Public Class App
         My.Settings.Default.Save()
     End Sub
 
-    Private Sub App_OnDispatcherUnhandledException(ByVal sender As Object, ByVal e As DispatcherUnhandledExceptionEventArgs)
+    Private Sub App_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
         Dim errorWindow = New ExceptionWindow With {
             .Owner = Current.MainWindow,
             .Message = e.Exception.Message,

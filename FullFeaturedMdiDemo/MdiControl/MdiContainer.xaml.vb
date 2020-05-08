@@ -297,7 +297,7 @@ Namespace MdiControl
 			Children.Remove(mdiChild)
 		End Sub
 
-        Private Sub GridRoot_OnPreviewMouseDown(ByVal sender As Object, ByVal e As MouseButtonEventArgs)
+        Private Sub GridRoot_OnPreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
             Dim point = e.GetPosition(Me)
             Dim isFound = False
 

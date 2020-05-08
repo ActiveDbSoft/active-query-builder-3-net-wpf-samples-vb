@@ -45,44 +45,44 @@ Namespace MSDASC
     Public Interface IDataInitialize
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub GetDataSource(
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
-        <[In]> ByVal dwClsCtx As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitializationString As String,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
+        <[In]> dwClsCtx As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitializationString As String,
         <[In]> ByRef riid As Guid,
         <MarshalAs(UnmanagedType.IUnknown), [In], Out> ByRef ppDataSource As Object)
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub GetInitializationString(
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pDataSource As Object,
-        <[In]> ByVal fIncludePassword As SByte, <Out>
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pDataSource As Object,
+        <[In]> fIncludePassword As SByte, <Out>
         <MarshalAs(UnmanagedType.LPWStr)> ByRef ppwszInitString As String)
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub CreateDBInstance(
         <[In]> ByRef clsidProvider As Guid,
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
-        <[In]> ByVal dwClsCtx As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszReserved As String,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
+        <[In]> dwClsCtx As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszReserved As String,
         <[In]> ByRef riid As Guid, <Out>
         <MarshalAs(UnmanagedType.IUnknown)> ByRef ppDataSource As Object)
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub RemoteCreateDBInstanceEx(
         <[In]> ByRef clsidProvider As Guid,
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
-        <[In]> ByVal dwClsCtx As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszReserved As String,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
+        <[In]> dwClsCtx As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszReserved As String,
         <[In]> ByRef pServerInfo As _COSERVERINFO,
-        <[In]> ByVal cmq As UInteger,
-        <[In]> ByVal rgpIID As IntPtr, <Out>
+        <[In]> cmq As UInteger,
+        <[In]> rgpIID As IntPtr, <Out>
         <MarshalAs(UnmanagedType.IUnknown)> ByRef rgpItf As Object, <Out>
         <MarshalAs(UnmanagedType.Error)> ByRef rghr As Integer)
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub LoadStringFromStorage(
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszFileName As String, <Out>
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszFileName As String, <Out>
         <MarshalAs(UnmanagedType.LPWStr)> ByRef ppwszInitializationString As String)
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub WriteStringToStorage(
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszFileName As String,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitializationString As String,
-        <[In]> ByVal dwCreationDisposition As UInteger)
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszFileName As String,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitializationString As String,
+        <[In]> dwCreationDisposition As UInteger)
     End Interface
 
     <InterfaceTypeAttribute(CType(1, Short))>
@@ -92,20 +92,20 @@ Namespace MSDASC
     Public Interface IDBPromptInitialize
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub PromptDataSource(
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
         <ComAliasName("MSDASC.wireHWND"), [In]> ByRef hWndParent As _RemotableHandle,
-        <[In]> ByVal dwPromptOptions As UInteger,
-        <[In]> ByVal cSourceTypeFilter As UInteger,
+        <[In]> dwPromptOptions As UInteger,
+        <[In]> cSourceTypeFilter As UInteger,
         <[In]> ByRef rgSourceTypeFilter As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszszzProviderFilter As String,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszszzProviderFilter As String,
         <[In]> ByRef riid As Guid,
         <MarshalAs(UnmanagedType.IUnknown), [In], Out> ByRef ppDataSource As Object)
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Sub PromptFileName(
         <ComAliasName("MSDASC.wireHWND"), [In]> ByRef hWndParent As _RemotableHandle,
-        <[In]> ByVal dwPromptOptions As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitialDirectory As String,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitialFile As String, <Out>
+        <[In]> dwPromptOptions As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitialDirectory As String,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitialFile As String, <Out>
         <MarshalAs(UnmanagedType.LPWStr)> ByRef ppwszSelectedFile As String)
     End Interface
 
@@ -157,12 +157,12 @@ Namespace MSDASC
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub PromptDataSource(
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
         <ComAliasName("MSDASC.wireHWND"), [In]> ByRef hWndParent As _RemotableHandle,
-        <[In]> ByVal dwPromptOptions As UInteger,
-        <[In]> ByVal cSourceTypeFilter As UInteger,
+        <[In]> dwPromptOptions As UInteger,
+        <[In]> cSourceTypeFilter As UInteger,
         <[In]> ByRef rgSourceTypeFilter As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszszzProviderFilter As String,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszszzProviderFilter As String,
         <[In]> ByRef riid As Guid,
         <MarshalAs(UnmanagedType.IUnknown), [In], Out> ByRef ppDataSource As Object) Implements IDBPromptInitialize.PromptDataSource
         End Sub
@@ -170,34 +170,34 @@ Namespace MSDASC
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub PromptFileName(
         <ComAliasName("MSDASC.wireHWND"), [In]> ByRef hWndParent As _RemotableHandle,
-        <[In]> ByVal dwPromptOptions As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitialDirectory As String,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitialFile As String, <Out>
+        <[In]> dwPromptOptions As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitialDirectory As String,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitialFile As String, <Out>
         <MarshalAs(UnmanagedType.LPWStr)> ByRef ppwszSelectedFile As String) Implements IDBPromptInitialize.PromptFileName
         End Sub
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub GetDataSource(
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
-        <[In]> ByVal dwClsCtx As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitializationString As String,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
+        <[In]> dwClsCtx As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitializationString As String,
         <[In]> ByRef riid As Guid,
         <MarshalAs(UnmanagedType.IUnknown), [In], Out> ByRef ppDataSource As Object) Implements IDataInitialize.GetDataSource
         End Sub
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub GetInitializationString(
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pDataSource As Object,
-        <[In]> ByVal fIncludePassword As SByte, <Out>
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pDataSource As Object,
+        <[In]> fIncludePassword As SByte, <Out>
         <MarshalAs(UnmanagedType.LPWStr)> ByRef ppwszInitString As String) Implements IDataInitialize.GetInitializationString
         End Sub
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub CreateDBInstance(
         <[In]> ByRef clsidProvider As Guid,
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
-        <[In]> ByVal dwClsCtx As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszReserved As String,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
+        <[In]> dwClsCtx As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszReserved As String,
         <[In]> ByRef riid As Guid, <Out>
         <MarshalAs(UnmanagedType.IUnknown)> ByRef ppDataSource As Object) Implements IDataInitialize.CreateDBInstance
         End Sub
@@ -205,27 +205,27 @@ Namespace MSDASC
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub RemoteCreateDBInstanceEx(
         <[In]> ByRef clsidProvider As Guid,
-        <MarshalAs(UnmanagedType.IUnknown), [In]> ByVal pUnkOuter As Object,
-        <[In]> ByVal dwClsCtx As UInteger,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszReserved As String,
+        <MarshalAs(UnmanagedType.IUnknown), [In]> pUnkOuter As Object,
+        <[In]> dwClsCtx As UInteger,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszReserved As String,
         <[In]> ByRef pServerInfo As _COSERVERINFO,
-        <[In]> ByVal cmq As UInteger,
-        <[In]> ByVal rgpIID As IntPtr, <Out>
+        <[In]> cmq As UInteger,
+        <[In]> rgpIID As IntPtr, <Out>
         <MarshalAs(UnmanagedType.IUnknown)> ByRef rgpItf As Object, <Out>
         <MarshalAs(UnmanagedType.Error)> ByRef rghr As Integer) Implements IDataInitialize.RemoteCreateDBInstanceEx
         End Sub
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub LoadStringFromStorage(
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszFileName As String, <Out>
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszFileName As String, <Out>
         <MarshalAs(UnmanagedType.LPWStr)> ByRef ppwszInitializationString As String) Implements IDataInitialize.LoadStringFromStorage
         End Sub
 
         <MethodImpl(MethodImplOptions.InternalCall, MethodCodeType:=MethodCodeType.Runtime)>
         Public Overridable Sub WriteStringToStorage(
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszFileName As String,
-        <MarshalAs(UnmanagedType.LPWStr), [In]> ByVal pwszInitializationString As String,
-        <[In]> ByVal dwCreationDisposition As UInteger) Implements IDataInitialize.WriteStringToStorage
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszFileName As String,
+        <MarshalAs(UnmanagedType.LPWStr), [In]> pwszInitializationString As String,
+        <[In]> dwCreationDisposition As UInteger) Implements IDataInitialize.WriteStringToStorage
         End Sub
     End Class
 End Namespace
