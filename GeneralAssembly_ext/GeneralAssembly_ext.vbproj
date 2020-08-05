@@ -68,7 +68,7 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ActiveQueryBuilder.AdvantageMetadataProvider, Version=3.6.11.1168, Culture=neutral, PublicKeyToken=49d051b90653c7f4, processorArchitecture=MSIL" />
+    <Reference Include="ActiveQueryBuilder.AdvantageMetadataProvider, Version=3.6.12.1169, Culture=neutral, PublicKeyToken=49d051b90653c7f4, processorArchitecture=MSIL" />
     
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
