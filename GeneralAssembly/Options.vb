@@ -86,17 +86,13 @@ Public Class Options
             Using xmlBuilder = New XmlDescriptionBuilder(stream)
                 Dim service = New OptionsSerializationService(xmlBuilder) With {.SerializeDefaultValues = True}
                 XmlSerializerExtensions.Builder = xmlBuilder
-                Dim root = xmlBuilder.BeginObject("Options")
-                If True Then
+                Using root = xmlBuilder.BeginObject("Options")
                     For Each [option] In _options
-                        Dim optionHandle = xmlBuilder.BeginObjectProperty(root, [option].GetType().Name)
-                        If True Then
+                        Using optionHandle = xmlBuilder.BeginObjectProperty(root, [option].GetType().Name)
                             service.EncodeObject(optionHandle, [option])
-                        End If
-                        xmlBuilder.EndObjectProperty(optionHandle)
+                        End Using
                     Next [option]
-                End If
-                xmlBuilder.EndObject(root)
+                End Using
             End Using
 
             stream.Position = 0
