@@ -94,10 +94,20 @@ Namespace Connection
 			AddHandler Dispatcher.CurrentDispatcher.Hooks.DispatcherInactive, AddressOf Hooks_DispatcherInactive
 		End Sub
 
-		Protected Overrides Sub OnClosing(e As CancelEventArgs)
+        Private Sub SaveData()
+            App.Connections.SaveData()
+            App.XmlFiles.SaveData()
+
+            My.Settings.Default.Connections = App.Connections
+            My.Settings.Default.XmlFiles = App.XmlFiles
+            My.Settings.Default.Save()
+        End Sub
+
+        Protected Overrides Sub OnClosing(e As CancelEventArgs)
 			MyBase.OnClosing(e)
-			RemoveHandler Dispatcher.CurrentDispatcher.Hooks.DispatcherInactive, AddressOf Hooks_DispatcherInactive
-		End Sub
+            RemoveHandler Dispatcher.CurrentDispatcher.Hooks.DispatcherInactive, AddressOf Hooks_DispatcherInactive
+            SaveData()
+        End Sub
 
 		Private Sub Hooks_DispatcherInactive(sender As Object, e As EventArgs)
 			ButtonRemoveConnection.IsEnabled = (LvConnections.SelectedItems.Count > 0)
@@ -105,12 +115,14 @@ Namespace Connection
 			ButtonConfigureXml.IsEnabled = (LvXmlFiles.SelectedItems.Count > 0)
 			ButtonRemoveXml.IsEnabled = (LvXmlFiles.SelectedItems.Count > 0)
 
-			If TabControl1.SelectedIndex = 0 Then
-				BtnOk.IsEnabled = (LvConnections.SelectedItems.Count > 0)
-			Else
-				BtnOk.IsEnabled = (LvXmlFiles.SelectedItems.Count > 0)
-			End If
-		End Sub
+            If TabControl1.SelectedIndex = 0 Then
+                BtnOk.IsEnabled = (LvConnections.SelectedItems.Count > 0)
+            Else
+                BtnOk.IsEnabled = (LvXmlFiles.SelectedItems.Count > 0)
+            End If
+
+
+        End Sub
 
 		Private Shared Function GetNewConnectionEntryName() As String
 			Dim x = 0

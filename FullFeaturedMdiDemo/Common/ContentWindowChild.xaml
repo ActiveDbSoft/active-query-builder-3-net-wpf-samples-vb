@@ -233,6 +233,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" MinHeight="30"/>
                         <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="140" MinHeight="100"/>
                     </Grid.RowDefinitions>
 
@@ -246,9 +247,31 @@
                         <dataViewerControl:DataViewer x:Name="DataViewerResult"/>
                     </Grid>
 
-                    <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0"/>
+                    <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="3" Margin="0,2,0,0" Visibility="Collapsed"/>
 
-                    <expressionEditor:SqlTextEditor Grid.Row="2"
+                    <Border Grid.Row="2" Margin="5,10,5,10" BorderThickness="1" CornerRadius="5" BorderBrush="Gray" 
+                            Padding="5" SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Padding" Value="15,5"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </Style>
+                            </Grid.Resources>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="Generate report" Grid.Column="0" Click="GenerateReport_OnClick" x:Name="ButtonReport"/>
+                            <Button Content="Export to Excel" Margin="10,0" Grid.Column="1" Click="ExportToExcel_OnClick" x:Name="ButtonExcel"/>
+                            <Button Content="Export to CSV" Grid.Column="2" Click="ExportToCSV_OnClick" x:Name="ButtonCVS"/>
+                        </Grid>
+                    </Border>
+
+                    <expressionEditor:SqlTextEditor Grid.Row="3"
                                  Padding="5"
                                  Margin="0,4,0,0" 
                                  x:Name="BoxSqlTransformer" 

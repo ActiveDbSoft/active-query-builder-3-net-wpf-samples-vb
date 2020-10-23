@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Enter connection string:" Margin="0,0,0,8" Grid.Row="0"/>
-        <TextBox VerticalScrollBarVisibility="Visible" Margin="2,2,2,33" x:Name="tbConnectionString" Grid.Row="1" TextChanged="tbConnectionString_TextChanged"/>
+        <TextBox VerticalScrollBarVisibility="Visible" Margin="2,2,2,33" x:Name="tbConnectionString" Grid.Row="1" TextChanged="tbConnectionString_TextChanged" TextWrapping="Wrap"/>
         <Button x:Name="btnTest" Content="Test connection and detect syntax" HorizontalAlignment="Right" Height="23" Margin="0,0,2,5" Grid.Row="1" VerticalAlignment="Bottom" Width="198" Click="btnTest_Click"/>
     </Grid>
 </UserControl>

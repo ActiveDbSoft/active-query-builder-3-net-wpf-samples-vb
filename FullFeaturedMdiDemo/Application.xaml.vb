@@ -26,13 +26,13 @@ Imports Windows
 		Public Sub New()
 			Dim i = ControlFactory.Instance ' force call static constructor of control factory
 
-			'if new version, import upgrade from previous version
-			If My.Settings.Default.CallUpgrade Then
-				My.Settings.Default.Upgrade()
-				My.Settings.Default.CallUpgrade = False
-			End If
+        'if new version, import upgrade from previous version
+        If My.Settings.Default.CallUpgrade Then
+            My.Settings.Default.Upgrade()
+            My.Settings.Default.CallUpgrade = False
+        End If
 
-			If My.Settings.Default.Connections IsNot Nothing Then
+        If My.Settings.Default.Connections IsNot Nothing Then
 				Connections = My.Settings.Default.Connections
 				Connections.RemoveObsoleteConnectionInfos()
 				Connections.RestoreData()

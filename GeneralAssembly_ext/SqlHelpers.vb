@@ -156,10 +156,8 @@ Public Class SqlHelpers
         Return command
     End Function
 
-    Public Shared Function GetDataView(sqlCommand As String, sqlQuery As SQLQuery) As DataView
-        If String.IsNullOrEmpty(sqlCommand) Then
-            Return Nothing
-        End If
+    Public Shared Function GetDataTable(sqlCommand As String, sqlQuery As SQLQuery) As DataTable
+        If String.IsNullOrEmpty(sqlCommand) Then Return Nothing
 
         If sqlQuery.SQLContext.MetadataProvider Is Nothing Then
             Return Nothing
@@ -169,31 +167,29 @@ Public Class SqlHelpers
             sqlQuery.SQLContext.MetadataProvider.Connect()
         End If
 
-        If String.IsNullOrEmpty(sqlCommand) Then
-            Return Nothing
-        End If
-
-        If Not sqlQuery.SQLContext.MetadataProvider.Connected Then
-            sqlQuery.SQLContext.MetadataProvider.Connect()
-        End If
-
+        If String.IsNullOrEmpty(sqlCommand) Then Return Nothing
+        If Not sqlQuery.SQLContext.MetadataProvider.Connected Then sqlQuery.SQLContext.MetadataProvider.Connect()
         Dim command = CreateSqlCommand(sqlCommand, sqlQuery)
-
-        Dim table As New DataTable("result")
+        Dim table As DataTable = New DataTable("result")
 
         Using dbReader = command.ExecuteReader()
 
             For i As Integer = 0 To dbReader.FieldCount - 1
-                table.Columns.Add(dbReader.GetName(i))
-            Next i
+                table.Columns.Add(dbReader.GetName(i), If(dbReader.GetFieldType(i), GetType(String)))
+            Next
 
-            Do While dbReader.Read()
-                Dim values(dbReader.FieldCount - 1) As Object
+            While dbReader.Read()
+                Dim values = New Object(dbReader.FieldCount - 1) {}
                 dbReader.GetValues(values)
                 table.Rows.Add(values)
-            Loop
-
-            Return table.DefaultView
+            End While
         End Using
+
+        Return table
+    End Function
+
+    Public Shared Function GetDataView(sqlCommand As String, sqlQuery As SQLQuery) As DataView
+        Dim table = GetDataTable(sqlCommand, sqlQuery)
+        Return table?.DefaultView
     End Function
 End Class

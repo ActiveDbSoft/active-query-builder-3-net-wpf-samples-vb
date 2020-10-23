@@ -33,9 +33,8 @@ Partial Public Class App
             XmlFiles = My.Settings.Default.XmlFiles
         End If
 
-        My.Settings.Default.Connections = Connections
-        My.Settings.Default.XmlFiles = XmlFiles
-        My.Settings.Default.Save()
+        Connections.RestoreData()
+        XmlFiles.RestoreData()
     End Sub
 
     Private Sub App_OnDispatcherUnhandledException(sender As Object, e As DispatcherUnhandledExceptionEventArgs)
@@ -44,6 +43,8 @@ Partial Public Class App
             .Message = e.Exception.Message,
             .StackTrace = e.Exception.StackTrace
         }
+
+        e.Handled = True
 
         errorWindow.ShowDialog()
     End Sub

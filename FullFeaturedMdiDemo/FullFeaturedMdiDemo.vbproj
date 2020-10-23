@@ -9,7 +9,7 @@
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>FullFeaturedMdiDemo</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <TargetFrameworkProfile />
@@ -101,6 +101,13 @@
   </ItemGroup>
   <ItemGroup>
     
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -111,9 +118,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ChildWindow.vb" />
+    <Compile Include="CommonWindow\CreateReportWindow.xaml.vb">
+      <DependentUpon>CreateReportWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\ContentWindowChild.xaml.vb">
       <DependentUpon>ContentWindowChild.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\ExportHelpers.vb" />
+    <Compile Include="Common\ReportType.vb" />
     <Compile Include="Common\WindowNameQuery.xaml.vb">
       <DependentUpon>WindowNameQuery.xaml</DependentUpon>
     </Compile>
@@ -156,6 +168,19 @@
     <Compile Include="Connection\XmlConnectionEditWindow.xaml.vb">
       <DependentUpon>XmlConnectionEditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ActiveReportsWindow.xaml.vb">
+      <DependentUpon>ActiveReportsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FastReportWindow.xaml.vb">
+      <DependentUpon>FastReportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\StimulsoftWindow.xaml.vb">
+      <DependentUpon>StimulsoftWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="CommonWindow\CreateReportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Common\ContentWindowChild.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,6 +252,18 @@
     <Page Include="Connection\XmlConnectionEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Reports\ActiveReportsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Reports\FastReportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Reports\StimulsoftWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +384,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>echo. 2&gt;"$(ProjectDir)\Properties\licenses.licx"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

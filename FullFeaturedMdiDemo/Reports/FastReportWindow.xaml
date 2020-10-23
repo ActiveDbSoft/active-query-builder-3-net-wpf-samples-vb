@@ -1,0 +1,14 @@
+﻿<Window x:Class="FullFeaturedMdiDemo.Reports.FastReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Fast Report" Loaded="FastReportWindow_OnLoaded" SizeToContent="WidthAndHeight" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" >
+    <Grid>
+        <StackPanel Margin="20">
+            <Button Content="Show report"  Margin="0,0,0,10" Padding="15,3" Click="ShowSimpleReport"/>
+            <Button Content="Show designer" Padding="15,3" Click="ShowDesignReport"/>
+        </StackPanel>
+    </Grid>
+</Window>

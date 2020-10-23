@@ -14,7 +14,7 @@
         
         <TextBlock Text="Enter connection string:" Margin="0,0,0,8" Grid.Row="0" HorizontalAlignment="Left"/>
         <Button Grid.Row="0" HorizontalAlignment="Right" Height="23" Width="87" Content="Build..." x:Name="btnBuild" Click="BtnBuild_OnClick"/>
-        <TextBox Grid.Row="1" VerticalScrollBarVisibility="Visible" Margin="2,2,2,33" x:Name="tbConnectionString" TextChanged="tbConnectionString_TextChanged"/>
+        <TextBox Grid.Row="1" VerticalScrollBarVisibility="Visible" Margin="2,2,2,33" x:Name="tbConnectionString" TextChanged="tbConnectionString_TextChanged" TextWrapping="Wrap"/>
         <Button x:Name="btnTest" Content="Test connection and detect syntax" HorizontalAlignment="Right" Height="23" Margin="0,0,2,5" Grid.Row="1" VerticalAlignment="Bottom" Width="198" Click="btnTest_Click"/>
     </Grid>
 </UserControl>
