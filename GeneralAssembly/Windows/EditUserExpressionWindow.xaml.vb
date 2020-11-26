@@ -160,7 +160,11 @@ Namespace Windows
             TextBoxExpression.Text = _selectedPredefinedCondition.Condition
             CheckBoxIsNeedEdit.IsChecked = _selectedPredefinedCondition.IsNeedEdit
 
-            For Each item In _selectedPredefinedCondition.ShowOnlyForDbTypes.Select(Function(type) ComboboxDbTypes.Items.First(Function(x) String.Equals(x.Content.ToString(), type.ToString(), StringComparison.InvariantCultureIgnoreCase)))
+            For Each item In _
+                _selectedPredefinedCondition.ShowOnlyForDbTypes.Select(
+                    Function(type) ComboboxDbTypes.Items.First(Function(x) String.Equals(x.Content.ToString(),
+                                                                                         type.ToString(),
+                                                                                           StringComparison.InvariantCultureIgnoreCase)))
                 item.IsChecked = True
             Next item
 

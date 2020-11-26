@@ -5,5 +5,6 @@
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)system.data.sqlite.core\1.0.109\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('$(NuGetPackageRoot)system.data.sqlite.core\1.0.109\build\net46\System.Data.SQLite.Core.targets')" />
+    <Import Project="$(NuGetPackageRoot)grapecity.activereports\14.2.20581\buildTransitive\netstandard2.0\GrapeCity.ActiveReports.targets" Condition="Exists('$(NuGetPackageRoot)grapecity.activereports\14.2.20581\buildTransitive\netstandard2.0\GrapeCity.ActiveReports.targets')" />
   </ImportGroup>
 </Project>
