@@ -837,7 +837,7 @@ Namespace Common
             If result <> True OrElse IsNothing(window.SelectedReportType) Then
                 Return
             End If
-            Dim dataTable As DataTable = SqlHelpers.GetDataTable(CBuilder.SQL, SqlQuery)
+            Dim dataTable As DataTable = SqlHelpers.GetDataTable(CBuilder.QueryTransformer.ResultAST.GetSQL(SqlGenerationOptions), SqlQuery)
             Select Case window.SelectedReportType
                 Case ReportType.ActiveReports14
                     CreateActiveReport(dataTable)
@@ -853,7 +853,7 @@ Namespace Common
             End Select
         End Sub
         Private Sub ExportToExcel_OnClick(sender As Object, e As RoutedEventArgs)
-            Dim dt As DataTable = SqlHelpers.GetDataTable(CBuilder.SQL, SqlQuery)
+            Dim dt As DataTable = SqlHelpers.GetDataTable(CBuilder.QueryTransformer.ResultAST.GetSQL(SqlGenerationOptions), SqlQuery)
             Dim saveDialog As SaveFileDialog = New SaveFileDialog() With {
                 .AddExtension = True,
                 .DefaultExt = "xlsx",
@@ -874,7 +874,7 @@ Namespace Common
             If result <> True Then
                 Return
             End If
-            Dim dt As DataTable = SqlHelpers.GetDataTable(CBuilder.SQL, SqlQuery)
+            Dim dt As DataTable = SqlHelpers.GetDataTable(CBuilder.QueryTransformer.ResultAST.GetSQL(SqlGenerationOptions), SqlQuery)
             ExportHelpers.ExportToCSV(dt, saveDialog.FileName)
         End Sub
     End Class

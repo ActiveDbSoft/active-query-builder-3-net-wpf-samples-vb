@@ -19,7 +19,7 @@ Imports System.Windows
 <Assembly: AssemblyConfiguration("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("AlternateNames")>
-<Assembly: AssemblyCopyright("Copyright © 2006-2020 Active Database Software")>
+<Assembly: AssemblyCopyright("Copyright © 2006-2021 Active Database Software")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: AssemblyCulture("")>
 <Assembly: ComVisible(False)>

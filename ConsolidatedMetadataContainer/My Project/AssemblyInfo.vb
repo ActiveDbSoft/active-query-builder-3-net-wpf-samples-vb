@@ -25,7 +25,7 @@ Imports System.Windows
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("ConsolidatedMetadataContainer")>
-<Assembly: AssemblyCopyright("Copyright ©  2020")>
+<Assembly: AssemblyCopyright("Copyright © 2006-2021 Active Database Software")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 
