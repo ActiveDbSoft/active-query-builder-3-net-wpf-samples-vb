@@ -32,9 +32,6 @@ Public Class Options
     Public Property UserInterfaceOptions() As UserInterfaceOptions
     Public Property SqlFormattingOptions() As SQLFormattingOptions
     Public Property SqlGenerationOptions() As SQLGenerationOptions
-    Public Property ExpressionEditorOptions() As ExpressionEditorOptions
-    Public Property TextEditorOptions() As TextEditorOptions
-    Public Property TextEditorSqlOptions() As SqlTextEditorOptions
 
     Private ReadOnly _options As New List(Of OptionsBase)()
 
@@ -53,12 +50,6 @@ Public Class Options
         UserInterfaceOptions = New UserInterfaceOptions()
         SqlFormattingOptions = New SQLFormattingOptions()
         SqlGenerationOptions = New SQLGenerationOptions()
-        ExpressionEditorOptions = New ExpressionEditorOptions()
-        TextEditorOptions = New TextEditorOptions With {
-            .Padding = DefaultTextEditorPadding,
-            .LineHeight = New LengthUnit(90, SizeUnitType.Percent)
-        }
-        TextEditorSqlOptions = New SqlTextEditorOptions()
     End Sub
 
     Private Sub InitializeOptionsList()
@@ -73,9 +64,6 @@ Public Class Options
         _options.Add(UserInterfaceOptions)
         _options.Add(SqlFormattingOptions)
         _options.Add(SqlGenerationOptions)
-        _options.Add(ExpressionEditorOptions)
-        _options.Add(TextEditorOptions)
-        _options.Add(TextEditorSqlOptions)
     End Sub
 
     Public Function SerializeToString() As String
