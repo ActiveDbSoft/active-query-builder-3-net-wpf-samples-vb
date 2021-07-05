@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>CustomExpressionBuilder.wpf.vb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <Description>Active Query Builder 3 CustomExpressionBuilder Demo</Description>
+    <RootNamespace>CustomExpressionBuilder</RootNamespace>
+
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralAssembly\GeneralAssembly.wpf.vb.vbproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Northwind.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

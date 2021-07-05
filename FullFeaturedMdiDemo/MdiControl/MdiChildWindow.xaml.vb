@@ -1,23 +1,15 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System
-Imports System.Collections.ObjectModel
-Imports System.Collections.Specialized
-Imports System.Windows
-Imports System.Windows.Controls
 Imports System.Windows.Controls.Primitives
-Imports System.Windows.Input
 Imports System.Windows.Markup
-Imports System.Windows.Media
-Imports Common
 
 Namespace MdiControl
 	''' <summary>
@@ -26,8 +18,8 @@ Namespace MdiControl
 	<ContentProperty("Children")>
 	Partial Public Class MdiChildWindow
 		Private Const WidthMinimized As Double = 173
-		Private _oldSize As Size = Size.Empty
-		Private _oldPoint As New Point(0, 0)
+		Private _oldSize As Windows.Size = Windows.Size.Empty
+		Private _oldPoint As New Windows.Point(0, 0)
 		Private Shadows Property Content() As Grid
 
 		Public Event Closing As EventHandler
@@ -44,7 +36,7 @@ Namespace MdiControl
 
 		Public Shared ReadOnly TitleProperty As DependencyProperty = DependencyProperty.Register("Title", GetType(String), GetType(MdiChildWindow), New PropertyMetadata("Window"))
 
-		Public Shadows Shared ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(MdiChildWindow), New PropertyMetadata(Brushes.White, AddressOf CallBackBackgound))
+		Public Shared Shadows ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Windows.Media.Brush), GetType(MdiChildWindow), New PropertyMetadata(Windows.Media.Brushes.White, AddressOf CallBackBackgound))
 
 		Public Shared ReadOnly StateProperty As DependencyProperty = DependencyProperty.Register("State", GetType(StateWindow), GetType(MdiChildWindow), New PropertyMetadata(StateWindow.Normal, AddressOf CallbackStateChange))
 
@@ -56,17 +48,17 @@ Namespace MdiControl
 			If obj IsNot Nothing Then
 				Select Case state_Renamed
 					Case StateWindow.Normal
-						obj.SetSize(If(obj._oldSize = Size.Empty, New Size(300, 200), obj._oldSize))
+						obj.SetSize(If(obj._oldSize = Windows.Size.Empty, New Windows.Size(300, 200), obj._oldSize))
 						obj.SetLocation(obj._oldPoint)
 					Case StateWindow.Minimized
 						obj.State = StateWindow.Minimized
-						obj._oldSize = New Size(obj.ActualWidth, obj.ActualHeight)
-						obj._oldPoint = New Point(obj.Left, obj.Top)
+						obj._oldSize = New Windows.Size(obj.ActualWidth, obj.ActualHeight)
+						obj._oldPoint = New Windows.Point(obj.Left, obj.Top)
 						obj.Height = SystemParameters.MinimizedWindowHeight
 						obj.Width = WidthMinimized
 					Case StateWindow.Maximized
 						obj.IsMaximized = True
-						obj.Measure(New Size(Double.PositiveInfinity, Double.PositiveInfinity))
+						obj.Measure(New Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity))
 						obj.Arrange(New Rect(obj.DesiredSize))
 					Case Else
 						Throw New ArgumentOutOfRangeException()
@@ -96,11 +88,11 @@ Namespace MdiControl
 			End Set
 		End Property
 
-		Public Shadows Property Background() As Brush
+		Public Shadows Property Background() As Windows.Media.Brush
 			Get
-				Return DirectCast(GetValue(BackgroundProperty), Brush)
+				Return DirectCast(GetValue(BackgroundProperty), Windows.Media.Brush)
 			End Get
-			Set(value As Brush)
+			Set(value As Windows.Media.Brush)
 				SetValue(BackgroundProperty, value)
 			End Set
 		End Property
@@ -172,30 +164,30 @@ Namespace MdiControl
 			Content = DirectCast(Template.FindName("GridRoot", Me), Grid)
 		End Sub
 
-		Public Function IsContainsPoint(point As Point) As Boolean
-'INSTANT VB NOTE: The variable left was renamed since Visual Basic does not handle local variables named the same as class members well:
+		Public Function IsContainsPoint(point As Windows.Point) As Boolean
+			'INSTANT VB NOTE: The variable left was renamed since Visual Basic does not handle local variables named the same as class members well:
 			Dim left_Renamed = Canvas.GetLeft(Me)
-'INSTANT VB NOTE: The variable top was renamed since Visual Basic does not handle local variables named the same as class members well:
+			'INSTANT VB NOTE: The variable top was renamed since Visual Basic does not handle local variables named the same as class members well:
 			Dim top_Renamed = Canvas.GetTop(Me)
 
 			If Double.IsNaN(left_Renamed) Then
-				left_Renamed = TranslatePoint(New Point(0, 0), CType(Parent, UIElement)).X
+				left_Renamed = TranslatePoint(New Windows.Point(0, 0), CType(Parent, UIElement)).X
 			End If
 
 			If Double.IsNaN(top_Renamed) Then
-				top_Renamed = TranslatePoint(New Point(0, 0), CType(Parent, UIElement)).Y
+				top_Renamed = TranslatePoint(New Windows.Point(0, 0), CType(Parent, UIElement)).Y
 			End If
 
 			Dim rect = New Rect(left_Renamed, top_Renamed, ActualWidth, ActualHeight)
 			Return rect.Contains(point)
 		End Function
 
-		Public Sub SetLocation(point As Point)
+		Public Sub SetLocation(point As Windows.Point)
 			Left = point.X
 			Top = point.Y
 		End Sub
 
-		Public Sub SetSize(size As Size)
+		Public Sub SetSize(size As Windows.Size)
 			Width = size.Width
 			Height = size.Height
 		End Sub
@@ -222,7 +214,7 @@ Namespace MdiControl
 				If obj.Content Is Nothing Then
 					obj.ApplyTemplate()
 				End If
-				obj.Content.Background = DirectCast(e.NewValue, Brush)
+				obj.Content.Background = DirectCast(e.NewValue, Windows.Media.Brush)
 			End If
 		End Sub
 
@@ -274,7 +266,7 @@ Namespace MdiControl
 			If ActualHeight + e.VerticalChange < 30 Then
 				Return
 			End If
-			Dim newSize = New Size(ActualWidth, ActualHeight + e.VerticalChange)
+			Dim newSize = New Windows.Size(ActualWidth, ActualHeight + e.VerticalChange)
 
 			Height = newSize.Height
 
@@ -289,7 +281,7 @@ Namespace MdiControl
 			If ActualWidth + e.HorizontalChange < 140 Then
 				Return
 			End If
-			Dim newSize = New Size(ActualWidth + e.HorizontalChange, ActualHeight)
+			Dim newSize = New Windows.Size(ActualWidth + e.HorizontalChange, ActualHeight)
 
 			Width = newSize.Width
 			OnResize()
@@ -333,14 +325,14 @@ Namespace MdiControl
 			If State = StateWindow.Maximized Then
 				IsMaximized = False
 				State = StateWindow.Normal
-				SetSize(If(_oldSize = Size.Empty, New Size(300,200), _oldSize))
+				SetSize(If(_oldSize = Windows.Size.Empty, New Windows.Size(300, 200), _oldSize))
 				SetLocation(_oldPoint)
 			Else
 				IsMaximized = True
 
 				If State <> StateWindow.Minimized Then
-					_oldSize = New Size(ActualWidth, ActualHeight)
-					_oldPoint = New Point(Left, Top)
+					_oldSize = New Windows.Size(ActualWidth, ActualHeight)
+					_oldPoint = New Windows.Point(Left, Top)
 				End If
 				State = StateWindow.Maximized
 			End If
@@ -357,8 +349,8 @@ Namespace MdiControl
 				Top = _oldPoint.Y
 			Else
 				State = StateWindow.Minimized
-				_oldSize = New Size(ActualWidth, ActualHeight)
-				_oldPoint = New Point(Left, Top)
+				_oldSize = New Windows.Size(ActualWidth, ActualHeight)
+				_oldPoint = New Windows.Point(Left, Top)
 				Height = SystemParameters.MinimizedWindowHeight
 				Width = WidthMinimized
 			End If

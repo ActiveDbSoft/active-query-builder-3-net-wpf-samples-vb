@@ -1,0 +1,40 @@
+﻿<Project>
+  <!-- set up correct SolutionDir -->
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
+  </PropertyGroup>
+
+  <!-- common props -->
+  <PropertyGroup>
+    <AssetsPath>$(SolutionDir)assets\</AssetsPath>
+
+    <Version>$([System.IO.File]::ReadAllText("$(SolutionDir)version"))</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+
+    <Edition>$([System.IO.File]::ReadAllText("$(SolutionDir)edition"))</Edition>
+
+    <Product>Active Query Builder 3 .NET $(Edition) Edition</Product>
+    <Company>Active Database Software</Company>
+    <Copyright>Copyright © 2005-$([System.DateTime]::Now.Year) Active Database Software</Copyright>
+  </PropertyGroup>
+
+  <!-- disable XML docs warnings -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);1591;1574</NoWarn>
+  </PropertyGroup>
+
+  <!-- resources -->
+  <PropertyGroup>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version="5.0.0" />
+  </ItemGroup>
+
+  <!-- use nuget ActiveQueryBuilder references instead of ProjectReference -->
+  <PropertyGroup>
+    <UseNugetAqbReferences>true</UseNugetAqbReferences>
+  </PropertyGroup>
+
+</Project>

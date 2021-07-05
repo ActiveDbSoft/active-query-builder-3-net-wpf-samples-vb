@@ -6,9 +6,9 @@
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:criteriaBuilder="clr-namespace:ActiveQueryBuilder.View.WPF.CriteriaBuilder;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
-        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly"
-        xmlns:dataViewerFastResultControl="clr-namespace:Common.DataViewerFastResultControl;assembly=GeneralAssembly"
-        xmlns:dataViewerControl="clr-namespace:Common.DataViewerControl;assembly=GeneralAssembly"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
+        xmlns:dataViewerFastResultControl="clr-namespace:GeneralAssembly.Common.DataViewerFastResultControl;assembly=GeneralAssembly.wpf.vb"
+        xmlns:dataViewerControl="clr-namespace:GeneralAssembly.Common.DataViewerControl;assembly=GeneralAssembly.wpf.vb"
         mc:Ignorable="d"
         Title="Active Query Builder for .NET Standard WPF Edition - Full Featured Demo (C#)" Height="900" Width="1000" Icon="Resources/App.ico">
 

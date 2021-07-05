@@ -1,15 +1,15 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System.Windows.Threading
-Imports Windows
+Imports GeneralAssembly
+Imports GeneralAssembly.Windows
 
 ''' <summary>
 ''' Interaction logic for App.xaml
@@ -20,17 +20,17 @@ Partial Public Class App
 
     Public Sub New()
         'if new version, import upgrade from previous version
-        If My.Settings.Default.CallUpgrade Then
-            My.Settings.Default.Upgrade()
-            My.Settings.Default.CallUpgrade = False
+        If My.Settings.CallUpgrade Then
+            My.Settings.Upgrade()
+            My.Settings.CallUpgrade = False
         End If
 
-        If My.Settings.Default.Connections IsNot Nothing Then
-            Connections = My.Settings.Default.Connections
+        If My.Settings.Connections IsNot Nothing Then
+            Connections = My.Settings.Connections
         End If
 
-        If My.Settings.Default.XmlFiles IsNot Nothing Then
-            XmlFiles = My.Settings.Default.XmlFiles
+        If My.Settings.XmlFiles IsNot Nothing Then
+            XmlFiles = My.Settings.XmlFiles
         End If
 
         Connections.RestoreData()

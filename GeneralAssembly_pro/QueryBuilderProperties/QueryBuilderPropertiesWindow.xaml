@@ -1,0 +1,65 @@
+﻿<Window x:Class="QueryBuilderProperties.QueryBuilderPropertiesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Query Builder Properties" Height="516" Width="640" Background="{x:Static SystemColors.ControlBrush}" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="StyleHeaderCaptionTree">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="Margin" Value="0,9,0,2"></Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="StyleItemTree">
+            <Setter Property="Margin" Value="10,7,0,0"></Setter>
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextDecorations" Value="Underline"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="White" Margin="10,10,10,0">
+            <TextBlock Text="Query Builder Properties" FontFamily="Arial" FontSize="12pt" FontWeight="Bold" Foreground="CornflowerBlue" VerticalAlignment="Center" Margin="15,0,0,0" HorizontalAlignment="Left"/>
+            <Image Source="pack://siteoforigin:,,,/App.ico"  VerticalAlignment="Center" HorizontalAlignment="Right" Stretch="None" Margin="0,0,5,0"/>
+        </Grid>
+        <ScrollViewer Grid.Row="1" Margin="10,0,10,10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid  Background="White" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="11,0,0,0">
+                    <TextBlock Text="Non-visual Options" Style="{StaticResource StyleHeaderCaptionTree}"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="SQL Syntax" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkSqlSyntax"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Offline Mode" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkOfflineMode"/>
+
+                    <TextBlock Text="Visual Options" Style="{StaticResource StyleHeaderCaptionTree}"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Panes Visibility" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkPanesVisibility"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Database Schema View" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkMetadataTree"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Miscellaneous" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkMiscellaneous"/>
+
+                    <TextBlock Text="SQL Builder Options" Style="{StaticResource StyleHeaderCaptionTree}"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="General" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkGeneral"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Main Query" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkMainQuery"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Derived Queries" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkDerievedQueries"/>
+                    <TextBlock Style="{StaticResource StyleItemTree}" Text="Expression Subqueries" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" x:Name="linkExpressionSubqueries"/>
+                </StackPanel>
+                <Border Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" BorderThickness="0,0,1,0" BorderBrush="Gray" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased" Margin="0,10"/>
+                <Grid Grid.Column="1" x:Name="panelPages"/>
+
+            </Grid>
+        </ScrollViewer>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,10">
+            <Button Content="OK" Width="75" Height="23" Margin="0,0,5,0" x:Name="buttonOk" Click="ButtonOk_OnClick"/>
+            <Button Content="Cancel"  Width="75" Height="23" Margin="0,0,5,0" x:Name="buttonCancel" Click="ButtonCancel_OnClick"/>
+            <Button Content="Apply" Width="75" Height="23" x:Name="buttonApply" Click="ButtonApply_OnClick"/>
+        </StackPanel>
+    </Grid>
+</Window>

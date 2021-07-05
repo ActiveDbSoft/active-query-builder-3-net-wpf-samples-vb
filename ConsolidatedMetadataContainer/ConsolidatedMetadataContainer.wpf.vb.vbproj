@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>ConsolidatedMetadataContainer.wpf.vb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <Description>Active Query Builder 3 ConsolidatedMetadataContainer Demo</Description>
+    <RootNamespace></RootNamespace>
+
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <!-- database-specific metadata provider -->
+  <ItemGroup Condition="$(UseNugetAqbReferences)">
+    <PackageReference Include="ActiveQueryBuilder.MSSQLMetadataProvider" Version="$(Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(UseNugetAqbReferences)">
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\MSSQLMetadataProvider\MSSQLMetadataProvider.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="northwind.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

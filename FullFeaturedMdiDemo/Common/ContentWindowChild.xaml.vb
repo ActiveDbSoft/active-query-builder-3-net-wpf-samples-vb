@@ -1,29 +1,25 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System.ComponentModel
 Imports System.Threading
-Imports Windows.QueryInformationWindows
-Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.Core.QueryTransformer
-Imports ActiveQueryBuilder.View
 Imports ActiveQueryBuilder.View.QueryView
-Imports ActiveQueryBuilder.View.WPF
 Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports ActiveQueryBuilder.View.WPF.QueryView
-Imports CommonWindow
+Imports FullFeaturedMdiDemo.CommonWindow
 Imports FullFeaturedMdiDemo.Reports
 Imports Microsoft.Win32
-Imports Reports
 
 Imports SQLParsingException = ActiveQueryBuilder.Core.SQLParsingException
+Imports GeneralAssembly
+Imports GeneralAssembly.Windows.QueryInformationWindows
 
 Namespace Common
     ''' <summary>
@@ -170,13 +166,13 @@ Namespace Common
         Public Property UserMetadataStructureItem() As MetadataStructureItem
         Public Property FileSourceUrl() As String
 
-        Private privateSqlContext As SQLContext
+        Private _privateSqlContext As SQLContext
         Public Property SqlContext() As SQLContext
             Get
-                Return privateSqlContext
+                Return _privateSqlContext
             End Get
             Private Set(value As SQLContext)
-                privateSqlContext = value
+                _privateSqlContext = value
             End Set
         End Property
 
@@ -625,7 +621,7 @@ Namespace Common
 
 #Region "Menu buttons event method"
 
-        Private Sub ButtonPropertise_OnClick(sender As Object, e As RoutedEventArgs)
+        Private Sub ButtonProperties_OnClick(sender As Object, e As RoutedEventArgs)
             PropertiesQuery()
         End Sub
 
@@ -700,7 +696,7 @@ Namespace Common
             If ButtonRefreashFastResult Is Nothing OrElse CheckBoxAutoRefreash Is Nothing Then
                 Return
             End If
-            ButtonRefreashFastResult.IsEnabled = CheckBoxAutoRefreash.IsChecked = False
+            ButtonRefreashFastResult.IsEnabled = CheckBoxAutoRefreash.IsChecked.HasValue AndAlso CheckBoxAutoRefreash.IsChecked.Value = False
         End Sub
 
         Private Sub BoxSqlCurrentSubQuery_OnLostKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs)

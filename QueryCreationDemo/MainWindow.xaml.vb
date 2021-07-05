@@ -1,19 +1,15 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System.Collections.Generic
-Imports System.Linq
-Imports System.Windows
-Imports System.Windows.Controls
-Imports ActiveQueryBuilder.Core
 
+Imports GeneralAssembly.Windows.QueryInformationWindows
 ''' <summary>
 ''' Interaction logic for MainWindow.xaml
 ''' </summary>
@@ -145,7 +141,7 @@ Partial Public Class MainWindow
             stats += vbCr & vbLf & statisticsOutputColumn.Expression
         Next
 
-        Dim f As QueryStatisticsForm = New QueryStatisticsForm(stats)
+        Dim f As QueryStatisticsWindow = New QueryStatisticsWindow(stats)
         f.ShowDialog()
 
     End Sub
@@ -350,7 +346,7 @@ Partial Public Class MainWindow
 
             qn.Add(withClauseItemName)
 
-            Dim parentSubQuery As SubQuery = TryCast(If(unionSubQuery.ParentSubQuery, unionSubQuery.QueryRoot) , SubQuery)
+            Dim parentSubQuery As SubQuery = TryCast(If(unionSubQuery.ParentSubQuery, unionSubQuery.QueryRoot), SubQuery)
 
             If parentSubQuery.IsMainQuery Then
                 _query.QueryRoot.AddNewCTE(Nothing, withClauseItemName)

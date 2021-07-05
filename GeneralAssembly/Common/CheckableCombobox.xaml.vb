@@ -1,12 +1,12 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
 Imports System
 Imports System.Collections.ObjectModel
@@ -78,7 +78,7 @@ Namespace Common
 				If Not String.IsNullOrEmpty(Text) Then
 					Text &= ", "
 				End If
-				Text &= item.Content
+				Text &= item.Content.ToString()
 			Next item
 		End Sub
 
@@ -111,13 +111,7 @@ Namespace Common
 
 		Private Sub UpdateText()
 			Dim list = Items.Where(Function(x) x.IsChecked).ToList()
-
-			Text = String.Empty
-
-			For i = 0 To list.Count - 1
-				Text &= (If(i = 0, "", ", ")) + list(i).Content
-			Next i
-
+			Text = String.Join(", ", list.Select(Function(i) i.Content.ToString))
 			ToolTip = If(String.IsNullOrEmpty(Text), Nothing, Text)
 		End Sub
 	End Class

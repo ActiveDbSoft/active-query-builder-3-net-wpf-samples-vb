@@ -1,12 +1,12 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
 Imports System.Windows
 Imports System.Windows.Input
@@ -68,7 +68,7 @@ Namespace Common.DataViewerControl
 
 		Public Property PageSize() As Integer
 			Get
-				Return CInt(Math.Truncate(GetValue(PageSizeProperty)))
+				Return CInt(GetValue(PageSizeProperty))
 			End Get
 			Set(value As Integer)
 				SetValue(PageSizeProperty, value)
@@ -87,7 +87,7 @@ Namespace Common.DataViewerControl
 
 		Public Property CurrentPage() As Integer
 			Get
-				Return CInt(Math.Truncate(GetValue(CurrentPageProperty)))
+				Return CInt(GetValue(CurrentPageProperty))
 			End Get
 			Set(value As Integer)
 				SetValue(CurrentPageProperty, value)
@@ -111,7 +111,8 @@ Namespace Common.DataViewerControl
 
 		Public Shadows ReadOnly Property IsEnabled() As Boolean
 			Get
-				Return CheckBoxEnabled.IsChecked = True
+				Dim isChecked = CheckBoxEnabled.IsChecked
+				Return isChecked.HasValue AndAlso isChecked.Value = True
 			End Get
 		End Property
 
@@ -131,7 +132,8 @@ Namespace Common.DataViewerControl
 		End Sub
 
 		Private Sub CheckBoxEnabled_CheckedChanged(sender As Object, e As RoutedEventArgs)
-			ToggleEnabled(CheckBoxEnabled.IsChecked = True)
+			Dim isChecked = CheckBoxEnabled.IsChecked
+			ToggleEnabled(isChecked.HasValue AndAlso isChecked.Value = True)
 
 			OnEnabledPaginationChanged(e)
 		End Sub

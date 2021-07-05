@@ -8,9 +8,9 @@
              xmlns:dockManager="clr-namespace:ActiveQueryBuilder.View.WPF.CommonControls.DockManager;assembly=ActiveQueryBuilder.View.WPF"
              xmlns:criteriaBuilder="clr-namespace:ActiveQueryBuilder.View.WPF.CriteriaBuilder;assembly=ActiveQueryBuilder.View.WPF"
              xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
-             xmlns:common="clr-namespace:Common;assembly=GeneralAssembly_ext"
-             xmlns:dataViewerFastResultControl="clr-namespace:Common.DataViewerFastResultControl;assembly=GeneralAssembly_ext"
-             xmlns:dataViewerControl="clr-namespace:Common.DataViewerControl;assembly=GeneralAssembly_ext"
+             xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly_pro.wpf.vb"
+             xmlns:dataViewerFastResultControl="clr-namespace:GeneralAssembly.Common.DataViewerFastResultControl;assembly=GeneralAssembly_pro.wpf.vb"
+             xmlns:dataViewerControl="clr-namespace:GeneralAssembly.Common.DataViewerControl;assembly=GeneralAssembly_pro.wpf.vb"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -49,7 +49,7 @@
 
                     <Border Grid.Row="0" Padding="2,2,0,0" Background="#f0f0f0">
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="ButtonPropertise" ToolTip="Properties" Click="ButtonPropertise_OnClick" Style="{StaticResource StyleButtonMenu}">
+                            <Button x:Name="ButtonPropertise" ToolTip="Properties" Click="ButtonProperties_OnClick" Style="{StaticResource StyleButtonMenu}">
                                 <Image Source="../Resources/query_properties.png" Style="{StaticResource StyleImageButton}"/>
                             </Button>
 

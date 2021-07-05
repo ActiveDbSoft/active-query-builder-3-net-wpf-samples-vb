@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DatasourceFieldsLinkingDragnDropDemo"
-        xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.Wpf"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:DatasourceFieldsLinkingDragnDropDemo.Common"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
         mc:Ignorable="d"
         Title="Datasource Fields Linking Drag'n'Drop demo" Height="600" Width="800">
     <Grid>
@@ -34,7 +33,7 @@
                                         LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus"
                                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"/>
 
-        <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
+        <common:SqlErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
                          GoToErrorPosition="ErrorBox_OnGoToErrorPosition" RevertValidText="ErrorBox_OnRevertValidText"/>
 
         <TextBox Grid.Row="3" Margin="4" Background="{x:Static SystemColors.InfoBrush}" 

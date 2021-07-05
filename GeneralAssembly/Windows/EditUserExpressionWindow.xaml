@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:common="clr-namespace:Common"
+        xmlns:common="clr-namespace:GeneralAssembly.Common"
         mc:Ignorable="d"
         Title="Edit Predefined Conditions" Height="450" Width="862.812" ShowInTaskbar="False" WindowStyle="ToolWindow">
     <Window.Resources>

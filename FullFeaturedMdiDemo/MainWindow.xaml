@@ -2,9 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:databaseSchemaView="clr-namespace:ActiveQueryBuilder.View.WPF.DatabaseSchemaView;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:mdiControl="clr-namespace:MdiControl"
+        xmlns:mdiControl="clr-namespace:FullFeaturedMdiDemo.MdiControl"
         xmlns:userQueries="clr-namespace:ActiveQueryBuilder.View.WPF.UserQueries;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly_ext"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly_pro.wpf.vb"
         Title="Active Query Builder for .NET Professional WPF Edition - Full Featured Mdi Demo (C#)" Height="900" Width="1000" Icon="Resources/App.ico">
 
     <Window.Resources>

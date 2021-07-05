@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>SubQueryTextEditingDemo.wpf.vb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <Description>Active Query Builder 3 SubQueryTextEditing Demo</Description>
+    <RootNamespace>SubQueryTextEditingDemo</RootNamespace>
+
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <!-- metadata providers -->
+  <ItemGroup Condition="$(UseNugetAqbReferences)">
+    <PackageReference Include="ActiveQueryBuilder.MSSQLMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.ODBCMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.OLEDBMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.OracleNativeMetadataProvider" Version="$(Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(UseNugetAqbReferences)">
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\MSSQLMetadataProvider\MSSQLMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\ODBCMetadataProvider\ODBCMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\OLEDBMetadataProvider\OLEDBMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\OracleNativeMetadataProvider\OracleNativeMetadataProvider.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralAssembly\GeneralAssembly.wpf.vb.vbproj" />
+  </ItemGroup>
+
+</Project>

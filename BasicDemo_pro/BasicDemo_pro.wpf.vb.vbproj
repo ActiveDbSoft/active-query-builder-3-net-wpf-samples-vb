@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>BasicDemo_pro.wpf.vb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <Description>Active Query Builder 3 Basic Demo</Description>
+    <RootNamespace>BasicDemo</RootNamespace>
+
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralAssembly_pro\GeneralAssembly_pro.wpf.vb.vbproj" />
+  </ItemGroup>
+
+</Project>

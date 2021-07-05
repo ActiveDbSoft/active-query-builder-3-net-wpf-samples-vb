@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>SubQueryTextEditingDemo.wpf.vb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <Description>Active Query Builder 3 SubQueryTextEditing Demo</Description>
+    <RootNamespace>SubQueryTextEditingDemo</RootNamespace>
+
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <!-- database-specific metadata provider -->
+  <ItemGroup Condition="$(UseNugetAqbReferences)">
+    <PackageReference Include="ActiveQueryBuilder.MSSQLMetadataProvider" Version="$(Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(UseNugetAqbReferences)">
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\MSSQLMetadataProvider\MSSQLMetadataProvider.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralAssembly_pro\GeneralAssembly_pro.wpf.vb.vbproj" />
+  </ItemGroup>
+
+</Project>

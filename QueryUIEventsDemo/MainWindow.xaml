@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:QueryUIEventsDemo.Common"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
         Title="Query UI events demo" Height="800" Width="1010.169">
     <Grid>
         <Grid.RowDefinitions>
@@ -110,7 +110,7 @@
                                         HorizontalScrollBarVisibility="Auto"
                                         AcceptsReturn="True"/>
 
-        <common:ErrorBox Grid.Row="2" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="ErrorBox"
+        <common:SqlErrorBox Grid.Row="2" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="ErrorBox"
                          GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
                          RevertValidText="ErrorBox_OnRevertValidText"/>
 

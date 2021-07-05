@@ -1,22 +1,14 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System
-Imports System.Collections.ObjectModel
-Imports System.Collections.Specialized
-Imports System.Linq
-Imports System.Windows
-Imports System.Windows.Controls
-Imports System.Windows.Input
 Imports System.Windows.Markup
-Imports System.Windows.Media
 
 Namespace MdiControl
 	''' <summary>
@@ -34,7 +26,7 @@ Namespace MdiControl
 
 		Public Shared ReadOnly FocusedWindowProperty As DependencyProperty = DependencyProperty.Register("FocusedWindow", GetType(MdiChildWindow), GetType(MdiContainer), New PropertyMetadata(Nothing, AddressOf CallbackFocusedWindow))
 
-		Public Shadows Shared ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Brush), GetType(MdiContainer), New PropertyMetadata(SystemColors.ControlBrush, AddressOf CallBackBackground))
+		Public Shared Shadows ReadOnly BackgroundProperty As DependencyProperty = DependencyProperty.Register("Background", GetType(Windows.Media.Brush), GetType(MdiContainer), New PropertyMetadata(Windows.SystemColors.ControlBrush, AddressOf CallBackBackground))
 
 		Public Shared ReadOnly ActiveChildProperty As DependencyProperty = DependencyProperty.Register("ActiveChild", GetType(MdiChildWindow), GetType(MdiContainer), New PropertyMetadata(Nothing))
 
@@ -51,11 +43,11 @@ Namespace MdiControl
 
 		Public Event ActivatedChild As DependencyPropertyChangedEventHandler
 
-		Public Shadows Property Background() As Brush
+		Public Shadows Property Background() As Windows.Media.Brush
 			Get
-				Return DirectCast(GetValue(BackgroundProperty), Brush)
+				Return DirectCast(GetValue(BackgroundProperty), Windows.Media.Brush)
 			End Get
-			Set(value As Brush)
+			Set(value As Windows.Media.Brush)
 				SetValue(BackgroundProperty, value)
 			End Set
 		End Property
@@ -63,7 +55,7 @@ Namespace MdiControl
 		Private Shared Sub CallBackBackground(d As DependencyObject, e As DependencyPropertyChangedEventArgs)
 			Dim obj = TryCast(d, MdiContainer)
 			If obj IsNot Nothing Then
-				obj.ScrollViewerRoot.Background = DirectCast(e.NewValue, Brush)
+				obj.ScrollViewerRoot.Background = DirectCast(e.NewValue, Windows.Media.Brush)
 			End If
 		End Sub
 
@@ -135,7 +127,7 @@ Namespace MdiControl
 		End Sub
 
 		Public Sub LayoutMdi(mdiLayout As MdiLayout)
-			Dim point = New Point(0, 0)
+			Dim point = New Windows.Point(0, 0)
 
 			Select Case mdiLayout
 				Case MdiControl.MdiLayout.Cascade
@@ -256,8 +248,8 @@ Namespace MdiControl
 'INSTANT VB NOTE: The variable height was renamed since Visual Basic does not handle local variables named the same as class members well:
 				Dim height_Renamed = ScrollViewerRoot.ViewportHeight + (If(GridRoot.ActualHeight > ScrollViewerRoot.ViewportHeight, SystemParameters.HorizontalScrollBarHeight, 0))
 
-				mdiChild.SetLocation(New Point(0, 0))
-				mdiChild.SetSize(New Size(width_Renamed, height_Renamed))
+				mdiChild.SetLocation(New Windows.Point(0, 0))
+				mdiChild.SetSize(New Windows.Size(width_Renamed, height_Renamed))
 			Else
 				ScrollViewerRoot.VerticalScrollBarVisibility = ScrollBarVisibility.Auto
 				ScrollViewerRoot.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
@@ -274,7 +266,7 @@ Namespace MdiControl
 			Dim startX = collectionMinimizedWindow.Sum(Function(mdiChildWindow) mdiChildWindow.ActualWidth + 2)
 
 			If mdiChild.State = StateWindow.Minimized Then
-				mdiChild.SetLocation(New Point(startX, startY))
+				mdiChild.SetLocation(New Windows.Point(startX, startY))
 			End If
 
 			If Equals(FocusedWindow, mdiChild) Then
@@ -321,7 +313,7 @@ Namespace MdiControl
 				Return
 			End If
 
-			mdiChild.SetSize(New Size(ScrollViewerRoot.ActualWidth, ScrollViewerRoot.ActualHeight))
+			mdiChild.SetSize(New Windows.Size(ScrollViewerRoot.ActualWidth, ScrollViewerRoot.ActualHeight))
 		End Sub
 
 		Protected Overridable Sub OnActivatedChild(e As DependencyPropertyChangedEventArgs)

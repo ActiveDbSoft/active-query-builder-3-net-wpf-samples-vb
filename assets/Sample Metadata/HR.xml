@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.activequerybuilder.com/schemas/metadata2.xsd">
+	<schema name="HR" default="True">
+		<table name="REGIONS">
+			<field name="REGION_ID" primary_key="True" type_name="NUMBER" type="Decimal" size="22" precision="38" scale="127" nullable="False" />
+			<field name="REGION_NAME" type_name="VARCHAR2" type="String" size="25" />
+		</table>
+		<table name="COUNTRIES">
+			<description>country table. Contains 25 rows. References with locations table.</description>
+			<field name="COUNTRY_ID" primary_key="True" type_name="CHAR" type="String" size="2" nullable="False">
+				<description>Primary key of countries table.</description>
+			</field>
+			<field name="COUNTRY_NAME" type_name="VARCHAR2" type="String" size="40">
+				<description>Country name</description>
+			</field>
+			<field name="REGION_ID" type_name="NUMBER" type="Decimal" size="22" precision="38" scale="127">
+				<description>Region ID for the country. Foreign key to region_id column in the departments table.</description>
+			</field>
+			<foreignkey>
+				<referenced_object>
+					<name>REGIONS</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="REGION_ID" referenced_field="REGION_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+		</table>
+		<table name="LOCATIONS">
+			<description>Locations table that contains specific address of a specific office,
+warehouse, and/or production site of a company. Does not store addresses /
+locations of customers. Contains 23 rows; references with the
+departments and countries tables. </description>
+			<field name="LOCATION_ID" primary_key="True" type_name="NUMBER" type="Int16" size="22" precision="4" nullable="False">
+				<description>Primary key of locations table</description>
+			</field>
+			<field name="STREET_ADDRESS" type_name="VARCHAR2" type="String" size="40">
+				<description>Street address of an office, warehouse, or production site of a company.
+Contains building number and street name</description>
+			</field>
+			<field name="POSTAL_CODE" type_name="VARCHAR2" type="String" size="12">
+				<description>Postal code of the location of an office, warehouse, or production site
+of a company. </description>
+			</field>
+			<field name="CITY" type_name="VARCHAR2" type="String" size="30" nullable="False">
+				<description>A not null column that shows city where an office, warehouse, or
+production site of a company is located. </description>
+			</field>
+			<field name="STATE_PROVINCE" type_name="VARCHAR2" type="String" size="25">
+				<description>State or Province where an office, warehouse, or production site of a
+company is located.</description>
+			</field>
+			<field name="COUNTRY_ID" type_name="CHAR" type="String" size="2">
+				<description>Country where an office, warehouse, or production site of a company is
+located. Foreign key to country_id column of the countries table.</description>
+			</field>
+			<foreignkey>
+				<referenced_object>
+					<name>COUNTRIES</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="COUNTRY_ID" referenced_field="COUNTRY_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+		</table>
+		<table name="DEPARTMENTS">
+			<description>Departments table that shows details of departments where employees
+work. Contains 27 rows; references with locations, employees, and job_history tables.</description>
+			<field name="DEPARTMENT_ID" primary_key="True" type_name="NUMBER" type="Int16" size="22" precision="4" nullable="False">
+				<description>Primary key column of departments table.</description>
+			</field>
+			<field name="DEPARTMENT_NAME" type_name="VARCHAR2" type="String" size="30" nullable="False">
+				<description>A not null column that shows name of a department. Administration,
+Marketing, Purchasing, Human Resources, Shipping, IT, Executive, Public
+Relations, Sales, Finance, and Accounting. </description>
+			</field>
+			<field name="MANAGER_ID" type_name="NUMBER" type="Int32" size="22" precision="6">
+				<description>Manager_id of a department. Foreign key to employee_id column of employees table. The manager_id column of the employee table references this column.</description>
+			</field>
+			<field name="LOCATION_ID" type_name="NUMBER" type="Int16" size="22" precision="4">
+				<description>Location id where a department is located. Foreign key to location_id column of locations table.</description>
+			</field>
+			<foreignkey>
+				<referenced_object>
+					<name>LOCATIONS</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="LOCATION_ID" referenced_field="LOCATION_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+			<foreignkey>
+				<referenced_object>
+					<name>EMPLOYEES</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="MANAGER_ID" referenced_field="EMPLOYEE_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+		</table>
+		<table name="JOBS">
+			<description>jobs table with job titles and salary ranges. Contains 19 rows.
+References with employees and job_history table.</description>
+			<field name="JOB_ID" primary_key="True" type_name="VARCHAR2" type="String" size="10" nullable="False">
+				<description>Primary key of jobs table.</description>
+			</field>
+			<field name="JOB_TITLE" type_name="VARCHAR2" type="String" size="35" nullable="False">
+				<description>A not null column that shows job title, e.g. AD_VP, FI_ACCOUNTANT</description>
+			</field>
+			<field name="MIN_SALARY" type_name="NUMBER" type="Int32" size="22" precision="6">
+				<description>Minimum salary for a job title.</description>
+			</field>
+			<field name="MAX_SALARY" type_name="NUMBER" type="Int32" size="22" precision="6">
+				<description>Maximum salary for a job title</description>
+			</field>
+		</table>
+		<table name="EMPLOYEES">
+			<description>employees table. Contains 107 rows. References with departments,
+jobs, job_history tables. Contains a self reference.</description>
+			<field name="EMPLOYEE_ID" primary_key="True" type_name="NUMBER" type="Int32" size="22" precision="6" nullable="False">
+				<description>Primary key of employees table.</description>
+			</field>
+			<field name="FIRST_NAME" type_name="VARCHAR2" type="String" size="20">
+				<description>First name of the employee. A not null column.</description>
+			</field>
+			<field name="LAST_NAME" type_name="VARCHAR2" type="String" size="25" nullable="False">
+				<description>Last name of the employee. A not null column.</description>
+			</field>
+			<field name="EMAIL" type_name="VARCHAR2" type="String" size="25" nullable="False">
+				<description>Email id of the employee</description>
+			</field>
+			<field name="PHONE_NUMBER" type_name="VARCHAR2" type="String" size="20">
+				<description>Phone number of the employee; includes country code and area code</description>
+			</field>
+			<field name="HIRE_DATE" type_name="DATE" type="DateTime" size="7" nullable="False">
+				<description>Date when the employee started on this job. A not null column.</description>
+			</field>
+			<field name="JOB_ID" type_name="VARCHAR2" type="String" size="10" nullable="False">
+				<description>Current job of the employee; foreign key to job_id column of the
+jobs table. A not null column.</description>
+			</field>
+			<field name="SALARY" type_name="NUMBER" type="Double" size="22" precision="8" scale="2">
+				<description>Monthly salary of the employee. Must be greater
+than zero (enforced by constraint emp_salary_min)</description>
+			</field>
+			<field name="COMMISSION_PCT" type_name="NUMBER" type="Single" size="22" precision="2" scale="2">
+				<description>Commission percentage of the employee; Only employees in sales
+department elgible for commission percentage</description>
+			</field>
+			<field name="MANAGER_ID" type_name="NUMBER" type="Int32" size="22" precision="6">
+				<description>Manager id of the employee; has same domain as manager_id in
+departments table. Foreign key to employee_id column of employees table.
+(useful for reflexive joins and CONNECT BY query)</description>
+			</field>
+			<field name="DEPARTMENT_ID" type_name="NUMBER" type="Int16" size="22" precision="4">
+				<description>Department id where employee works; foreign key to department_id
+column of the departments table</description>
+			</field>
+			<foreignkey>
+				<referenced_object>
+					<name>DEPARTMENTS</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="DEPARTMENT_ID" referenced_field="DEPARTMENT_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+			<foreignkey>
+				<referenced_object>
+					<name>JOBS</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="JOB_ID" referenced_field="JOB_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+			<foreignkey>
+				<referenced_object>
+					<name>EMPLOYEES</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="MANAGER_ID" referenced_field="EMPLOYEE_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+		</table>
+		<table name="JOB_HISTORY">
+			<description>Table that stores job history of the employees. If an employee
+changes departments within the job or changes jobs within the department,
+new rows get inserted into this table with old job information of the
+employee. Contains a complex primary key: employee_id+start_date.
+Contains 25 rows. References with jobs, employees, and departments tables.</description>
+			<field name="EMPLOYEE_ID" primary_key="True" type_name="NUMBER" type="Int32" size="22" precision="6" nullable="False">
+				<description>A not null column in the complex primary key employee_id+start_date.
+Foreign key to employee_id column of the employee table</description>
+			</field>
+			<field name="START_DATE" primary_key="True" type_name="DATE" type="DateTime" size="7" nullable="False">
+				<description>A not null column in the complex primary key employee_id+start_date.
+Must be less than the end_date of the job_history table. (enforced by
+constraint jhist_date_interval)</description>
+			</field>
+			<field name="END_DATE" type_name="DATE" type="DateTime" size="7" nullable="False">
+				<description>Last day of the employee in this job role. A not null column. Must be
+greater than the start_date of the job_history table.
+(enforced by constraint jhist_date_interval)</description>
+			</field>
+			<field name="JOB_ID" type_name="VARCHAR2" type="String" size="10" nullable="False">
+				<description>Job role in which the employee worked in the past; foreign key to
+job_id column in the jobs table. A not null column.</description>
+			</field>
+			<field name="DEPARTMENT_ID" type_name="NUMBER" type="Int16" size="22" precision="4">
+				<description>Department id in which the employee worked in the past; foreign key to deparment_id column in the departments table</description>
+			</field>
+			<foreignkey>
+				<referenced_object>
+					<name>JOBS</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="JOB_ID" referenced_field="JOB_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+			<foreignkey>
+				<referenced_object>
+					<name>EMPLOYEES</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="EMPLOYEE_ID" referenced_field="EMPLOYEE_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+			<foreignkey>
+				<referenced_object>
+					<name>DEPARTMENTS</name>
+					<name>HR</name>
+				</referenced_object>
+				<referencing_field name="DEPARTMENT_ID" referenced_field="DEPARTMENT_ID" />
+				<referencing_cardinality>Many</referencing_cardinality>
+				<referenced_cardinality>One</referenced_cardinality>
+			</foreignkey>
+		</table>
+		<view name="EMP_DETAILS_VIEW">
+			<field name="EMPLOYEE_ID" type_name="NUMBER" type="Int32" size="22" precision="6" nullable="False" />
+			<field name="JOB_ID" type_name="VARCHAR2" type="String" size="10" nullable="False" />
+			<field name="MANAGER_ID" type_name="NUMBER" type="Int32" size="22" precision="6" />
+			<field name="DEPARTMENT_ID" type_name="NUMBER" type="Int16" size="22" precision="4" />
+			<field name="LOCATION_ID" type_name="NUMBER" type="Int16" size="22" precision="4" />
+			<field name="COUNTRY_ID" type_name="CHAR" type="String" size="2" />
+			<field name="FIRST_NAME" type_name="VARCHAR2" type="String" size="20" />
+			<field name="LAST_NAME" type_name="VARCHAR2" type="String" size="25" nullable="False" />
+			<field name="SALARY" type_name="NUMBER" type="Double" size="22" precision="8" scale="2" />
+			<field name="COMMISSION_PCT" type_name="NUMBER" type="Single" size="22" precision="2" scale="2" />
+			<field name="DEPARTMENT_NAME" type_name="VARCHAR2" type="String" size="30" nullable="False" />
+			<field name="JOB_TITLE" type_name="VARCHAR2" type="String" size="35" nullable="False" />
+			<field name="CITY" type_name="VARCHAR2" type="String" size="30" nullable="False" />
+			<field name="STATE_PROVINCE" type_name="VARCHAR2" type="String" size="25" />
+			<field name="COUNTRY_NAME" type_name="VARCHAR2" type="String" size="40" />
+			<field name="REGION_NAME" type_name="VARCHAR2" type="String" size="25" />
+		</view>
+	</schema>
+</metadata>

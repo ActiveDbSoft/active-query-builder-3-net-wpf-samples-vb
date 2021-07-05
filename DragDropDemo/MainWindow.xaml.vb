@@ -1,12 +1,12 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
 Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View
@@ -34,27 +34,27 @@ Class MainWindow
 
 	Private Sub ListBox1_OnMouseDown(sender As Object, e As MouseButtonEventArgs)
 		' Prepare drag'n'drop:
-		Dim mousePosition As Point = e.GetPosition(DirectCast(sender, FrameworkElement))
+		Dim mousePosition = e.GetPosition(DirectCast(sender, FrameworkElement))
 
 		If IsContainsItemAtPoint(mousePosition) Then
 
-			Dim dragSize As Size = New Size(SystemParameters.MinimumHorizontalDragDistance, SystemParameters.MinimumVerticalDragDistance)
-			_dragBoxFromMouseDown = New Rect(New Point(mousePosition.X - (dragSize.Width / 2), mousePosition.Y - (dragSize.Height / 2)), dragSize)
+			Dim dragSize = New Windows.Size(SystemParameters.MinimumHorizontalDragDistance, SystemParameters.MinimumVerticalDragDistance)
+			_dragBoxFromMouseDown = New Rect(New Windows.Point(mousePosition.X - (dragSize.Width / 2), mousePosition.Y - (dragSize.Height / 2)), dragSize)
 		Else
 			_dragBoxFromMouseDown = Rect.Empty
 		End If
 	End Sub
 
-	Private Function IsContainsItemAtPoint(target As Point) As Boolean
+	Private Function IsContainsItemAtPoint(target As Windows.Point) As Boolean
 		Dim answer As Boolean = False
 
-		For i As Int16 = 0 To ListBox1.Items.Count - 1
+		For i = 0 To ListBox1.Items.Count - 1
 			Dim item As ListBoxItem = DirectCast(ListBox1.ItemContainerGenerator.ContainerFromIndex(i), ListBoxItem)
 			If item Is Nothing Then
 				Continue For
 			End If
 
-			Dim rect As Rect = New Rect(item.TranslatePoint(New Point(0, 0), ListBox1), New Size(item.ActualWidth, item.ActualHeight))
+			Dim rect As Rect = New Rect(item.TranslatePoint(New Windows.Point(0, 0), ListBox1), New Windows.Size(item.ActualWidth, item.ActualHeight))
 
 			If Not rect.Contains(target) Then
 				Continue For
@@ -82,7 +82,7 @@ Class MainWindow
 
 	Private Sub ListBox1_OnMouseMove(sender As Object, e As MouseEventArgs)
 		' Do drag:
-		Dim mousePosition As Point = e.GetPosition(DirectCast(sender, FrameworkElement))
+		Dim mousePosition = e.GetPosition(DirectCast(sender, FrameworkElement))
 		If ListBox1.SelectedIndex = -1 Then
 			Return
 		End If

@@ -1,21 +1,15 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System
-Imports System.Collections.Generic
-Imports System.ComponentModel
-Imports System.Linq
-Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.DatabaseSchemaView
-Imports ActiveQueryBuilder.View.WPF
-Imports Common
+Imports GeneralAssembly.Common
 
 Namespace QueryBuilderProperties
 	''' <summary>
@@ -73,7 +67,7 @@ Namespace QueryBuilderProperties
 			cmbDefaultExpandLevel.ClearCheckedItems()
 			Dim decomposed = DecomposeEnum(value)
 			For i As Integer = 0 To cmbDefaultExpandLevel.Items.Count - 1
-				If decomposed.Contains(CInt(Math.Truncate(cmbDefaultExpandLevel.Items(i).Content))) Then
+				If decomposed.Contains(CInt(cmbDefaultExpandLevel.Items(i).Content)) Then
 					cmbDefaultExpandLevel.SetItemChecked(i, True)
 				End If
 			Next i
@@ -97,7 +91,7 @@ Namespace QueryBuilderProperties
 			Dim result = New List(Of System.Enum)()
 			For Each value In values
 				' filter unity items
-				If IsDegreeOf2(CInt(Math.Truncate(value))) Then
+				If IsDegreeOf2(CInt(value)) Then
 					result.Add(CType(value, [Enum]))
 				End If
 			Next value
@@ -149,9 +143,9 @@ Namespace QueryBuilderProperties
 
 			For i As Integer = 0 To cmbDefaultExpandLevel.Items.Count - 1
 				If cmbDefaultExpandLevel.IsItemChecked(i) Then
-					intValue = intValue Or CInt(Math.Truncate(cmbDefaultExpandLevel.Items(i).Content))
+					intValue = intValue Or CInt(cmbDefaultExpandLevel.Items(i).Content)
 				Else
-					intValue = intValue And Not CInt(Math.Truncate(cmbDefaultExpandLevel.Items(i).Content))
+					intValue = intValue And Not CInt(cmbDefaultExpandLevel.Items(i).Content)
 				End If
 			Next i
 

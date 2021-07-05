@@ -1,21 +1,16 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports System.Data
 Imports System.Data.Odbc
 Imports System.Data.OleDb
-Imports System.Data.OracleClient
 Imports System.Data.SqlClient
-Imports System.Windows
-Imports ActiveQueryBuilder.Core
-Imports ActiveQueryBuilder.View.WPF
 Imports LoadMetadataDemo.ConnectionWindows
 
 ''' <summary>
@@ -299,22 +294,6 @@ Public Partial Class MainWindow
 			End If
 
 			_dbConnection = New SqlConnection(f.ConnectionString)
-		End If
-
-	End Sub
-
-	Private Sub connectToOracleServerMenuItem_Click(sender As Object, e As EventArgs)
-		' Connect to Oracle Server
-
-		Dim f As New OracleConnectionWindow()
-
-		If f.ShowDialog() = True Then
-			If _dbConnection IsNot Nothing Then
-				_dbConnection.Close()
-				_dbConnection.Dispose()
-			End If
-
-			_dbConnection = New OracleConnection(f.ConnectionString)
 		End If
 
 	End Sub

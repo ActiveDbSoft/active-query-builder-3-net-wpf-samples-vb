@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>GeneralAssembly_pro.wpf.vb</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <Description>Active Query Builder 3 extended full-featured demos common parts</Description>
+    <RootNamespace>GeneralAssembly</RootNamespace>
+
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="My Project\Resources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="My Project\Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- metadata providers -->
+  <ItemGroup Condition="$(UseNugetAqbReferences)">
+    <PackageReference Include="ActiveQueryBuilder.AdvantageMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.FirebirdMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.MSSQLMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.MySQLMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.ODBCMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.OLEDBMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.OracleNativeMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.PostgreSQLMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.SQLiteMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.SybaseMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.UniversalMetadataProvider" Version="$(Version)" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(UseNugetAqbReferences)">
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\AdvantageMetadataProvider\AdvantageMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\FirebirdMetadataProvider\FirebirdMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\MSSQLMetadataProvider\MSSQLMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\MySQLMetadataProvider\MySQLMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\ODBCMetadataProvider\ODBCMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\OLEDBMetadataProvider\OLEDBMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\OracleNativeMetadataProvider\OracleNativeMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\PostgreSQLMetadataProvider\PostgreSQLMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\SQLiteMetadataProvider\SQLiteMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\SybaseMetadataProvider\SybaseMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\UniversalMetadataProvider\UniversalMetadataProvider.csproj" />
+  </ItemGroup>
+
+</Project>

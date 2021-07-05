@@ -1,20 +1,22 @@
-﻿<Window  x:Class="MainWindow"
+﻿<Window x:Class="MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:navigationBar="clr-namespace:ActiveQueryBuilder.View.WPF.NavigationBar;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SeparatedComponents"
         xmlns:queryView="clr-namespace:ActiveQueryBuilder.View.WPF.QueryView;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:expressionEditor="clr-namespace:ActiveQueryBuilder.View.WPF.ExpressionEditor;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:databaseSchemaView="clr-namespace:ActiveQueryBuilder.View.WPF.DatabaseSchemaView;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly_ext"
-
-        Title="SeparatedComponents Demo" Height="658" Width="950">
+        xmlns:navigationBar="clr-namespace:ActiveQueryBuilder.View.WPF.NavigationBar;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly_pro.wpf.vb"
+        mc:Ignorable="d"
+       Title="SeparatedComponents Demo" Height="658" Width="950">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <Menu VerticalAlignment="Top" Grid.Row="0">
             <MenuItem Header="Metadata">
                 <MenuItem Header="Load Metadata from XML..." Click="MenuItemLoadMetadata_OnClick"/>
@@ -46,9 +48,6 @@
                         <queryView:QueryView.AddObjectDialog>
                             <queryView:AddObjectDialog/>
                         </queryView:QueryView.AddObjectDialog>
-                        <queryView:QueryView.ExpressionEditor>
-                            <expressionEditor:ExpressionEditor/>
-                        </queryView:QueryView.ExpressionEditor>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
@@ -57,14 +56,15 @@
                         <queryView:QueryColumnListControl Grid.Row="1" Height="116" Margin="4,0,4,4"/>
                     </queryView:QueryView>
                 </Border>
-                
+
             </Grid>
             <databaseSchemaView:DatabaseSchemaView Grid.Row="0" Grid.RowSpan="2" 
                                                    Grid.Column="0" VerticalAlignment="Stretch" Width="236" BorderThickness="1"
                                                    BorderBrush="Gray" x:Name="databaseSchemaView1" Focusable="True"/>
         </Grid>
-        <expressionEditor:SqlTextEditor Grid.Row="2" Height="93" Margin="4" Background="#404040" Foreground="White" Text="sqlTextEditor"
-                                        x:Name="sqlTextEditor" LostKeyboardFocus="SqlTextEditor_OnLostFocus" TextChanged="SqlTextEditor_OnTextChanged"/>
-        <common:SqlErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox" GoToErrorPosition="ErrorBox_OnGoToErrorPosition" RevertValidText="ErrorBox_OnRevertValidText"/>
+        <TextBox Grid.Row="2" x:Name="textBox1" Height="93" Margin="4" Text="textBox1" LostFocus="TextBox1_LostFocus" TextChanged="TextBox1_OnTextChanged"/>
+        <common:SqlErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
+                         GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
+                         RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
 </Window>

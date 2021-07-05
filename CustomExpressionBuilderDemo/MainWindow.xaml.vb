@@ -1,14 +1,13 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.QueryView
 
 Class MainWindow
@@ -28,7 +27,7 @@ Class MainWindow
 
         ' Fill metadata container from the XML file. (For demonstration purposes.)
         Try
-            QBuilder.QueryColumnListOptions.UseCustomExpressionBuilder = (AffectedColumns.ConditionColumns & AffectedColumns.ExpressionColumn)
+            QBuilder.QueryColumnListOptions.UseCustomExpressionBuilder = AffectedColumns.ConditionColumns And AffectedColumns.ExpressionColumn
             QBuilder.MetadataLoadingOptions.OfflineMode = True
             QBuilder.MetadataContainer.ImportFromXML("Northwind.xml")
             QBuilder.InitializeDatabaseSchemaTree()
@@ -59,23 +58,17 @@ Class MainWindow
         End Try
     End Sub
 
-    Private Sub QBuilder_OnCustomExpressionBuilder(querycolumnlistitem As QueryColumnListItem, conditionIndex As Integer, expression As String)
+    Private Sub QBuilder_OnCustomExpressionBuilder(ByVal sender As Object, ByVal e As ActiveQueryBuilder.View.QueryView.ExpressionEditorParameters)
         Dim msg As MessageContainer = New MessageContainer(Me) With {
-            .Title = "Edit " & (If(conditionIndex <> -1, "condition", "expression")),
-            .TextContent = expression
+            .Title = "Edit expression",
+            .TextContent = e.OldExpression
         }
         If msg.ShowDialog() <> True Then
             Return
         End If
 
         ' Update the criteria list with new expression text.
-        If conditionIndex > -1 Then
-            ' it's one of condition columns
-            querycolumnlistitem.ConditionStrings(conditionIndex) = msg.TextContent
-        Else
-            ' it's the Expression column
-            querycolumnlistitem.ExpressionString = msg.TextContent
-        End If
+        e.NewExpression = msg.TextContent
     End Sub
 
     Public Class MessageContainer

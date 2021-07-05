@@ -1,0 +1,112 @@
+﻿<Window x:Class="DatabaseConnectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        Title="Database Connection" Height="360" Width="410" WindowStartupLocation="CenterOwner" 
+        Background="{x:Static SystemColors.ControlBrush}" ShowInTaskbar="False">
+
+    <Grid Margin="10" Background="{x:Static SystemColors.ControlBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row ="0" Background="{x:Static SystemColors.InfoBrush}" Margin="0,0,0,5" x:Name="GridHint">
+            <TextBlock Text="To work with this demo you must establish connection to a database to extract metadata and be able to execute SQL queries. Alternatively you can load metadata from the pre-generated XML file."
+                       Margin="5" TextWrapping="Wrap" FontSize="11" FontFamily="Tahoma"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TabControl Grid.Column="0" x:Name="TabControl1">
+                    <TabItem Header="Database Connections">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <DataGrid Background="White" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeRows="False"
+                                  CanUserDeleteRows="False"  CanUserSortColumns="False" Grid.Column="0" Margin="8,8,0,8" 
+                                  SelectionMode="Single" SelectionUnit="FullRow" x:Name="LvConnections" AutoGenerateColumns="False"
+                                  VerticalGridLinesBrush="#e4e5e7" HorizontalGridLinesBrush="Transparent">
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Type" Width="*" Binding="{Binding Type}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <StackPanel Grid.Column="1" Margin="8">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Width" Value="73"/>
+                                        <Setter Property="Height" Value="21"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button Content="Add..." Margin="0,0,0,8" x:Name="ButtonAddConnection" Click="ButtonAddConnection_OnClick"/>
+                                <Button Content="Remove"  Margin="0,0,0,8" IsEnabled="False" x:Name="ButtonRemoveConnection" Click="ButtonRemoveConnection_OnClick"/>
+                                <Button Content="Configure..." IsEnabled="False" x:Name="ButtonConfigureConnection" Click="ButtonConfigureConnection_OnClick"/>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Saved XML metadata">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <DataGrid Background="White" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeRows="False"
+                                  CanUserDeleteRows="False"  CanUserSortColumns="False" Grid.Column="0" Margin="8,8,0,8" 
+                                  SelectionMode="Single" SelectionUnit="FullRow" x:Name="LvXmlFiles" AutoGenerateColumns="False" 
+                                  VerticalGridLinesBrush="#e4e5e7" HorizontalGridLinesBrush="Transparent">
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Type" Width="*" Binding="{Binding Type}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <StackPanel Grid.Column="1" Margin="8">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Width" Value="73"/>
+                                        <Setter Property="Height" Value="21"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button Content="Add..." Margin="0,0,0,8" x:Name="ButtonAddXml" Click="ButtonAddXml_OnClick"/>
+                                <Button Content="Remove"  Margin="0,0,0,8" IsEnabled="False" x:Name="ButtonRemoveXml" Click="ButtonRemoveXml_OnClick"/>
+                                <Button Content="Configure..." IsEnabled="False" x:Name="ButtonConfigureXml" Click="ButtonConfigureXml_OnClick"/>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" Margin="0,8,0,0">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Height" Value="21"/>
+                        <Setter Property="Width" Value="73"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Content="OK" Margin="0,0,8,0" x:Name="BtnOk" Click="BtnOk_OnClick"/>
+                <Button Content="Cancel" Click="ButtonBaseClose_OnClick"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+    
+</Window>

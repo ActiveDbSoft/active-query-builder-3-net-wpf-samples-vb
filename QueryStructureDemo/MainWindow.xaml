@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:Common;assembly=GeneralAssembly"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
 
         mc:Ignorable="d" Title="Query Structure Demo" Height="679" Width="898" Icon="App.ico">
     

@@ -1,147 +1,142 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
-
-Imports System.Collections.ObjectModel
-Imports System.ComponentModel
-Imports ActiveQueryBuilder.Core
 Imports ActiveQueryBuilder.View.QueryView
-Imports Common
-
+Imports GeneralAssembly.Common
 
 Namespace Windows
-	''' <summary>
-	''' Interaction logic for EditUserExpressionWindow.xaml
-	''' </summary>
-	Partial Public Class EditUserExpressionWindow
-		Private _queryView As IQueryView
-		Private _selectedPredefinedCondition As UserExpressionVisualItem
+    ''' <summary>
+    ''' Interaction logic for EditUserExpressionWindow.xaml
+    ''' </summary>
+    Partial Public Class EditUserExpressionWindow
+        Private _queryView As IQueryView
+        Private _selectedPredefinedCondition As UserExpressionVisualItem
 
-		Private ReadOnly _source As New ObservableCollection(Of UserExpressionVisualItem)()
+        Private ReadOnly _source As New ObservableCollection(Of UserExpressionVisualItem)()
 
         Public Sub New()
-			InitializeComponent()
+            InitializeComponent()
 
-			ListBoxUserExpressions.ItemsSource = _source
+            ListBoxUserExpressions.ItemsSource = _source
 
-'INSTANT VB NOTE: The variable name was renamed since Visual Basic does not handle local variables named the same as class members well:
-			For Each name_Renamed In System.Enum.GetNames(GetType(DbType))
-				ComboboxDbTypes.Items.Add(New SelectableItem(name_Renamed))
-			Next name_Renamed
-		End Sub
+            'INSTANT VB NOTE: The variable name was renamed since Visual Basic does not handle local variables named the same as class members well:
+            For Each name_Renamed In System.Enum.GetNames(GetType(DbType))
+                ComboboxDbTypes.Items.Add(New SelectableItem(name_Renamed))
+            Next name_Renamed
+        End Sub
 
-		Public Sub Load(queryView As IQueryView)
-			_source.Clear()
-			_selectedPredefinedCondition = Nothing
+        Public Sub Load(queryView As IQueryView)
+            _source.Clear()
+            _selectedPredefinedCondition = Nothing
 
-			If _queryView Is Nothing Then
-				_queryView = queryView
-			End If
+            If _queryView Is Nothing Then
+                _queryView = queryView
+            End If
 
-			If _queryView Is Nothing Then
-				Return
-			End If
+            If _queryView Is Nothing Then
+                Return
+            End If
 
-			For Each expression In _queryView.UserPredefinedConditions
-				_source.Add(New UserExpressionVisualItem(expression))
-			Next expression
-		End Sub
+            For Each expression In _queryView.UserPredefinedConditions
+                _source.Add(New UserExpressionVisualItem(expression))
+            Next expression
+        End Sub
 
-		Private Sub ButtonSaveForm_OnClick(sender As Object, e As RoutedEventArgs)
-			SaveUserExpression()
-		End Sub
+        Private Sub ButtonSaveForm_OnClick(sender As Object, e As RoutedEventArgs)
+            SaveUserExpression()
+        End Sub
 
-		Private Function SaveUserExpression() As Boolean
-			If _queryView Is Nothing Then
-				Return False
-			End If
+        Private Function SaveUserExpression() As Boolean
+            If _queryView Is Nothing Then
+                Return False
+            End If
 
-			Try
-                Dim token as Token = Nothing
-				Dim result = _queryView.Query.SQLContext.ParseLogicalExpression(TextBoxExpression.Text, False, False,  token)
-				If result Is Nothing AndAlso token IsNot Nothing Then
-					Throw New SQLParsingException(String.Format(Helpers.Localizer.GetString(NameOf(LocalizableConstantsUI.strInvalidCondition), ActiveQueryBuilder.View.WPF.Helpers.ConvertLanguageFromNative(Language), LocalizableConstantsUI.strInvalidCondition), TextBoxExpression.Text), token)
-				End If
-			Catch exception As Exception
-				MessageBox.Show(exception.Message, "Invalid SQL", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.None)
+            Try
+                Dim token As Token = Nothing
+                Dim result = _queryView.Query.SQLContext.ParseLogicalExpression(TextBoxExpression.Text, False, False, token)
+                If result Is Nothing AndAlso token IsNot Nothing Then
+                    Throw New SQLParsingException(String.Format(ActiveQueryBuilder.Core.Helpers.Localizer.GetString(NameOf(LocalizableConstantsUI.strInvalidCondition), WPF.Helpers.ConvertLanguageFromNative(Language), LocalizableConstantsUI.strInvalidCondition), TextBoxExpression.Text), token)
+                End If
+            Catch exception As Exception
+                MessageBox.Show(exception.Message, "Invalid SQL", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.None)
 
-				TextBoxExpression.Focus()
-				Keyboard.Focus(TextBoxExpression)
-				Return False
-			End Try
+                TextBoxExpression.Focus()
+                Keyboard.Focus(TextBoxExpression)
+                Return False
+            End Try
 
-			Dim listTypes = ComboboxDbTypes.Items.Where(Function(x) x.IsChecked).Select(Function(selectableItem) DirectCast(System.Enum.Parse(GetType(DbType), selectableItem.Content.ToString(), True), DbType)).ToList()
+            Dim listTypes = ComboboxDbTypes.Items.Where(Function(x) x.IsChecked).Select(Function(selectableItem) DirectCast(System.Enum.Parse(GetType(DbType), selectableItem.Content.ToString(), True), DbType)).ToList()
 
-			Dim userExpression = New PredefinedCondition(TextBoxCaption.Text, listTypes, TextBoxExpression.Text, CheckBoxIsNeedEdit.IsChecked = True)
+            Dim userExpression = New PredefinedCondition(TextBoxCaption.Text, listTypes, TextBoxExpression.Text, CheckBoxIsNeedEdit.IsChecked.HasValue AndAlso CheckBoxIsNeedEdit.IsChecked.Value = True)
 
-			Dim index = -1
-			If _selectedPredefinedCondition IsNot Nothing Then
-				index = _queryView.UserPredefinedConditions.IndexOf(_selectedPredefinedCondition.PredefinedCondition)
-				_queryView.UserPredefinedConditions.Remove(_selectedPredefinedCondition.PredefinedCondition)
-			End If
+            Dim index = -1
+            If _selectedPredefinedCondition IsNot Nothing Then
+                index = _queryView.UserPredefinedConditions.IndexOf(_selectedPredefinedCondition.PredefinedCondition)
+                _queryView.UserPredefinedConditions.Remove(_selectedPredefinedCondition.PredefinedCondition)
+            End If
 
-			If _queryView.UserPredefinedConditions.Any(Function(x) String.Compare(x.Caption, TextBoxCaption.Text, StringComparison.InvariantCultureIgnoreCase) = 0) Then
-				MessageBox.Show($"Condition with caption ""{TextBoxCaption.Text}"" already exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK)
+            If _queryView.UserPredefinedConditions.Any(Function(x) String.Compare(x.Caption, TextBoxCaption.Text, StringComparison.InvariantCultureIgnoreCase) = 0) Then
+                MessageBox.Show($"Condition with caption ""{TextBoxCaption.Text}"" already exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK)
 
-				Keyboard.Focus(TextBoxCaption)
+                Keyboard.Focus(TextBoxCaption)
 
-				Return False
-			End If
+                Return False
+            End If
 
-			Try
-				If index <> -1 Then
-					_queryView.UserPredefinedConditions.Insert(index, userExpression)
-				Else
-					_queryView.UserPredefinedConditions.Add(userExpression)
-				End If
-			Catch ex As Exception
-				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
-				Return False
-			End Try
+            Try
+                If index <> -1 Then
+                    _queryView.UserPredefinedConditions.Insert(index, userExpression)
+                Else
+                    _queryView.UserPredefinedConditions.Add(userExpression)
+                End If
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+                Return False
+            End Try
 
-			Load(Nothing)
+            Load(Nothing)
 
-			ResetForm()
+            ResetForm()
 
-			If index >= 0 Then
-				ListBoxUserExpressions.SelectedIndex = index
-			End If
+            If index >= 0 Then
+                ListBoxUserExpressions.SelectedIndex = index
+            End If
             Return True
-		End Function
+        End Function
 
-		Private Sub RemoveSelectedUserExpression()
-			Dim itemForRemove = ListBoxUserExpressions.SelectedItems.OfType(Of UserExpressionVisualItem)().ToList()
+        Private Sub RemoveSelectedUserExpression()
+            Dim itemForRemove = ListBoxUserExpressions.SelectedItems.OfType(Of UserExpressionVisualItem)().ToList()
 
-			For Each item In itemForRemove
-				_queryView.UserPredefinedConditions.Remove(item.PredefinedCondition)
-			Next item
+            For Each item In itemForRemove
+                _queryView.UserPredefinedConditions.Remove(item.PredefinedCondition)
+            Next item
 
-			Load(Nothing)
+            Load(Nothing)
 
-			ResetForm()
-		End Sub
+            ResetForm()
+        End Sub
 
-		Private Sub ResetForm()
-			_selectedPredefinedCondition = Nothing
-			TextBoxCaption.Text = String.Empty
-			TextBoxExpression.Text = String.Empty
-			CheckBoxIsNeedEdit.IsChecked = False
+        Private Sub ResetForm()
+            _selectedPredefinedCondition = Nothing
+            TextBoxCaption.Text = String.Empty
+            TextBoxExpression.Text = String.Empty
+            CheckBoxIsNeedEdit.IsChecked = False
 
-			For Each selectableItem In ComboboxDbTypes.Items
-				selectableItem.IsChecked = False
-			Next selectableItem
-		End Sub
+            For Each selectableItem In ComboboxDbTypes.Items
+                selectableItem.IsChecked = False
+            Next selectableItem
+        End Sub
 
-		Private Sub ListBoxUserExpressions_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+        Private Sub ListBoxUserExpressions_OnSelectionChanged(sender As Object, e As SelectionChangedEventArgs)
             UpdateForm()
-		End Sub
+        End Sub
 
         Private Sub UpdateForm()
             Dim enable = TypeOf ListBoxUserExpressions.SelectedItem Is UserExpressionVisualItem
@@ -160,7 +155,7 @@ Namespace Windows
             TextBoxExpression.Text = _selectedPredefinedCondition.Condition
             CheckBoxIsNeedEdit.IsChecked = _selectedPredefinedCondition.IsNeedEdit
 
-            For Each item In _
+            For Each item In
                 _selectedPredefinedCondition.ShowOnlyForDbTypes.Select(
                     Function(type) ComboboxDbTypes.Items.First(Function(x) String.Equals(x.Content.ToString(),
                                                                                          type.ToString(),
@@ -171,124 +166,126 @@ Namespace Windows
             ButtonSave.IsEnabled = False
         End Sub
 
-		Private Sub ButtonAddNew_OnClick(sender As Object, e As RoutedEventArgs)
-			ResetForm()
-			ListBoxUserExpressions.SelectedItem = Nothing
-			Keyboard.Focus(TextBoxCaption)
-		End Sub
+        Private Sub ButtonAddNew_OnClick(sender As Object, e As RoutedEventArgs)
+            ResetForm()
+            ListBoxUserExpressions.SelectedItem = Nothing
+            Keyboard.Focus(TextBoxCaption)
+        End Sub
 
-		Private Sub ButtonCopyCurrent_OnClick(sender As Object, e As RoutedEventArgs)
-			_selectedPredefinedCondition = TryCast(ListBoxUserExpressions.SelectedItem, UserExpressionVisualItem)
+        Private Sub ButtonCopyCurrent_OnClick(sender As Object, e As RoutedEventArgs)
+            _selectedPredefinedCondition = TryCast(ListBoxUserExpressions.SelectedItem, UserExpressionVisualItem)
 
-			If _selectedPredefinedCondition Is Nothing Then
-				Return
-			End If
+            If _selectedPredefinedCondition Is Nothing Then
+                Return
+            End If
 
-'INSTANT VB NOTE: The variable name was renamed since Visual Basic does not handle local variables named the same as class members well:
-			Dim name_Renamed = _selectedPredefinedCondition.Caption
+            'INSTANT VB NOTE: The variable name was renamed since Visual Basic does not handle local variables named the same as class members well:
+            Dim name_Renamed = _selectedPredefinedCondition.Caption
 
-			Dim newName = ""
+            Dim newName = ""
 
-			If _source.All(Function(x) String.Compare(x.Caption, $"{name_Renamed} Copy", StringComparison.InvariantCultureIgnoreCase) <> 0) Then
-				newName = $"{name_Renamed} Copy"
-			Else
-				For i = 1 To 999
-					If _source.Any(Function(x) String.Compare(x.Caption, $"{name_Renamed} Copy ({i})", StringComparison.InvariantCultureIgnoreCase) = 0) Then
-						Continue For
-					End If
+            For i = 0 To 999
+                newName = $"{name_Renamed} Copy"
+                If i > 0 Then
+                    newName += $" ({i})"
+                End If
+                If _source.Any(Function(x) String.Compare(x.Caption, newName, StringComparison.InvariantCultureIgnoreCase) = 0) Then
+                    Continue For
+                End If
 
-					newName = $"{name_Renamed} Copy ({i})"
-					Exit For
-				Next i
-			End If
+                Exit For
+            Next i
 
-			Dim newCopy = _selectedPredefinedCondition.Copy(newName)
-			Dim index = _source.IndexOf(_selectedPredefinedCondition)
+            Dim newCopy = _selectedPredefinedCondition.Copy(newName)
+            Dim index = _source.IndexOf(_selectedPredefinedCondition)
 
-			_queryView.UserPredefinedConditions.Insert(index + 1, newCopy.PredefinedCondition)
+            _queryView.UserPredefinedConditions.Insert(index + 1, newCopy.PredefinedCondition)
 
-			Load(Nothing)
-			ListBoxUserExpressions.SelectedIndex = index + 1
-		End Sub
+            Load(Nothing)
+            ListBoxUserExpressions.SelectedIndex = index + 1
+        End Sub
 
 
-		Private Sub ButtonDelete_OnClick(sender As Object, e As RoutedEventArgs)
-			RemoveSelectedUserExpression()
-		End Sub
+        Private Sub ButtonDelete_OnClick(sender As Object, e As RoutedEventArgs)
+            RemoveSelectedUserExpression()
+        End Sub
 
-		Private Sub ButtonMoveUp_OnClick(sender As Object, e As RoutedEventArgs)
-			Dim selectedItem = TryCast(ListBoxUserExpressions.SelectedItem, UserExpressionVisualItem)
+        Private Sub ButtonMoveUp_OnClick(sender As Object, e As RoutedEventArgs)
+            Dim selectedItem = TryCast(ListBoxUserExpressions.SelectedItem, UserExpressionVisualItem)
 
-			If selectedItem Is Nothing Then
-				Return
-			End If
+            If selectedItem Is Nothing Then
+                Return
+            End If
 
-			Dim index = _source.IndexOf(selectedItem)
+            Dim index = _source.IndexOf(selectedItem)
 
-			If index - 1 < 0 Then
-				Return
-			End If
+            If index - 1 < 0 Then
+                Return
+            End If
 
-			Helpers.IListMove(_queryView.UserPredefinedConditions, index, index - 1)
+            ActiveQueryBuilder.Core.Helpers.IListMove(_queryView.UserPredefinedConditions, index, index - 1)
 
-			Load(Nothing)
+            Load(Nothing)
 
-			ListBoxUserExpressions.SelectedIndex = index - 1
-		End Sub
+            ListBoxUserExpressions.SelectedIndex = index - 1
+        End Sub
 
-		Private Sub ButtonMoveDown_OnClick(sender As Object, e As RoutedEventArgs)
-			Dim selectedItem = TryCast(ListBoxUserExpressions.SelectedItem, UserExpressionVisualItem)
+        Private Sub ButtonMoveDown_OnClick(sender As Object, e As RoutedEventArgs)
+            Dim selectedItem = TryCast(ListBoxUserExpressions.SelectedItem, UserExpressionVisualItem)
 
-			If selectedItem Is Nothing Then
-				Return
-			End If
+            If selectedItem Is Nothing Then
+                Return
+            End If
 
-			Dim index = _source.IndexOf(selectedItem)
+            Dim index = _source.IndexOf(selectedItem)
 
-			If index + 1 >= _source.Count Then
-				Return
-			End If
+            If index + 1 >= _source.Count Then
+                Return
+            End If
 
-			Helpers.IListMove(_queryView.UserPredefinedConditions, index, index + 1)
+            ActiveQueryBuilder.Core.Helpers.IListMove(_queryView.UserPredefinedConditions, index, index + 1)
 
-			Load(Nothing)
+            Load(Nothing)
 
-			ListBoxUserExpressions.SelectedIndex = index + 1
-		End Sub
+            ListBoxUserExpressions.SelectedIndex = index + 1
+        End Sub
 
-		Private Sub CheckChangingItem()
-			If _selectedPredefinedCondition Is Nothing Then
-				ButtonSave.IsEnabled = Not String.IsNullOrEmpty(TextBoxCaption.Text) AndAlso Not String.IsNullOrEmpty(TextBoxExpression.Text)
+        Private Sub CheckChangingItem()
+            If _selectedPredefinedCondition Is Nothing Then
+                ButtonSave.IsEnabled = Not String.IsNullOrEmpty(TextBoxCaption.Text) AndAlso Not String.IsNullOrEmpty(TextBoxExpression.Text)
 
-				Return
-			End If
+                Return
+            End If
 
-			Dim dbTypes = ComboboxDbTypes.Items.Where(Function(x) x.Content IsNot Nothing AndAlso x.IsChecked).Select(Function(x) DirectCast(System.Enum.Parse(GetType(DbType), x.Content.ToString(), True), DbType)).ToList()
+            Dim dbTypes = ComboboxDbTypes.Items.Where(Function(x) x.Content IsNot Nothing AndAlso x.IsChecked).Select(Function(x) DirectCast(System.Enum.Parse(GetType(DbType), x.Content.ToString(), True), DbType)).ToList()
 
-			Dim changed = String.Compare(TextBoxCaption.Text, _selectedPredefinedCondition.Caption, StringComparison.InvariantCulture) <> 0 OrElse String.Compare(TextBoxExpression.Text, _selectedPredefinedCondition.Condition, StringComparison.InvariantCulture) <> 0 OrElse CheckBoxIsNeedEdit.IsChecked <> _selectedPredefinedCondition.IsNeedEdit OrElse Not ((_selectedPredefinedCondition.ShowOnlyForDbTypes.Count = dbTypes.Count) AndAlso Not _selectedPredefinedCondition.ShowOnlyForDbTypes.Except(dbTypes).Any())
+            Dim changed = String.Compare(TextBoxCaption.Text, _selectedPredefinedCondition.Caption, StringComparison.InvariantCulture) <> 0 _
+                OrElse String.Compare(TextBoxExpression.Text, _selectedPredefinedCondition.Condition, StringComparison.InvariantCulture) <> 0 _
+                OrElse CheckBoxIsNeedEdit.IsChecked <> _selectedPredefinedCondition.IsNeedEdit _
+                OrElse Not ((_selectedPredefinedCondition.ShowOnlyForDbTypes.Count = dbTypes.Count) AndAlso Not _selectedPredefinedCondition.ShowOnlyForDbTypes.Except(dbTypes).Any())
 
-			ButtonSave.IsEnabled = changed
-		End Sub
+            ButtonSave.IsEnabled = changed.HasValue AndAlso changed.Value
+        End Sub
 
-		Private Sub TextBoxExpression_OnTextChanged(sender As Object, e As EventArgs)
-			CheckChangingItem()
-		End Sub
+        Private Sub TextBoxExpression_OnTextChanged(sender As Object, e As EventArgs)
+            CheckChangingItem()
+        End Sub
 
-		Private Sub ComboboxDbTypes_OnItemCheckStateChanged(sender As Object, e As EventArgs)
-			CheckChangingItem()
-		End Sub
+        Private Sub ComboboxDbTypes_OnItemCheckStateChanged(sender As Object, e As EventArgs)
+            CheckChangingItem()
+        End Sub
 
-		Private Sub CheckBoxIsNeedEdit_OnCheckChanged(sender As Object, e As RoutedEventArgs)
-			CheckChangingItem()
-		End Sub
+        Private Sub CheckBoxIsNeedEdit_OnCheckChanged(sender As Object, e As RoutedEventArgs)
+            CheckChangingItem()
+        End Sub
 
-		Private Sub TextBoxCaption_OnTextChanged(sender As Object, e As TextChangedEventArgs)
-			CheckChangingItem()
-		End Sub
+        Private Sub TextBoxCaption_OnTextChanged(sender As Object, e As TextChangedEventArgs)
+            CheckChangingItem()
+        End Sub
 
-		Private Sub ButtonOk_OnClick(sender As Object, e As RoutedEventArgs)
-			Close()
-		End Sub
+        Private Sub ButtonOk_OnClick(sender As Object, e As RoutedEventArgs)
+            Close()
+        End Sub
 
         Protected Overrides Sub OnClosing(e As CancelEventArgs)
             If ButtonSave.IsEnabled Then
@@ -306,35 +303,35 @@ Namespace Windows
             ResetForm()
             UpdateForm()
         End Sub
-	End Class
+    End Class
 
-	Public Class UserExpressionVisualItem
-		Public Property ShowOnlyForDbTypes() As List(Of DbType)
+    Public Class UserExpressionVisualItem
+        Public Property ShowOnlyForDbTypes() As List(Of DbType)
 
-		Public ReadOnly Property Caption() As String
-		Public ReadOnly Property Condition() As String
-		Public ReadOnly Property IsNeedEdit() As Boolean
+        Public ReadOnly Property Caption() As String
+        Public ReadOnly Property Condition() As String
+        Public ReadOnly Property IsNeedEdit() As Boolean
 
-		Public ReadOnly Property PredefinedCondition() As PredefinedCondition
+        Public ReadOnly Property PredefinedCondition() As PredefinedCondition
 
 
-		Public Sub New(predefinedCondition As PredefinedCondition)
-			Me.PredefinedCondition = predefinedCondition
-			ShowOnlyForDbTypes = New List(Of DbType)()
+        Public Sub New(predefinedCondition As PredefinedCondition)
+            Me.PredefinedCondition = predefinedCondition
+            ShowOnlyForDbTypes = New List(Of DbType)()
 
-			Caption = predefinedCondition.Caption
-			Condition = predefinedCondition.Expression
-			IsNeedEdit = predefinedCondition.IsNeedEdit
+            Caption = predefinedCondition.Caption
+            Condition = predefinedCondition.Expression
+            IsNeedEdit = predefinedCondition.IsNeedEdit
 
-			ShowOnlyForDbTypes.AddRange(predefinedCondition.ShowOnlyFor)
-		End Sub
+            ShowOnlyForDbTypes.AddRange(predefinedCondition.ShowOnlyFor)
+        End Sub
 
-		Public Overrides Function ToString() As String
-			Return $"{Caption}"
-		End Function
+        Public Overrides Function ToString() As String
+            Return $"{Caption}"
+        End Function
 
-		Public Function Copy(newName As String) As UserExpressionVisualItem
-			Return New UserExpressionVisualItem(New PredefinedCondition(newName, PredefinedCondition.ShowOnlyFor, PredefinedCondition.Expression, PredefinedCondition.IsNeedEdit))
-		End Function
-	End Class
+        Public Function Copy(newName As String) As UserExpressionVisualItem
+            Return New UserExpressionVisualItem(New PredefinedCondition(newName, PredefinedCondition.ShowOnlyFor, PredefinedCondition.Expression, PredefinedCondition.IsNeedEdit))
+        End Function
+    End Class
 End Namespace

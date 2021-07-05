@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
-        xmlns:common="clr-namespace:CustomExpressionBuilderDemo.Common"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
         mc:Ignorable="d"
         Title="Custom Expression Builder Demo" Height="800" Width="1000">
     <Grid>
@@ -23,7 +23,7 @@
                                         LostKeyboardFocus="SqlEditor_OnLostKeyboardFocus" TextChanged="SqlEditor_OnTextChanged"
                                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
 
-        <common:ErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
+        <common:SqlErrorBox Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,7,7" x:Name="ErrorBox"
                          GoToErrorPosition="ErrorBox_OnGoToErrorPosition" RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
 </Window>

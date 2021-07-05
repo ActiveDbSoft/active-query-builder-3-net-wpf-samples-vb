@@ -8,79 +8,148 @@
 ' </auto-generated>
 '------------------------------------------------------------------------------
 
+Option Strict On
+Option Explicit On
+
+
 Namespace My
+    
+    <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0"),  _
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
+    Partial Friend NotInheritable Class Settings
+        Inherits Global.System.Configuration.ApplicationSettingsBase
+        
+        Private Shared defaultInstance As Settings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New Settings()),Settings)
+        
+#Region "My.Settings Auto-Save Functionality"
+#If _MyType = "WindowsForms" Then
+    Private Shared addedHandler As Boolean
 
+    Private Shared addedHandlerLockObject As New Object
 
-	<Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(), Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")>
-	Friend NotInheritable Partial Class Settings
-		Inherits System.Configuration.ApplicationSettingsBase
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
+    Private Shared Sub AutoSaveSettings(sender As Global.System.Object, e As Global.System.EventArgs)
+        If My.Application.SaveMySettingsOnExit Then
+            My.Settings.Save()
+        End If
+    End Sub
+#End If
+#End Region
+        
+        Public Shared ReadOnly Property [Default]() As Settings
+            Get
+                
+#If _MyType = "WindowsForms" Then
+               If Not addedHandler Then
+                    SyncLock addedHandlerLockObject
+                        If Not addedHandler Then
+                            AddHandler My.Application.Shutdown, AddressOf AutoSaveSettings
+                            addedHandler = True
+                        End If
+                    End SyncLock
+                End If
+#End If
+                Return defaultInstance
+            End Get
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0, 0, 0, 0")>  _
+        Public Property WindowPlacement() As Global.System.Drawing.Rectangle
+            Get
+                Return CType(Me("WindowPlacement"),Global.System.Drawing.Rectangle)
+            End Get
+            Set
+                Me("WindowPlacement") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property IsMaximized() As Boolean
+            Get
+                Return CType(Me("IsMaximized"),Boolean)
+            End Get
+            Set
+                Me("IsMaximized") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property Connections() As Global.GeneralAssembly.ConnectionList
+            Get
+                Return CType(Me("Connections"),Global.GeneralAssembly.ConnectionList)
+            End Get
+            Set
+                Me("Connections") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property XmlFiles() As Global.GeneralAssembly.ConnectionList
+            Get
+                Return CType(Me("XmlFiles"),Global.GeneralAssembly.ConnectionList)
+            End Get
+            Set
+                Me("XmlFiles") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property CallUpgrade() As Boolean
+            Get
+                Return CType(Me("CallUpgrade"),Boolean)
+            End Get
+            Set
+                Me("CallUpgrade") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Auto")>  _
+        Public Property Language() As String
+            Get
+                Return CType(Me("Language"),String)
+            End Get
+            Set
+                Me("Language") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Options() As String
+            Get
+                Return CType(Me("Options"),String)
+            End Get
+            Set
+                Me("Options") = value
+            End Set
+        End Property
+    End Class
+End Namespace
 
-		Private Shared defaultInstance As Settings = (CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New Settings()), Settings))
+Namespace My
+    
+    <Global.Microsoft.VisualBasic.HideModuleNameAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
+    Friend Module MySettingsProperty
 
-		Public Shared ReadOnly Property [Default]() As Settings
-			Get
-				Return defaultInstance
-			End Get
-		End Property
-
-		<Global.System.Configuration.UserScopedSettingAttribute(), Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.Configuration.DefaultSettingValueAttribute("False")>
-		Public Property IsMaximized() As Boolean
-			Get
-				Return (DirectCast(Me("IsMaximized"), Boolean))
-			End Get
-			Set(value As Boolean)
-				Me("IsMaximized") = value
-			End Set
-		End Property
-
-		<Global.System.Configuration.UserScopedSettingAttribute(), Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>
-		Public Property Connections() As ConnectionList
-			Get
-				Return (DirectCast(Me("Connections"), ConnectionList))
-			End Get
-			Set(value As ConnectionList)
-				Me("Connections") = value
-			End Set
-		End Property
-
-		<Global.System.Configuration.UserScopedSettingAttribute(), Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.Configuration.DefaultSettingValueAttribute("True")>
-		Public Property CallUpgrade() As Boolean
-			Get
-				Return (DirectCast(Me("CallUpgrade"), Boolean))
-			End Get
-			Set(value As Boolean)
-				Me("CallUpgrade") = value
-			End Set
-		End Property
-
-		<Global.System.Configuration.UserScopedSettingAttribute(), Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.Configuration.DefaultSettingValueAttribute("Auto")>
-		Public Property Language() As String
-			Get
-				Return (DirectCast(Me("Language"), String))
-			End Get
-			Set(value As String)
-				Me("Language") = value
-			End Set
-		End Property
-
-		<Global.System.Configuration.UserScopedSettingAttribute(), Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>
-		Public Property XmlFiles() As ConnectionList
-			Get
-				Return (DirectCast(Me("XmlFiles"), ConnectionList))
-			End Get
-			Set(value As ConnectionList)
-				Me("XmlFiles") = value
-			End Set
-		End Property
-
-		<Global.System.Configuration.UserScopedSettingAttribute(), Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.Configuration.DefaultSettingValueAttribute("")>
-		Public Property Options() As String
-			Get
-				Return (DirectCast(Me("Options"), String))
-			End Get
-			Set(value As String)
-				Me("Options") = value
-			End Set
-		End Property
-	End Class
+        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>
+        Friend ReadOnly Property Settings() As My.Settings
+            Get
+                Return My.Settings.Default
+            End Get
+        End Property
+    End Module
 End Namespace

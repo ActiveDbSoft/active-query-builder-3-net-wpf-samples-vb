@@ -1,12 +1,12 @@
-﻿'*******************************************************************'
-'       Active Query Builder Component Suite                        '
-'                                                                   '
-'       Copyright © 2006-2019 Active Database Software              '
-'       ALL RIGHTS RESERVED                                         '
-'                                                                   '
-'       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            '
-'       RESTRICTIONS.                                               '
-'*******************************************************************'
+//*******************************************************************//
+//       Active Query Builder Component Suite                        //
+//                                                                   //
+//       Copyright © 2006-2021 Active Database Software              //
+//       ALL RIGHTS RESERVED                                         //
+//                                                                   //
+//       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            //
+//       RESTRICTIONS.                                               //
+//*******************************************************************//
 
 Imports System.Data
 Imports System.Windows
@@ -15,7 +15,7 @@ Imports ActiveQueryBuilder.View.WPF.Annotations
 Imports FastReport
 Imports FastReport.Utils
 
-Namespace FullFeaturedMdiDemo.Reports
+Namespace Reports
     Partial Public Class FastReportWindow
         Private Property DataTable() As DataTable
         Private _report As Report

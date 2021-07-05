@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mdiControl="clr-namespace:MdiControl"
+             xmlns:local="clr-namespace:FullFeaturedMdiDemo.MdiControl"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" PreviewMouseDown="GridRoot_OnPreviewMouseDown" Background="{x:Static SystemColors.ControlBrush}">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 
                   x:Name="ScrollViewerRoot" SizeChanged="ScrollViewerRoot_OnSizeChanged" Focusable="False">
-        <mdiControl:CustomCanvas x:Name="GridRoot" VerticalAlignment="Top" HorizontalAlignment="Left"/>    
+        <local:CustomCanvas x:Name="GridRoot" VerticalAlignment="Top" HorizontalAlignment="Left"/>
     </ScrollViewer>
 </UserControl>

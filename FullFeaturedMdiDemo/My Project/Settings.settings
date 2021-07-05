@@ -1,11 +1,17 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="WindowPlacement" Type="System.Drawing.Rectangle" Scope="User">
+      <Value Profile="(Default)">0, 0, 0, 0</Value>
+    </Setting>
     <Setting Name="IsMaximized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Connections" Type="ConnectionList" Scope="User">
+    <Setting Name="Connections" Type="GeneralAssembly.ConnectionList" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="XmlFiles" Type="GeneralAssembly.ConnectionList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CallUpgrade" Type="System.Boolean" Scope="User">
@@ -13,9 +19,6 @@
     </Setting>
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">Auto</Value>
-    </Setting>
-    <Setting Name="XmlFiles" Type="ConnectionList" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Options" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

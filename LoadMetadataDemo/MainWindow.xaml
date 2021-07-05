@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:aqb="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:core="clr-namespace:ActiveQueryBuilder.Core;assembly=ActiveQueryBuilder.Core"
-        xmlns:common="clr-namespace:LoadMetadataDemo.Common"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
 
         x:Class="MainWindow"
         Title="LoadMetadataDemo" Height="677" Width="1086.75">
@@ -18,7 +18,6 @@
         <Menu Grid.Row="0" Padding="0,2">
             <MenuItem Header="Conntect">
                 <MenuItem Header="Connect to Microsoft SQL Server" Click="connectToMSSQLServerMenuItem_Click"/>
-                <MenuItem Header="Connect to Oracle Server" Click="connectToOracleServerMenuItem_Click"/>
                 <MenuItem Header="Connect to Microsoft Access database" Click="connectToAccessDatabaseMenuItem_Click"/>
                 <Separator/>
                 <MenuItem Header="Connect to database through OLE DB" Click="connectOleDbMenuItem_Click"/>
@@ -75,7 +74,7 @@
         <TextBox TextWrapping="Wrap" Grid.Row="3" Height="120" Margin="4,0,4,4" x:Name="SqlTextBox" LostFocus="SqlTextBox_OnLostFocus" 
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"/>
 
-        <common:ErrorBox Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" x:Name="ErrorBox"
+        <common:SqlErrorBox Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" x:Name="ErrorBox"
                          GoToErrorPosition="ErrorBox_OnGoToErrorPosition"
                          RevertValidText="ErrorBox_OnRevertValidText"/>
     </Grid>
