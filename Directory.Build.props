@@ -3,6 +3,10 @@
   <PropertyGroup>
     <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
 
   <!-- common props -->
   <PropertyGroup>
@@ -17,11 +21,18 @@
     <Product>Active Query Builder 3 .NET $(Edition) Edition</Product>
     <Company>Active Database Software</Company>
     <Copyright>Copyright © 2005-$([System.DateTime]::Now.Year) Active Database Software</Copyright>
+	
+	<DefineConstants>$(DefineConstants.Replace(';', ','))</DefineConstants>
   </PropertyGroup>
 
   <!-- disable XML docs warnings -->
   <PropertyGroup>
     <NoWarn>$(NoWarn);1591;1574</NoWarn>
+  </PropertyGroup>
+  
+  <!-- use nuget ActiveQueryBuilder references instead of ProjectReference -->
+  <PropertyGroup>
+    <UseNugetAqbReferences>true</UseNugetAqbReferences>
   </PropertyGroup>
 
   <!-- resources -->
@@ -30,11 +41,43 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Resources.Extensions" Version="5.0.0" />
+	
+	<PackageReference Include="ActiveQueryBuilder.Core" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.View" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.View.WPF" Version="$(Version)" />
   </ItemGroup>
 
-  <!-- use nuget ActiveQueryBuilder references instead of ProjectReference -->
-  <PropertyGroup>
-    <UseNugetAqbReferences>true</UseNugetAqbReferences>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Import Include="System" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.ComponentModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Data.Common" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Windows" />
+    <Import Include="System.Windows.Controls" />
+    <Import Include="System.Windows.Data" />
+    <Import Include="System.Windows.Documents" />
+    <Import Include="System.Windows.Input" />
+    <Import Include="System.Windows.Media" />
+    <Import Include="System.Windows.Media.Imaging" />
+    <Import Include="System.Windows.Navigation" />
+    <Import Include="System.Windows.Shapes" />
+    <Import Include="System.Windows.Threading" />
+    <Import Include="System.Xml.Serialization" />
+    <Import Include="ActiveQueryBuilder.Core" />
+	<Import Include="ActiveQueryBuilder.View" />
+	<Import Include="ActiveQueryBuilder.View.WPF" />
+  </ItemGroup>
 
 </Project>
