@@ -21,6 +21,10 @@ Imports SQLParsingException = ActiveQueryBuilder.Core.SQLParsingException
 Imports GeneralAssembly
 Imports GeneralAssembly.Windows.QueryInformationWindows
 
+#If ENABLE_ACTIVEREPORTS_SUPPORT Then
+Imports GrapeCityExtension
+#End If
+
 Namespace Common
     ''' <summary>
     ''' Interaction logic for ContentWindowChild.xaml
@@ -819,11 +823,17 @@ Namespace Common
             If IsNothing(dataTable) Then
                 Throw New ArgumentException("Argument cannot be null or empty.", "DataTable")
             End If
+#If ENABLE_ACTIVEREPORTS_SUPPORT Then
             Dim reportWindow As ActiveReportsWindow = New ActiveReportsWindow(dataTable) With {
                 .Owner = ActiveQueryBuilder.View.WPF.Helpers.FindVisualParent(Of Window)(Me),
                 .ShowInTaskbar = False
             }
             reportWindow.ShowDialog()
+#Else
+            MessageBox.Show("To test the integration with GrapeCity ActiveReports, please open the ""Directory.Build.props"" file in the demo projects installation directory (usually ""%USERPROFILE%\Documents\Active Query Builder x.x .NET Examples"") with a text editor and set the ""EnableActiveReportsSupport"" flag to true. Then, open the Active Query Builder Demos solution with your IDE, compile and run the Full-featured MDI demo." & vbCrLf & vbCrLf & "
+You may also need to activate the trial version of ActiveReports on the GrapeCity website.", "ActiveReports support", MessageBoxButton.OK, MessageBoxImage.Information)
+#End If
+
         End Sub
         Private Sub GenerateReport_OnClick(sender As Object, e As RoutedEventArgs)
             Dim window As CreateReportWindow = New CreateReportWindow() With {

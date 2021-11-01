@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>GrapeCityExtension.wpf.cs</AssemblyName>
+		<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+		<Description>Active Query Builder 3 GrapeCity common parts</Description>
+		<RootNamespace>GrapeCityExtension</RootNamespace>
+
+		<TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="application.exe.licenses" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="application.exe.licenses" />
+		<None Include="licenses.licx">
+			<DependentUpon>application.exe.licenses</DependentUpon>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="GrapeCity.ActiveReports" Version="15.1.6" />
+	  <PackageReference Include="GrapeCity.ActiveReports.Viewer.Wpf" Version="15.1.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="ActiveReportsWindow.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
+	</ItemGroup>
+
+</Project>

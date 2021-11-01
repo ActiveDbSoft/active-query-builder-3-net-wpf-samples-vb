@@ -1,65 +1,69 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>FullFeaturedMdiDemo.wpf.vb</AssemblyName>
-    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <Description>Active Query Builder 3 FullFeaturedMdi Demo</Description>
-    <RootNamespace>FullFeaturedMdiDemo</RootNamespace>
+	<PropertyGroup>
+		<AssemblyName>FullFeaturedMdiDemo.wpf.vb</AssemblyName>
+		<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+		<Description>Active Query Builder 3 FullFeaturedMdi Demo</Description>
+		<RootNamespace>FullFeaturedMdiDemo</RootNamespace>
 
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
-    <OutputType>WinExe</OutputType>
+		<TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+		<OutputType>WinExe</OutputType>
 
-    <!-- FastReport uses some types from System.Windows.Forms, so include it for WPF project -->
-    <UseWindowsForms>true</UseWindowsForms>
+		<!-- FastReport uses some types from System.Windows.Forms, so include it for WPF project -->
+		<UseWindowsForms>true</UseWindowsForms>
 
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Resources\App.ico</ApplicationIcon>
-  </PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Resources\App.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="Nwind.mdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Update="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-    </None>
-    <None Update="Northwind.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="northwind.sqlite">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Nwind.mdb">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<None Update="My Project\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+		</None>
+		<None Update="Northwind.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="northwind.sqlite">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GeneralAssembly_pro\GeneralAssembly_pro.wpf.vb.vbproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\GeneralAssembly_pro\GeneralAssembly_pro.wpf.vb.vbproj" />
+	</ItemGroup>
 
-  <!-- reporting -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.8.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.8.0" />
-    <PackageReference Include="NPOI" Version="2.5.1" />
-    <PackageReference Include="GrapeCity.ActiveReports" Version="15.0.7" />
-    <PackageReference Include="GrapeCity.ActiveReports.Viewer.Wpf" Version="15.0.7" />
-    <PackageReference Include="Stimulsoft.Reports.Engine" Version="2021.2.3" />
-    <PackageReference Include="Stimulsoft.Reports.Wpf" Version="2021.2.3" />
-    <Reference Include="FastReport">
-      <HintPath>$(AssetsPath)Third-Party Assemblies\FastReport.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup Condition="$(EnableActiveReportsSupport)">
+		<ProjectReference Include="..\GrapeCityExtension\GrapeCityExtension.wpf.vb.csproj" />
+	</ItemGroup>
+	<PropertyGroup Condition="$(EnableActiveReportsSupport)">
+		<DefineConstants>ENABLE_ACTIVEREPORTS_SUPPORT</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.8.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.8.0" />
+		<PackageReference Include="NPOI" Version="2.5.1" />
+		<PackageReference Include="Stimulsoft.Reports.Engine" Version="2021.2.3" />
+		<PackageReference Include="Stimulsoft.Reports.Wpf" Version="2021.2.3" />
+		<Reference Include="FastReport">
+			<HintPath>$(AssetsPath)Third-Party Assemblies\FastReport.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
 </Project>

@@ -24,6 +24,8 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GeneralAssembly.wpf.vb", "G
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GeneralAssembly_pro.wpf.vb", "GeneralAssembly_pro\GeneralAssembly_pro.wpf.vb.vbproj", "{C382ADA0-33A4-4413-86CD-A06EBDD17027}"
 EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GrapeCityExtension.wpf.vb", "GrapeCityExtension\GrapeCityExtension.wpf.vb.vbproj", "{BC259C3E-2F1B-4349-B147-727858B11619}"
+EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "InterfaceCustomizationDemo.wpf.vb", "InterfaceCustomizationDemo\InterfaceCustomizationDemo.wpf.vb.vbproj", "{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "LoadMetadataDemo.wpf.vb", "LoadMetadataDemo\LoadMetadataDemo.wpf.vb.vbproj", "{0C2DCC01-F9A6-402A-87E4-D46E11E6BE50}"
@@ -96,6 +98,10 @@ Global
 		{C382ADA0-33A4-4413-86CD-A06EBDD17027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C382ADA0-33A4-4413-86CD-A06EBDD17027}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{C382ADA0-33A4-4413-86CD-A06EBDD17027}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{BC259C3E-2F1B-4349-B147-727858B11619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC259C3E-2F1B-4349-B147-727858B11619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC259C3E-2F1B-4349-B147-727858B11619}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC259C3E-2F1B-4349-B147-727858B11619}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -145,6 +151,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A28F3D76-D1BB-4708-9351-2EAF0750C7D1}
+		SolutionGuid = {A969115E-9E6F-42BB-9B5D-0FE111E0689F}
 	EndGlobalSection
 EndGlobal
