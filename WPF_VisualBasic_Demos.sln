@@ -24,11 +24,11 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GeneralAssembly.wpf.vb", "G
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GeneralAssembly_pro.wpf.vb", "GeneralAssembly_pro\GeneralAssembly_pro.wpf.vb.vbproj", "{C382ADA0-33A4-4413-86CD-A06EBDD17027}"
 EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "GrapeCityExtension.wpf.vb", "GrapeCityExtension\GrapeCityExtension.wpf.vb.vbproj", "{BC259C3E-2F1B-4349-B147-727858B11619}"
-EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "InterfaceCustomizationDemo.wpf.vb", "InterfaceCustomizationDemo\InterfaceCustomizationDemo.wpf.vb.vbproj", "{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "LoadMetadataDemo.wpf.vb", "LoadMetadataDemo\LoadMetadataDemo.wpf.vb.vbproj", "{0C2DCC01-F9A6-402A-87E4-D46E11E6BE50}"
+EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "PreserveInitialQueryFormattingDemo.wpf.vb", "PreserveInitialQueryFormattingDemo\PreserveInitialQueryFormattingDemo.wpf.vb.vbproj", "{6BDD30BF-D86A-4ECD-9E75-E92F6E56CD40}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "QueryColumnsListCustomColumnsDemo.wpf.vb", "QueryColumnsListCustomColumnsDemo\QueryColumnsListCustomColumnsDemo.wpf.vb.vbproj", "{05B39B9F-0D91-4660-AFA6-4C803D9E65CA}"
 EndProject
@@ -98,10 +98,6 @@ Global
 		{C382ADA0-33A4-4413-86CD-A06EBDD17027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C382ADA0-33A4-4413-86CD-A06EBDD17027}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{C382ADA0-33A4-4413-86CD-A06EBDD17027}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{BC259C3E-2F1B-4349-B147-727858B11619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC259C3E-2F1B-4349-B147-727858B11619}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC259C3E-2F1B-4349-B147-727858B11619}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC259C3E-2F1B-4349-B147-727858B11619}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4D3B9C1-5FF1-4120-BF62-DD0E32866663}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -110,6 +106,10 @@ Global
 		{0C2DCC01-F9A6-402A-87E4-D46E11E6BE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C2DCC01-F9A6-402A-87E4-D46E11E6BE50}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C2DCC01-F9A6-402A-87E4-D46E11E6BE50}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{6BDD30BF-D86A-4ECD-9E75-E92F6E56CD40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDD30BF-D86A-4ECD-9E75-E92F6E56CD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BDD30BF-D86A-4ECD-9E75-E92F6E56CD40}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDD30BF-D86A-4ECD-9E75-E92F6E56CD40}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{05B39B9F-0D91-4660-AFA6-4C803D9E65CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{05B39B9F-0D91-4660-AFA6-4C803D9E65CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05B39B9F-0D91-4660-AFA6-4C803D9E65CA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -151,6 +151,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6ECA9D2C-2CAC-48FF-BA4B-CE88996D50FC}
+		SolutionGuid = {742F044F-6A85-46BF-B307-935097738292}
 	EndGlobalSection
 EndGlobal

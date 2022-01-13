@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -12,7 +12,7 @@
 
 Namespace My
     ''' <summary>
-    ''' Модуль определения свойств, доступных в My Namespace для WPF
+    ''' ������ ����������� �������, ��������� � My Namespace ��� WPF
     ''' </summary>
     ''' <remarks></remarks>
     <Global.Microsoft.VisualBasic.HideModuleName()> _
@@ -22,7 +22,7 @@ Namespace My
         Private s_Windows As New ThreadSafeObjectProvider(Of MyWindows)
         Private s_Log As New ThreadSafeObjectProvider(Of Global.Microsoft.VisualBasic.Logging.Log)
         ''' <summary>
-        ''' Возвращает объект приложения для запущенного приложения
+        ''' ���������� ������ ���������� ��� ����������� ����������
         ''' </summary>
         <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")>  _
         Friend ReadOnly Property Application() As Application
@@ -31,7 +31,7 @@ Namespace My
             End Get
         End Property
         ''' <summary>
-        ''' Возвращает информацию о главном компьютере.
+        ''' ���������� ���������� � ������� ����������.
         ''' </summary>
         <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")>  _
         Friend ReadOnly Property Computer() As Global.Microsoft.VisualBasic.Devices.Computer
@@ -40,8 +40,8 @@ Namespace My
             End Get
         End Property
         ''' <summary>
-        ''' Возвращает информацию для текущего пользователя.  Если вы хотите запустить приложение с текущими 
-        ''' учетными данными пользователя Windows, вызовите My.User.InitializeWithWindowsUser().
+        ''' ���������� ���������� ��� �������� ������������.  ���� �� ������ ��������� ���������� � �������� 
+        ''' �������� ������� ������������ Windows, �������� My.User.InitializeWithWindowsUser().
         ''' </summary>
         <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")>  _
         Friend ReadOnly Property User() As Global.Microsoft.VisualBasic.ApplicationServices.User
@@ -50,7 +50,7 @@ Namespace My
             End Get
         End Property
         ''' <summary>
-        ''' Возвращает журнал приложения. При помощи файла конфигурации приложения можно настроить обработчики.
+        ''' ���������� ������ ����������. ��� ������ ����� ������������ ���������� ����� ��������� �����������.
         ''' </summary>
         <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")>  _
         Friend ReadOnly Property Log() As Global.Microsoft.VisualBasic.Logging.Log
@@ -60,7 +60,7 @@ Namespace My
         End Property
 
         ''' <summary>
-        ''' Возвращает коллекцию окон, определенных в проекте.
+        ''' ���������� ��������� ����, ������������ � �������.
         ''' </summary>
         <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")>  _
         Friend ReadOnly Property Windows() As MyWindows

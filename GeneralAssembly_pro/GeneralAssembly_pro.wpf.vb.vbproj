@@ -5,8 +5,6 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <Description>Active Query Builder 3 extended full-featured demos common parts</Description>
     <RootNamespace>GeneralAssembly</RootNamespace>
-
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +33,9 @@
     <PackageReference Include="ActiveQueryBuilder.SQLiteMetadataProvider" Version="$(Version)" />
     <PackageReference Include="ActiveQueryBuilder.SybaseMetadataProvider" Version="$(Version)" />
     <PackageReference Include="ActiveQueryBuilder.UniversalMetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.VistaDB5MetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.DB2MetadataProvider" Version="$(Version)" />
+    <PackageReference Include="ActiveQueryBuilder.InformixMetadataProvider" Version="$(Version)" />
   </ItemGroup>
   <ItemGroup Condition="!$(UseNugetAqbReferences)">
     <ProjectReference Include="$(SolutionDir)src\_metadata-providers\AdvantageMetadataProvider\AdvantageMetadataProvider.csproj" />
@@ -48,6 +49,9 @@
     <ProjectReference Include="$(SolutionDir)src\_metadata-providers\SQLiteMetadataProvider\SQLiteMetadataProvider.csproj" />
     <ProjectReference Include="$(SolutionDir)src\_metadata-providers\SybaseMetadataProvider\SybaseMetadataProvider.csproj" />
     <ProjectReference Include="$(SolutionDir)src\_metadata-providers\UniversalMetadataProvider\UniversalMetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\VistaDB5MetadataProvider\VistaDB5MetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\DB2MetadataProvider\DB2MetadataProvider.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\_metadata-providers\InformixMetadataProvider\InformixMetadataProvider.csproj" />
   </ItemGroup>
 
 </Project>

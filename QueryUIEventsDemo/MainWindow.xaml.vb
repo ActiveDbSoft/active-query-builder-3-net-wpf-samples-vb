@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -307,7 +307,7 @@ Partial Public Class MainWindow
     Public Shared Iterator Function FindVisualChildren(Of T As DependencyObject)(depObj As DependencyObject) As IEnumerable(Of T)
         If depObj Is Nothing Then
             Yield Nothing
-		End If
+        End If
 
         For i As Integer = 0 To VisualTreeHelper.GetChildrenCount(depObj) - 1
             Dim child As DependencyObject = VisualTreeHelper.GetChild(depObj, i)

@@ -6,7 +6,6 @@
     <Description>Active Query Builder 3 FullFeatured Demo</Description>
     <RootNamespace>FullFeaturedDemo</RootNamespace>
 
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <OutputType>WinExe</OutputType>
 
     <ApplicationManifest>app.manifest</ApplicationManifest>

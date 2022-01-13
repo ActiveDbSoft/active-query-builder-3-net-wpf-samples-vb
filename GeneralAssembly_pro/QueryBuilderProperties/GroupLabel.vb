@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -12,11 +12,11 @@ Imports System.Windows.Controls
 Imports System.Windows.Media
 
 Namespace QueryBuilderProperties
-	Friend Class GroupLabel
-		Inherits TextBlock
+    Friend Class GroupLabel
+        Inherits TextBlock
 
-		Public Sub New()
-			Foreground = Brushes.CornflowerBlue
-		End Sub
-	End Class
+        Public Sub New()
+            Foreground = Brushes.CornflowerBlue
+        End Sub
+    End Class
 End Namespace

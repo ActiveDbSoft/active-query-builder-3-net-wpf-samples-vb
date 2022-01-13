@@ -6,7 +6,6 @@
     <Description>Active Query Builder 3 DatasourceFieldsLinkingDragnDrop Demo</Description>
     <RootNamespace></RootNamespace>
 
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
 

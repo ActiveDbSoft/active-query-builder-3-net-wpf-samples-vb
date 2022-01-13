@@ -1,0 +1,30 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:ActiveQueryBuilder.View.WPF;assembly=ActiveQueryBuilder.View.WPF"
+        xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly.wpf.vb"
+        mc:Ignorable="d"
+        Title="Preserve Initial Query Formatting Demo" Height="600" Width="1000">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto" MinHeight="100"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <wpf:QueryBuilder x:Name="QBuilder" Grid.Row="0" SnapsToDevicePixels="True" SQLUpdated="QBuilder_OnSQLUpdated"/>
+
+        <TextBox x:Name="TextBoxSql" Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" SnapsToDevicePixels="True"
+                 Margin="0,3,0,0" LostKeyboardFocus="TextBoxSql_OnLostKeyboardFocus" TextWrapping="Wrap"/>
+
+        <common:SqlErrorBox Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5" x:Name="SqlErrorBox"
+                            VisibilityCheckSyntaxBlock="Collapsed" IsVisibleActionLinks="false"/>
+
+        <GridSplitter Grid.Row="1" VerticalAlignment="Top" Height="2" HorizontalAlignment="Stretch"/>
+
+        <Button x:Name="ButtonOpenSql" Content="Open file with content sql text" Grid.Row="3" HorizontalAlignment="Right" Padding="30,2" Click="ButtonOpenSql_OnClick"/>
+    </Grid>
+</Window>

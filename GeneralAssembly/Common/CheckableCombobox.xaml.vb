@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -16,148 +16,148 @@ Imports System.Linq
 Imports System.Windows.Controls
 
 Namespace Common
-	''' <summary>
-	''' Interaction logic for CheckableCombobox.xaml
-	''' </summary>
-	Partial Public Class CheckableCombobox
-		Public Event ItemCheckStateChanged As EventHandler
-		Private privateItems As ObservableCollection(Of SelectableItem)
-		Public Shadows Property Items() As ObservableCollection(Of SelectableItem)
-			Get
-				Return privateItems
-			End Get
-			Private Set(value As ObservableCollection(Of SelectableItem))
-				privateItems = value
-			End Set
-		End Property
+    ''' <summary>
+    ''' Interaction logic for CheckableCombobox.xaml
+    ''' </summary>
+    Partial Public Class CheckableCombobox
+        Public Event ItemCheckStateChanged As EventHandler
+        Private privateItems As ObservableCollection(Of SelectableItem)
+        Public Shadows Property Items() As ObservableCollection(Of SelectableItem)
+            Get
+                Return privateItems
+            End Get
+            Private Set(value As ObservableCollection(Of SelectableItem))
+                privateItems = value
+            End Set
+        End Property
 
-		Public Sub New()
-			Items = New ObservableCollection(Of SelectableItem)()
+        Public Sub New()
+            Items = New ObservableCollection(Of SelectableItem)()
 
-			InitializeComponent()
-			ItemsSource = Items
+            InitializeComponent()
+            ItemsSource = Items
 
-			AddHandler Items.CollectionChanged, AddressOf Items_CollectionChanged
-		End Sub
+            AddHandler Items.CollectionChanged, AddressOf Items_CollectionChanged
+        End Sub
 
-		Protected Overrides Sub OnSelectionChanged(e As SelectionChangedEventArgs)
-			SelectedIndex = -1
-		End Sub
+        Protected Overrides Sub OnSelectionChanged(e As SelectionChangedEventArgs)
+            SelectedIndex = -1
+        End Sub
 
-		Private Sub Items_CollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
-			Select Case e.Action
-				Case NotifyCollectionChangedAction.Add
+        Private Sub Items_CollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+            Select Case e.Action
+                Case NotifyCollectionChangedAction.Add
 
-					For Each eNewItem As SelectableItem In e.NewItems
-						AddHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
-					Next eNewItem
+                    For Each eNewItem As SelectableItem In e.NewItems
+                        AddHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
+                    Next eNewItem
 
-				Case NotifyCollectionChangedAction.Remove
-					For Each eNewItem As SelectableItem In e.OldItems
-						RemoveHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
-					Next eNewItem
-				Case NotifyCollectionChangedAction.Replace
-					For Each eNewItem As SelectableItem In e.NewItems
-						AddHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
-					Next eNewItem
-					For Each eNewItem As SelectableItem In e.OldItems
-						RemoveHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
-					Next eNewItem
-				Case NotifyCollectionChangedAction.Move, NotifyCollectionChangedAction.Reset
-				Case Else
-					Throw New ArgumentOutOfRangeException()
-			End Select
+                Case NotifyCollectionChangedAction.Remove
+                    For Each eNewItem As SelectableItem In e.OldItems
+                        RemoveHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
+                    Next eNewItem
+                Case NotifyCollectionChangedAction.Replace
+                    For Each eNewItem As SelectableItem In e.NewItems
+                        AddHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
+                    Next eNewItem
+                    For Each eNewItem As SelectableItem In e.OldItems
+                        RemoveHandler eNewItem.PropertyChanged, AddressOf ItemPropertyChanged
+                    Next eNewItem
+                Case NotifyCollectionChangedAction.Move, NotifyCollectionChangedAction.Reset
+                Case Else
+                    Throw New ArgumentOutOfRangeException()
+            End Select
 
-			Text = String.Empty
+            Text = String.Empty
 
-			For Each item In Items
-				If Not item.IsChecked Then
-					Continue For
-				End If
+            For Each item In Items
+                If Not item.IsChecked Then
+                    Continue For
+                End If
 
-				If Not String.IsNullOrEmpty(Text) Then
-					Text &= ", "
-				End If
-				Text &= item.Content.ToString()
-			Next item
-		End Sub
+                If Not String.IsNullOrEmpty(Text) Then
+                    Text &= ", "
+                End If
+                Text &= item.Content.ToString()
+            Next item
+        End Sub
 
-		Private Sub ItemPropertyChanged(sender As Object, e As PropertyChangedEventArgs)
-			If e.PropertyName <> NameOf(SelectableItem.IsChecked) Then
-				Return
-			End If
-			UpdateText()
+        Private Sub ItemPropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+            If e.PropertyName <> NameOf(SelectableItem.IsChecked) Then
+                Return
+            End If
+            UpdateText()
 
-			OnItemCheckStateChanged()
-		End Sub
+            OnItemCheckStateChanged()
+        End Sub
 
-		Protected Overridable Sub OnItemCheckStateChanged()
-			ItemCheckStateChangedEvent?.Invoke(Me, EventArgs.Empty)
-		End Sub
+        Protected Overridable Sub OnItemCheckStateChanged()
+            ItemCheckStateChangedEvent?.Invoke(Me, EventArgs.Empty)
+        End Sub
 
-		Public Function IsItemChecked(i As Integer) As Boolean
-			Return Items(i).IsChecked
-		End Function
+        Public Function IsItemChecked(i As Integer) As Boolean
+            Return Items(i).IsChecked
+        End Function
 
-		Public Sub ClearCheckedItems()
-			For Each checkableComboboxItem In Items
-				checkableComboboxItem.IsChecked = False
-			Next checkableComboboxItem
-		End Sub
+        Public Sub ClearCheckedItems()
+            For Each checkableComboboxItem In Items
+                checkableComboboxItem.IsChecked = False
+            Next checkableComboboxItem
+        End Sub
 
-		Public Sub SetItemChecked(i As Integer, b As Boolean)
-			Items(i).IsChecked = b
-		End Sub
+        Public Sub SetItemChecked(i As Integer, b As Boolean)
+            Items(i).IsChecked = b
+        End Sub
 
-		Private Sub UpdateText()
-			Dim list = Items.Where(Function(x) x.IsChecked).ToList()
-			Text = String.Join(", ", list.Select(Function(i) i.Content.ToString))
-			ToolTip = If(String.IsNullOrEmpty(Text), Nothing, Text)
-		End Sub
-	End Class
+        Private Sub UpdateText()
+            Dim list = Items.Where(Function(x) x.IsChecked).ToList()
+            Text = String.Join(", ", list.Select(Function(i) i.Content.ToString))
+            ToolTip = If(String.IsNullOrEmpty(Text), Nothing, Text)
+        End Sub
+    End Class
 
-	Public Class SelectableItem
-		Implements INotifyPropertyChanged
+    Public Class SelectableItem
+        Implements INotifyPropertyChanged
 
-		Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+        Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
-		Private _isChecked As Boolean
-		Private _content As Object
+        Private _isChecked As Boolean
+        Private _content As Object
 
-		Public Property IsChecked() As Boolean
-			Get
-				Return _isChecked
-			End Get
-			Set(value As Boolean)
-				_isChecked = value
-				OnPropertyChanged(NameOf(IsChecked))
-			End Set
-		End Property
+        Public Property IsChecked() As Boolean
+            Get
+                Return _isChecked
+            End Get
+            Set(value As Boolean)
+                _isChecked = value
+                OnPropertyChanged(NameOf(IsChecked))
+            End Set
+        End Property
 
-		Public Property Content() As Object
-			Get
-				Return _content
-			End Get
-			Set(value As Object)
-				_content = value
-				OnPropertyChanged(NameOf(Content))
-			End Set
-		End Property
+        Public Property Content() As Object
+            Get
+                Return _content
+            End Get
+            Set(value As Object)
+                _content = value
+                OnPropertyChanged(NameOf(Content))
+            End Set
+        End Property
 
-		Public Sub New()
-		End Sub
+        Public Sub New()
+        End Sub
 
-		Public Sub New(content As Object)
-			Me.Content = content
-		End Sub
+        Public Sub New(content As Object)
+            Me.Content = content
+        End Sub
 
-		Public Sub New(content As Object, isChecked As Boolean)
-			Me.New(content)
-			Me.IsChecked = isChecked
-		End Sub
+        Public Sub New(content As Object, isChecked As Boolean)
+            Me.New(content)
+            Me.IsChecked = isChecked
+        End Sub
 
-		Protected Overridable Sub OnPropertyChanged(propertyName As String)
-			PropertyChangedEvent?.Invoke(Me, New PropertyChangedEventArgs(propertyName))
-		End Sub
-	End Class
+        Protected Overridable Sub OnPropertyChanged(propertyName As String)
+            PropertyChangedEvent?.Invoke(Me, New PropertyChangedEventArgs(propertyName))
+        End Sub
+    End Class
 End Namespace

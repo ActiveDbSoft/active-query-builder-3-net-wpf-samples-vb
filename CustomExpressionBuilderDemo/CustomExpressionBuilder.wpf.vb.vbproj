@@ -6,7 +6,6 @@
     <Description>Active Query Builder 3 CustomExpressionBuilder Demo</Description>
     <RootNamespace>CustomExpressionBuilder</RootNamespace>
 
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
 

@@ -6,7 +6,7 @@
 	xmlns:view="clr-namespace:ActiveQueryBuilder.View;assembly=ActiveQueryBuilder.View"
 	xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly_pro.wpf.vb"
 	xmlns:dataViewerControl="clr-namespace:GeneralAssembly.Common.DataViewerControl;assembly=GeneralAssembly_pro.wpf.vb"
-	Title="Active Query Builder for .NET WPF Edition - Basic Demo (C#)" Height="640" Width="800"
+	Title="Active Query Builder for .NET WPF Edition - Basic Demo (VisualBasic)" Height="640" Width="800"
     Loaded="Window_Loaded" FontSize="11" WindowStartupLocation="CenterScreen">
     <Grid x:Name="GridRoot">
         <Grid.RowDefinitions>

@@ -5,7 +5,7 @@
         xmlns:mdiControl="clr-namespace:FullFeaturedMdiDemo.MdiControl"
         xmlns:userQueries="clr-namespace:ActiveQueryBuilder.View.WPF.UserQueries;assembly=ActiveQueryBuilder.View.WPF"
         xmlns:common="clr-namespace:GeneralAssembly.Common;assembly=GeneralAssembly_pro.wpf.vb"
-        Title="Active Query Builder for .NET Professional WPF Edition - Full Featured Mdi Demo (C#)" Height="900" Width="1000" Icon="Resources/App.ico">
+        Title="Active Query Builder for .NET Professional WPF Edition - Full Featured Mdi Demo (VisualBasic)" Height="900" Width="1000" Icon="Resources/App.ico">
 
     <Window.Resources>
         <common:ColorEnabledConverter x:Key="ConverterColorEnabled"/>

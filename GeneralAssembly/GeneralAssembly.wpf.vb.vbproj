@@ -5,8 +5,6 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <Description>Active Query Builder 3 full-featured demos common parts</Description>
     <RootNamespace>GeneralAssembly</RootNamespace>
-
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

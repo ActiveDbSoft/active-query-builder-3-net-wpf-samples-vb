@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -12,13 +12,13 @@ Imports System
 
 
 Namespace Connection
-	Public Delegate Sub SyntaxProviderDetected(syntaxType As Type)
+    Public Delegate Sub SyntaxProviderDetected(syntaxType As Type)
 
-	Friend Interface IConnectionFrame
-		Event OnSyntaxProviderDetected As SyntaxProviderDetected
-		Sub SetServerType(serverType As String)
+    Friend Interface IConnectionFrame
+        Event OnSyntaxProviderDetected As SyntaxProviderDetected
+        Sub SetServerType(serverType As String)
 
-		Property ConnectionString() As String
-		Function TestConnection() As Boolean
-	End Interface
+        Property ConnectionString() As String
+        Function TestConnection() As Boolean
+    End Interface
 End Namespace

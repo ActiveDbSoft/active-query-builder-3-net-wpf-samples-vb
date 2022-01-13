@@ -6,7 +6,6 @@
     <Description>Active Query Builder 3 AlternateNames Demo</Description>
     <RootNamespace></RootNamespace>
 
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <OutputType>WinExe</OutputType>
     <StartupObject>Sub Main</StartupObject>
   </PropertyGroup>

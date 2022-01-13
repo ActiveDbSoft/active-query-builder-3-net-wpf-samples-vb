@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -31,9 +31,18 @@ Imports ActiveQueryBuilder.View.WPF
             QueryBuilder1.SyntaxProvider = New DB2SyntaxProvider()
 
             Try
+                ' tune QueryBuilder to normalize tables/fields names mentioned in SQL queries
+                ' when this setting is true QueryBuilder replaces all names to "canonical" names returned by the server's database schema
+                ' when this setting is false QueryBuilder tries to preserve names as they are written in a query text
+                ' to demonstrate AltNames feature turn this setting to true
+                QueryBuilder1.SQLFormattingOptions.ObjectNamesNormalization = True
+
+                ' Load demo metadata from XML file
                 QueryBuilder1.MetadataLoadingOptions.OfflineMode = True
                 QueryBuilder1.MetadataContainer.ImportFromXML("db2_sample_with_alt_names.xml")
                 QueryBuilder1.InitializeDatabaseSchemaTree()
+
+                ' set example query text
                 QueryBuilder1.SQL = "Select DEPARTMENT.DEPTNO, DEPARTMENT.DEPTNAME, DEPARTMENT.MGRNO From DEPARTMENT"
             Catch ex As QueryBuilderException
                 MessageBox.Show(ex.Message)

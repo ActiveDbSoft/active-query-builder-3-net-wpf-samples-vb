@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -163,54 +163,54 @@ Namespace Frames
             Dim item As QueryColumnListItem = TryCast(e.Row.Item, ActiveQueryBuilder.View.WPF.QueryView.QueryColumnListItem)
 
             If item Is Nothing Then
-				Return
-			End If
+                Return
+            End If
 
-			Dim newValue As String = item.CustomData.ToString()
+            Dim newValue As String = item.CustomData.ToString()
 
-			' do something with the new value
-			If oldValue <> newValue Then
-				_customValuesProvider(e.Row.GetIndex()) = newValue
-			End If
-		End Sub
+            ' do something with the new value
+            If oldValue <> newValue Then
+                _customValuesProvider(e.Row.GetIndex()) = newValue
+            End If
+        End Sub
 
-		Private Sub dataGridView_LoadingRow(sender As Object, e As DataGridRowEventArgs)
-			AddHandler e.Row.Loaded, AddressOf row_Loaded
-		End Sub
+        Private Sub dataGridView_LoadingRow(sender As Object, e As DataGridRowEventArgs)
+            AddHandler e.Row.Loaded, AddressOf row_Loaded
+        End Sub
 
-		''' <summary>
-		''' Defining the initial value for a newly added row.
-		''' </summary>
-		Private Sub row_Loaded(sender As Object, e As RoutedEventArgs)
-			Dim row As DataGridRow = DirectCast(sender, DataGridRow)
-			RemoveHandler row.Loaded, AddressOf row_Loaded
+        ''' <summary>
+        ''' Defining the initial value for a newly added row.
+        ''' </summary>
+        Private Sub row_Loaded(sender As Object, e As RoutedEventArgs)
+            Dim row As DataGridRow = DirectCast(sender, DataGridRow)
+            RemoveHandler row.Loaded, AddressOf row_Loaded
 
-			Dim grid As DataGrid = FindParent(Of DataGrid)(row)
+            Dim grid As DataGrid = FindParent(Of DataGrid)(row)
 
-			If (row.GetIndex() >= grid.Items.Count - 1) Then
-				Return
-			End If
+            If (row.GetIndex() >= grid.Items.Count - 1) Then
+                Return
+            End If
 
-			Dim item As ActiveQueryBuilder.View.WPF.QueryView.QueryColumnListItem = TryCast(row.Item, ActiveQueryBuilder.View.WPF.QueryView.QueryColumnListItem)
-			If item Is Nothing Then
-				Return
-			End If
+            Dim item As ActiveQueryBuilder.View.WPF.QueryView.QueryColumnListItem = TryCast(row.Item, ActiveQueryBuilder.View.WPF.QueryView.QueryColumnListItem)
+            If item Is Nothing Then
+                Return
+            End If
 
-			' Initial setting of the custom column data
-			item.CustomData = _customValuesProvider(row.GetIndex())
-		End Sub
+            ' Initial setting of the custom column data
+            item.CustomData = _customValuesProvider(row.GetIndex())
+        End Sub
 
-		''' <summary>
-		''' This handler determines whether a custom column should be editable or not.
-		''' </summary>
-		Private Sub dataGridView_BeginningEdit(sender As Object, e As DataGridBeginningEditEventArgs)
-			Dim grid As DataGrid = DirectCast(sender, DataGrid)
-			If e.Column.DisplayIndex = 2 AndAlso e.Row.GetIndex() < grid.Items.Count - 1 Then
-				' Make cell editable
-					' Change to "true" if you need a read-only cell.	
-				e.Cancel = False
-			End If
-		End Sub
+        ''' <summary>
+        ''' This handler determines whether a custom column should be editable or not.
+        ''' </summary>
+        Private Sub dataGridView_BeginningEdit(sender As Object, e As DataGridBeginningEditEventArgs)
+            Dim grid As DataGrid = DirectCast(sender, DataGrid)
+            If e.Column.DisplayIndex = 2 AndAlso e.Row.GetIndex() < grid.Items.Count - 1 Then
+                ' Make cell editable
+                    ' Change to "true" if you need a read-only cell.    
+                e.Cancel = False
+            End If
+        End Sub
 
         Public Shared Function FindParent(Of T As Class)(from As DependencyObject) As T
             Dim result As T = Nothing

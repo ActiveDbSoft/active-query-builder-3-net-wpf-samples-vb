@@ -21,7 +21,7 @@
                 <TextBlock Text="Demo Application" Grid.Row="2" Grid.Column="0"/>
                 <TextBlock x:Name="LblDemoVersion" Grid.Row="2" Grid.Column="1"/>
             </Grid>
-            <TextBlock Margin="0,15,0,0" Text="Copyright © 2008-2021 Active Database Software. All rights reserved."/>
+            <TextBlock Margin="0,15,0,0" Text="Copyright © 2008-2022 Active Database Software. All rights reserved."/>
             <TextBlock Margin="0,5,0,0">           
                 <Hyperlink NavigateUri="https://www.activequerybuilder.com/" RequestNavigate="Hyperlink1_RequestNavigate">
                     www.activequerybuilder.com

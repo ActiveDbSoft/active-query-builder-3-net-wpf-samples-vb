@@ -1,7 +1,7 @@
 ''*******************************************************************''
 ''       Active Query Builder Component Suite                        ''
 ''                                                                   ''
-''       Copyright © 2006-2021 Active Database Software              ''
+''       Copyright © 2006-2022 Active Database Software              ''
 ''       ALL RIGHTS RESERVED                                         ''
 ''                                                                   ''
 ''       CONSULT THE LICENSE AGREEMENT FOR INFORMATION ON            ''
@@ -56,7 +56,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Method Or AttributeTargets.Parameter Or AttributeTargets.Property Or AttributeTargets.Delegate Or AttributeTargets.Field Or AttributeTargets.Event Or AttributeTargets.Class Or AttributeTargets.Interface Or AttributeTargets.GenericParameter)>
   Public NotInheritable Class CanBeNullAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -70,7 +70,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Method Or AttributeTargets.Parameter Or AttributeTargets.Property Or AttributeTargets.Delegate Or AttributeTargets.Field Or AttributeTargets.Event Or AttributeTargets.Class Or AttributeTargets.Interface Or AttributeTargets.GenericParameter)>
   Public NotInheritable Class NotNullAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -90,7 +90,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Method Or AttributeTargets.Parameter Or AttributeTargets.Property Or AttributeTargets.Delegate Or AttributeTargets.Field)>
   Public NotInheritable Class ItemNotNullAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -111,7 +111,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Method Or AttributeTargets.Parameter Or AttributeTargets.Property Or AttributeTargets.Delegate Or AttributeTargets.Field)>
   Public NotInheritable Class ItemCanBeNullAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -130,17 +130,17 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Constructor Or AttributeTargets.Method Or AttributeTargets.Property Or AttributeTargets.Delegate)>
   Public NotInheritable Class StringFormatMethodAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	''' <param name="formatParameterName">
-	''' Specifies which parameter of an annotated method should be treated as the format string
-	''' </param>
-	Public Sub New(<NotNull> formatParameterName As String)
-	  Me.FormatParameterName = formatParameterName
-	End Sub
+    ''' <param name="formatParameterName">
+    ''' Specifies which parameter of an annotated method should be treated as the format string
+    ''' </param>
+    Public Sub New(<NotNull> formatParameterName As String)
+      Me.FormatParameterName = formatParameterName
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property FormatParameterName() As String
+    <NotNull>
+    Public ReadOnly Property FormatParameterName() As String
   End Class
 
   ''' <summary>
@@ -172,14 +172,14 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Property Or AttributeTargets.Field, AllowMultiple := True)>
   Public NotInheritable Class ValueProviderAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> name As String)
-	  Me.Name = name
-	End Sub
+    Public Sub New(<NotNull> name As String)
+      Me.Name = name
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Name() As String
+    <NotNull>
+    Public ReadOnly Property Name() As String
   End Class
 
   ''' <summary>
@@ -195,7 +195,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class InvokerParameterNameAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -239,16 +239,16 @@ Namespace Annotations
   ''' </example>
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class NotifyPropertyChangedInvocatorAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
-	Public Sub New(<NotNull> parameterName As String)
-	  Me.ParameterName = parameterName
-	End Sub
+    Public Sub New()
+    End Sub
+    Public Sub New(<NotNull> parameterName As String)
+      Me.ParameterName = parameterName
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property ParameterName() As String
+    <CanBeNull>
+    Public ReadOnly Property ParameterName() As String
   End Class
 
   ''' <summary>
@@ -297,21 +297,21 @@ Namespace Annotations
   ''' </list></examples>
   <AttributeUsage(AttributeTargets.Method, AllowMultiple := True)>
   Public NotInheritable Class ContractAnnotationAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> contract As String)
-		Me.New(contract, False)
-	End Sub
+    Public Sub New(<NotNull> contract As String)
+        Me.New(contract, False)
+    End Sub
 
-	Public Sub New(<NotNull> contract As String, forceFullStates As Boolean)
-	  Me.Contract = contract
-	  Me.ForceFullStates = forceFullStates
-	End Sub
+    Public Sub New(<NotNull> contract As String, forceFullStates As Boolean)
+      Me.Contract = contract
+      Me.ForceFullStates = forceFullStates
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Contract() As String
+    <NotNull>
+    Public ReadOnly Property Contract() As String
 
-	Public ReadOnly Property ForceFullStates() As Boolean
+    Public ReadOnly Property ForceFullStates() As Boolean
   End Class
 
   ''' <summary>
@@ -325,17 +325,17 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.All)>
   Public NotInheritable Class LocalizationRequiredAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-		Me.New(True)
-	End Sub
+    Public Sub New()
+        Me.New(True)
+    End Sub
 
-	Public Sub New(required As Boolean)
-	  Me.Required = required
-	End Sub
+    Public Sub New(required As Boolean)
+      Me.Required = required
+    End Sub
 
-	Public ReadOnly Property Required() As Boolean
+    Public ReadOnly Property Required() As Boolean
   End Class
 
   ''' <summary>
@@ -360,7 +360,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Interface Or AttributeTargets.Class Or AttributeTargets.Struct)>
   Public NotInheritable Class CannotApplyEqualityOperatorAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -377,14 +377,14 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Class, AllowMultiple := True), BaseTypeRequired(GetType(Attribute))>
   Public NotInheritable Class BaseTypeRequiredAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> baseType As Type)
-	  Me.BaseType = baseType
-	End Sub
+    Public Sub New(<NotNull> baseType As Type)
+      Me.BaseType = baseType
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property BaseType() As Type
+    <NotNull>
+    Public ReadOnly Property BaseType() As Type
   End Class
 
   ''' <summary>
@@ -393,28 +393,28 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.All)>
   Public NotInheritable Class UsedImplicitlyAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-		Me.New(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
-	End Sub
+    Public Sub New()
+        Me.New(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
+    End Sub
 
-	Public Sub New(useKindFlags As ImplicitUseKindFlags)
-		Me.New(useKindFlags, ImplicitUseTargetFlags.Default)
-	End Sub
+    Public Sub New(useKindFlags As ImplicitUseKindFlags)
+        Me.New(useKindFlags, ImplicitUseTargetFlags.Default)
+    End Sub
 
-	Public Sub New(targetFlags As ImplicitUseTargetFlags)
-		Me.New(ImplicitUseKindFlags.Default, targetFlags)
-	End Sub
+    Public Sub New(targetFlags As ImplicitUseTargetFlags)
+        Me.New(ImplicitUseKindFlags.Default, targetFlags)
+    End Sub
 
-	Public Sub New(useKindFlags As ImplicitUseKindFlags, targetFlags As ImplicitUseTargetFlags)
-	  Me.UseKindFlags = useKindFlags
-	  Me.TargetFlags = targetFlags
-	End Sub
+    Public Sub New(useKindFlags As ImplicitUseKindFlags, targetFlags As ImplicitUseTargetFlags)
+      Me.UseKindFlags = useKindFlags
+      Me.TargetFlags = targetFlags
+    End Sub
 
-	Public ReadOnly Property UseKindFlags() As ImplicitUseKindFlags
+    Public ReadOnly Property UseKindFlags() As ImplicitUseKindFlags
 
-	Public ReadOnly Property TargetFlags() As ImplicitUseTargetFlags
+    Public ReadOnly Property TargetFlags() As ImplicitUseTargetFlags
   End Class
 
   ''' <summary>
@@ -425,30 +425,30 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Class Or AttributeTargets.GenericParameter Or AttributeTargets.Parameter)>
   Public NotInheritable Class MeansImplicitUseAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-		Me.New(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
-	End Sub
+    Public Sub New()
+        Me.New(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
+    End Sub
 
-	Public Sub New(useKindFlags As ImplicitUseKindFlags)
-		Me.New(useKindFlags, ImplicitUseTargetFlags.Default)
-	End Sub
+    Public Sub New(useKindFlags As ImplicitUseKindFlags)
+        Me.New(useKindFlags, ImplicitUseTargetFlags.Default)
+    End Sub
 
-	Public Sub New(targetFlags As ImplicitUseTargetFlags)
-		Me.New(ImplicitUseKindFlags.Default, targetFlags)
-	End Sub
+    Public Sub New(targetFlags As ImplicitUseTargetFlags)
+        Me.New(ImplicitUseKindFlags.Default, targetFlags)
+    End Sub
 
-	Public Sub New(useKindFlags As ImplicitUseKindFlags, targetFlags As ImplicitUseTargetFlags)
-	  Me.UseKindFlags = useKindFlags
-	  Me.TargetFlags = targetFlags
-	End Sub
+    Public Sub New(useKindFlags As ImplicitUseKindFlags, targetFlags As ImplicitUseTargetFlags)
+      Me.UseKindFlags = useKindFlags
+      Me.TargetFlags = targetFlags
+    End Sub
 
-	<UsedImplicitly>
-	Public ReadOnly Property UseKindFlags() As ImplicitUseKindFlags
+    <UsedImplicitly>
+    Public ReadOnly Property UseKindFlags() As ImplicitUseKindFlags
 
-	<UsedImplicitly>
-	Public ReadOnly Property TargetFlags() As ImplicitUseTargetFlags
+    <UsedImplicitly>
+    Public ReadOnly Property TargetFlags() As ImplicitUseTargetFlags
   End Class
 
   ''' <summary>
@@ -457,18 +457,18 @@ Namespace Annotations
   ''' </summary>
   <Flags>
   Public Enum ImplicitUseKindFlags
-	[Default] = Access Or Assign Or InstantiatedWithFixedConstructorSignature
-	''' <summary>Only entity marked with attribute considered used.</summary>
-	Access = 1
-	''' <summary>Indicates implicit assignment to a member.</summary>
-	Assign = 2
-	''' <summary>
-	''' Indicates implicit instantiation of a type with fixed constructor signature.
-	''' That means any unused constructor parameters won't be reported as such.
-	''' </summary>
-	InstantiatedWithFixedConstructorSignature = 4
-	''' <summary>Indicates implicit instantiation of a type.</summary>
-	InstantiatedNoFixedConstructorSignature = 8
+    [Default] = Access Or Assign Or InstantiatedWithFixedConstructorSignature
+    ''' <summary>Only entity marked with attribute considered used.</summary>
+    Access = 1
+    ''' <summary>Indicates implicit assignment to a member.</summary>
+    Assign = 2
+    ''' <summary>
+    ''' Indicates implicit instantiation of a type with fixed constructor signature.
+    ''' That means any unused constructor parameters won't be reported as such.
+    ''' </summary>
+    InstantiatedWithFixedConstructorSignature = 4
+    ''' <summary>Indicates implicit instantiation of a type.</summary>
+    InstantiatedNoFixedConstructorSignature = 8
   End Enum
 
   ''' <summary>
@@ -477,12 +477,12 @@ Namespace Annotations
   ''' </summary>
   <Flags>
   Public Enum ImplicitUseTargetFlags
-	[Default] = Itself
-	Itself = 1
-	''' <summary>Members of entity marked with attribute are considered used.</summary>
-	Members = 2
-	''' <summary>Entity marked with attribute and all its members considered used.</summary>
-	WithMembers = Itself Or Members
+    [Default] = Itself
+    Itself = 1
+    ''' <summary>Members of entity marked with attribute are considered used.</summary>
+    Members = 2
+    ''' <summary>Entity marked with attribute and all its members considered used.</summary>
+    WithMembers = Itself Or Members
   End Enum
 
   ''' <summary>
@@ -491,17 +491,17 @@ Namespace Annotations
   ''' </summary>
   <MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)>
   Public NotInheritable Class PublicAPIAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull> comment As String)
-	  Me.Comment = comment
-	End Sub
+    Public Sub New(<NotNull> comment As String)
+      Me.Comment = comment
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property Comment() As String
+    <CanBeNull>
+    Public ReadOnly Property Comment() As String
   End Class
 
   ''' <summary>
@@ -511,7 +511,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class InstantHandleAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -528,7 +528,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class PureAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -545,17 +545,17 @@ Namespace Annotations
   ''' </remarks>
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class MustUseReturnValueAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull> justification As String)
-	  Me.Justification = justification
-	End Sub
+    Public Sub New(<NotNull> justification As String)
+      Me.Justification = justification
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property Justification() As String
+    <CanBeNull>
+    Public ReadOnly Property Justification() As String
   End Class
 
   ''' <summary>
@@ -575,7 +575,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Field Or AttributeTargets.Property Or AttributeTargets.Parameter Or AttributeTargets.Method Or AttributeTargets.Class Or AttributeTargets.Interface Or AttributeTargets.Struct Or AttributeTargets.GenericParameter)>
   Public NotInheritable Class ProvidesContextAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -585,17 +585,17 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class PathReferenceAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull, PathReference> basePath As String)
-	  Me.BasePath = basePath
-	End Sub
+    Public Sub New(<NotNull, PathReference> basePath As String)
+      Me.BasePath = basePath
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property BasePath() As String
+    <CanBeNull>
+    Public ReadOnly Property BasePath() As String
   End Class
 
   ''' <summary>
@@ -623,7 +623,7 @@ Namespace Annotations
   ''' </example>
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class SourceTemplateAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -657,103 +657,103 @@ Namespace Annotations
   ''' </example>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method, AllowMultiple := True)>
   Public NotInheritable Class MacroAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	''' <summary>
-	''' Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
-	''' parameter when the template is expanded.
-	''' </summary>
-	<CanBeNull>
-	Public Property Expression() As String
+    ''' <summary>
+    ''' Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
+    ''' parameter when the template is expanded.
+    ''' </summary>
+    <CanBeNull>
+    Public Property Expression() As String
 
-	''' <summary>
-	''' Allows specifying which occurrence of the target parameter becomes editable when the template is deployed.
-	''' </summary>
-	''' <remarks>
-	''' If the target parameter is used several times in the template, only one occurrence becomes editable;
-	''' other occurrences are changed synchronously. To specify the zero-based index of the editable occurrence,
-	''' use values >= 0. To make the parameter non-editable when the template is expanded, use -1.
-	''' </remarks>
-	Public Property Editable() As Integer
+    ''' <summary>
+    ''' Allows specifying which occurrence of the target parameter becomes editable when the template is deployed.
+    ''' </summary>
+    ''' <remarks>
+    ''' If the target parameter is used several times in the template, only one occurrence becomes editable;
+    ''' other occurrences are changed synchronously. To specify the zero-based index of the editable occurrence,
+    ''' use values >= 0. To make the parameter non-editable when the template is expanded, use -1.
+    ''' </remarks>
+    Public Property Editable() As Integer
 
-	''' <summary>
-	''' Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
-	''' <see cref="MacroAttribute"/> is applied on a template method.
-	''' </summary>
-	<CanBeNull>
-	Public Property Target() As String
+    ''' <summary>
+    ''' Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
+    ''' <see cref="MacroAttribute"/> is applied on a template method.
+    ''' </summary>
+    <CanBeNull>
+    Public Property Target() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly Or AttributeTargets.Field Or AttributeTargets.Property, AllowMultiple := True)>
   Public NotInheritable Class AspMvcAreaMasterLocationFormatAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> format As String)
-	  Me.Format = format
-	End Sub
+    Public Sub New(<NotNull> format As String)
+      Me.Format = format
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Format() As String
+    <NotNull>
+    Public ReadOnly Property Format() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly Or AttributeTargets.Field Or AttributeTargets.Property, AllowMultiple := True)>
   Public NotInheritable Class AspMvcAreaPartialViewLocationFormatAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> format As String)
-	  Me.Format = format
-	End Sub
+    Public Sub New(<NotNull> format As String)
+      Me.Format = format
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Format() As String
+    <NotNull>
+    Public ReadOnly Property Format() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly Or AttributeTargets.Field Or AttributeTargets.Property, AllowMultiple := True)>
   Public NotInheritable Class AspMvcAreaViewLocationFormatAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> format As String)
-	  Me.Format = format
-	End Sub
+    Public Sub New(<NotNull> format As String)
+      Me.Format = format
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Format() As String
+    <NotNull>
+    Public ReadOnly Property Format() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly Or AttributeTargets.Field Or AttributeTargets.Property, AllowMultiple := True)>
   Public NotInheritable Class AspMvcMasterLocationFormatAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> format As String)
-	  Me.Format = format
-	End Sub
+    Public Sub New(<NotNull> format As String)
+      Me.Format = format
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Format() As String
+    <NotNull>
+    Public ReadOnly Property Format() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly Or AttributeTargets.Field Or AttributeTargets.Property, AllowMultiple := True)>
   Public NotInheritable Class AspMvcPartialViewLocationFormatAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> format As String)
-	  Me.Format = format
-	End Sub
+    Public Sub New(<NotNull> format As String)
+      Me.Format = format
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Format() As String
+    <NotNull>
+    Public ReadOnly Property Format() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly Or AttributeTargets.Field Or AttributeTargets.Property, AllowMultiple := True)>
   Public NotInheritable Class AspMvcViewLocationFormatAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> format As String)
-	  Me.Format = format
-	End Sub
+    Public Sub New(<NotNull> format As String)
+      Me.Format = format
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Format() As String
+    <NotNull>
+    Public ReadOnly Property Format() As String
   End Class
 
   ''' <summary>
@@ -764,17 +764,17 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcActionAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull> anonymousProperty As String)
-	  Me.AnonymousProperty = anonymousProperty
-	End Sub
+    Public Sub New(<NotNull> anonymousProperty As String)
+      Me.AnonymousProperty = anonymousProperty
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property AnonymousProperty() As String
+    <CanBeNull>
+    Public ReadOnly Property AnonymousProperty() As String
   End Class
 
   ''' <summary>
@@ -784,17 +784,17 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcAreaAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull> anonymousProperty As String)
-	  Me.AnonymousProperty = anonymousProperty
-	End Sub
+    Public Sub New(<NotNull> anonymousProperty As String)
+      Me.AnonymousProperty = anonymousProperty
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property AnonymousProperty() As String
+    <CanBeNull>
+    Public ReadOnly Property AnonymousProperty() As String
   End Class
 
   ''' <summary>
@@ -805,17 +805,17 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcControllerAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull> anonymousProperty As String)
-	  Me.AnonymousProperty = anonymousProperty
-	End Sub
+    Public Sub New(<NotNull> anonymousProperty As String)
+      Me.AnonymousProperty = anonymousProperty
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property AnonymousProperty() As String
+    <CanBeNull>
+    Public ReadOnly Property AnonymousProperty() As String
   End Class
 
   ''' <summary>
@@ -824,7 +824,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcMasterAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -834,7 +834,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class AspMvcModelTypeAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -846,7 +846,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcPartialViewAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -855,7 +855,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Class Or AttributeTargets.Method)>
   Public NotInheritable Class AspMvcSuppressViewErrorAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -866,7 +866,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcDisplayTemplateAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -877,7 +877,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcEditorTemplateAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -888,7 +888,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcTemplateAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -900,7 +900,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcViewAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -910,7 +910,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcViewComponentAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -920,7 +920,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcViewComponentViewAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -937,35 +937,35 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Property)>
   Public NotInheritable Class AspMvcActionSelectorAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Property Or AttributeTargets.Field)>
   Public NotInheritable Class HtmlElementAttributesAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New()
-	End Sub
+    Public Sub New()
+    End Sub
 
-	Public Sub New(<NotNull> name As String)
-	  Me.Name = name
-	End Sub
+    Public Sub New(<NotNull> name As String)
+      Me.Name = name
+    End Sub
 
-	<CanBeNull>
-	Public ReadOnly Property Name() As String
+    <CanBeNull>
+    Public ReadOnly Property Name() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Field Or AttributeTargets.Property)>
   Public NotInheritable Class HtmlAttributeValueAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> name As String)
-	  Me.Name = name
-	End Sub
+    Public Sub New(<NotNull> name As String)
+      Me.Name = name
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Name() As String
+    <NotNull>
+    Public ReadOnly Property Name() As String
   End Class
 
   ''' <summary>
@@ -975,7 +975,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter Or AttributeTargets.Method)>
   Public NotInheritable Class RazorSectionAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1008,13 +1008,13 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Method Or AttributeTargets.Constructor Or AttributeTargets.Property)>
   Public NotInheritable Class CollectionAccessAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(collectionAccessType As CollectionAccessType)
-	  Me.CollectionAccessType = collectionAccessType
-	End Sub
+    Public Sub New(collectionAccessType As CollectionAccessType)
+      Me.CollectionAccessType = collectionAccessType
+    End Sub
 
-	Public ReadOnly Property CollectionAccessType() As CollectionAccessType
+    Public ReadOnly Property CollectionAccessType() As CollectionAccessType
   End Class
 
   ''' <summary>
@@ -1023,14 +1023,14 @@ Namespace Annotations
   ''' </summary>
   <Flags>
   Public Enum CollectionAccessType
-	''' <summary>Method does not use or modify content of the collection.</summary>
-	None = 0
-	''' <summary>Method only reads content of the collection but does not modify it.</summary>
-	Read = 1
-	''' <summary>Method can change content of the collection but does not add new elements.</summary>
-	ModifyExistingContent = 2
-	''' <summary>Method can add new elements to the collection.</summary>
-	UpdatedContent = ModifyExistingContent Or 4
+    ''' <summary>Method does not use or modify content of the collection.</summary>
+    None = 0
+    ''' <summary>Method only reads content of the collection but does not modify it.</summary>
+    Read = 1
+    ''' <summary>Method can change content of the collection but does not add new elements.</summary>
+    ModifyExistingContent = 2
+    ''' <summary>Method can add new elements to the collection.</summary>
+    UpdatedContent = ModifyExistingContent Or 4
   End Enum
 
   ''' <summary>
@@ -1040,7 +1040,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class AssertionMethodAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1051,13 +1051,13 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class AssertionConditionAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(conditionType As AssertionConditionType)
-	  Me.ConditionType = conditionType
-	End Sub
+    Public Sub New(conditionType As AssertionConditionType)
+      Me.ConditionType = conditionType
+    End Sub
 
-	Public ReadOnly Property ConditionType() As AssertionConditionType
+    Public ReadOnly Property ConditionType() As AssertionConditionType
   End Class
 
   ''' <summary>
@@ -1065,14 +1065,14 @@ Namespace Annotations
   ''' then the execution continues. Otherwise, execution is assumed to be halted.
   ''' </summary>
   Public Enum AssertionConditionType
-	''' <summary>Marked parameter should be evaluated to true.</summary>
-	IS_TRUE = 0
-	''' <summary>Marked parameter should be evaluated to false.</summary>
-	IS_FALSE = 1
-	''' <summary>Marked parameter should be evaluated to null value.</summary>
-	IS_NULL = 2
-	''' <summary>Marked parameter should be evaluated to not null value.</summary>
-	IS_NOT_NULL = 3
+    ''' <summary>Marked parameter should be evaluated to true.</summary>
+    IS_TRUE = 0
+    ''' <summary>Marked parameter should be evaluated to false.</summary>
+    IS_FALSE = 1
+    ''' <summary>Marked parameter should be evaluated to null value.</summary>
+    IS_NULL = 2
+    ''' <summary>Marked parameter should be evaluated to not null value.</summary>
+    IS_NOT_NULL = 3
   End Enum
 
   ''' <summary>
@@ -1081,7 +1081,7 @@ Namespace Annotations
   ''' </summary>
   <Obsolete("Use [ContractAnnotation('=> halt')] instead"), AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class TerminatesProgramAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1092,7 +1092,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class LinqTunnelAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1114,7 +1114,7 @@ Namespace Annotations
   ''' </code></example>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class NoEnumerationAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1123,7 +1123,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class RegexPatternAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1135,7 +1135,7 @@ Namespace Annotations
   ''' </remarks>
   <AttributeUsage(AttributeTargets.Class Or AttributeTargets.Interface Or AttributeTargets.Struct Or AttributeTargets.Enum)>
   Public NotInheritable Class NoReorderAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1145,7 +1145,7 @@ Namespace Annotations
   ''' </summary>
   <AttributeUsage(AttributeTargets.Class)>
   Public NotInheritable Class XamlItemsControlAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
@@ -1160,152 +1160,152 @@ Namespace Annotations
   ''' </remarks>
   <AttributeUsage(AttributeTargets.Property)>
   Public NotInheritable Class XamlItemBindingOfItemsControlAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Class, AllowMultiple := True)>
   Public NotInheritable Class AspChildControlTypeAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> tagName As String, <NotNull> controlType As Type)
-	  Me.TagName = tagName
-	  Me.ControlType = controlType
-	End Sub
+    Public Sub New(<NotNull> tagName As String, <NotNull> controlType As Type)
+      Me.TagName = tagName
+      Me.ControlType = controlType
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property TagName() As String
+    <NotNull>
+    Public ReadOnly Property TagName() As String
 
-	<NotNull>
-	Public ReadOnly Property ControlType() As Type
+    <NotNull>
+    Public ReadOnly Property ControlType() As Type
   End Class
 
   <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Method)>
   Public NotInheritable Class AspDataFieldAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Method)>
   Public NotInheritable Class AspDataFieldsAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Property)>
   Public NotInheritable Class AspMethodPropertyAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Class, AllowMultiple := True)>
   Public NotInheritable Class AspRequiredAttributeAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> attribute As String)
-	  Me.Attribute = attribute
-	End Sub
+    Public Sub New(<NotNull> attribute As String)
+      Me.Attribute = attribute
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Attribute() As String
+    <NotNull>
+    Public ReadOnly Property Attribute() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Property)>
   Public NotInheritable Class AspTypePropertyAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public ReadOnly Property CreateConstructorReferences() As Boolean
+    Public ReadOnly Property CreateConstructorReferences() As Boolean
 
-	Public Sub New(createConstructorReferences As Boolean)
-	  Me.CreateConstructorReferences = createConstructorReferences
-	End Sub
+    Public Sub New(createConstructorReferences As Boolean)
+      Me.CreateConstructorReferences = createConstructorReferences
+    End Sub
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly, AllowMultiple := True)>
   Public NotInheritable Class RazorImportNamespaceAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> name As String)
-	  Me.Name = name
-	End Sub
+    Public Sub New(<NotNull> name As String)
+      Me.Name = name
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Name() As String
+    <NotNull>
+    Public ReadOnly Property Name() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly, AllowMultiple := True)>
   Public NotInheritable Class RazorInjectionAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> type As String, <NotNull> fieldName As String)
-	  Me.Type = type
-	  Me.FieldName = fieldName
-	End Sub
+    Public Sub New(<NotNull> type As String, <NotNull> fieldName As String)
+      Me.Type = type
+      Me.FieldName = fieldName
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Type() As String
+    <NotNull>
+    Public ReadOnly Property Type() As String
 
-	<NotNull>
-	Public ReadOnly Property FieldName() As String
+    <NotNull>
+    Public ReadOnly Property FieldName() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly, AllowMultiple := True)>
   Public NotInheritable Class RazorDirectiveAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	Public Sub New(<NotNull> directive As String)
-	  Me.Directive = directive
-	End Sub
+    Public Sub New(<NotNull> directive As String)
+      Me.Directive = directive
+    End Sub
 
-	<NotNull>
-	Public ReadOnly Property Directive() As String
+    <NotNull>
+    Public ReadOnly Property Directive() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Assembly, AllowMultiple := True)>
   Public NotInheritable Class RazorPageBaseTypeAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
-	  Public Sub New(<NotNull> baseType As String)
-		Me.BaseType = baseType
-	  End Sub
-	  Public Sub New(<NotNull> baseType As String, pageName As String)
-		  Me.BaseType = baseType
-		  Me.PageName = pageName
-	  End Sub
+      Public Sub New(<NotNull> baseType As String)
+        Me.BaseType = baseType
+      End Sub
+      Public Sub New(<NotNull> baseType As String, pageName As String)
+          Me.BaseType = baseType
+          Me.PageName = pageName
+      End Sub
 
-	  <NotNull>
-	  Public ReadOnly Property BaseType() As String
-	  <CanBeNull>
-	  Public ReadOnly Property PageName() As String
+      <NotNull>
+      Public ReadOnly Property BaseType() As String
+      <CanBeNull>
+      Public ReadOnly Property PageName() As String
   End Class
 
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class RazorHelperCommonAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Property)>
   Public NotInheritable Class RazorLayoutAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class RazorWriteLiteralMethodAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Method)>
   Public NotInheritable Class RazorWriteMethodAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 
   <AttributeUsage(AttributeTargets.Parameter)>
   Public NotInheritable Class RazorWriteMethodParameterAttribute
-	  Inherits Attribute
+      Inherits Attribute
 
   End Class
 End Namespace
