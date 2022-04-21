@@ -188,6 +188,8 @@ Partial Public Class MainWindow
     End Sub
 
     Public Sub ResetQueryBuilder()
+        QueryBuilder.QueryView.HideInformationMessage()
+
         QueryBuilder.ClearMetadata()
         QueryBuilder.MetadataProvider = Nothing
         QueryBuilder.SyntaxProvider = Nothing
@@ -341,6 +343,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub ConnectTo_OnClick(ByVal sender As Object, ByVal e As RoutedEventArgs)
+        QueryBuilder.QueryView.HideInformationMessage()
         Dim cf = New DatabaseConnectionWindow(_showHintConnection) With {.Owner = Me}
         _showHintConnection = False
         If cf.ShowDialog() <> True Then

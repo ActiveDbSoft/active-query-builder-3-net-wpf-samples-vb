@@ -367,6 +367,8 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub CommandNew_OnExecuted(sender As Object, e As ExecutedRoutedEventArgs)
+        QBuilder.QueryView.HideInformationMessage()
+
         Dim cf = New DatabaseConnectionWindow(_showHintConnection) With {.Owner = Me}
 
         _showHintConnection = False

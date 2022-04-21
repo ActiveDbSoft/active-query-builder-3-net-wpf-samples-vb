@@ -230,6 +230,8 @@ Partial Public Class MainWindow
     End Sub
 
     Public Sub ResetQueryBuilder()
+        QueryBuilder.QueryView.HideInformationMessage()
+
         QueryBuilder.ClearMetadata()
         QueryBuilder.MetadataProvider = Nothing
         QueryBuilder.SyntaxProvider = Nothing
@@ -237,6 +239,7 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub connect_OnClick(sender As Object, e As RoutedEventArgs)
+        QueryBuilder.QueryView.HideInformationMessage()
         Dim form = New ConnectionEditWindow() With {.Owner = Me}
         Dim result = form.ShowDialog()
         If result.HasValue AndAlso result.Value Then
