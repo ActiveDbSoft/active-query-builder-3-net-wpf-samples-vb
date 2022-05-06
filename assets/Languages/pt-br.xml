@@ -395,19 +395,18 @@
 	<!--<string id="strContextMenuIsNull">Where</string>-->
 	<!--<string id="strContextMenuIsNotNull">Where</string>-->
 	<!--<string id="strQueryColumnListEnumNone">None</string>-->
-	<!--<string id="strEmpty">Empty</string>-->
-	<!--<string id="strSortingColumnCaption">Sorting</string>-->
-	<!--<string id="strGroupingAggregateColumnCaption">Grouping/Aggregate</string>-->
-	<!--<string id="strGroupAll">Group all</string>-->
-	<!--<string id="strConnectLinkTo">Link to</string>-->
-	<!--<string id="strConnectLinkFromTo">Link from {0} to {1}</string>-->
-	<!--<string id="strAddNewColumn">Add new column</string>-->
-	<!--<string id="strPromptSetEditAlias">Enter the new alias for "{0}"</string>-->
-	<!--<string id="strHintShowUnusedFields">Show unused fields in all objects</string>-->
-	<!--<string id="strHintHideUnusedFields">Hide unused fields in all objects</string>-->
-	<!--<string id="strShowQuickNavPane">Show quick navigation pane</string>-->
-    <!--
-        <string id="strTrustServerCertificate">Trust Server Certificate</string>
-        <string id="strUseStrongEncryptionForData">Use strong encryption for data</string>
-    -->
+	<string id="strEmpty">Vazio</string>
+	<string id="strSortingColumnCaption">Ordenação</string>
+	<string id="strGroupingAggregateColumnCaption">Agrupamento/Agregação</string>
+	<string id="strGroupAll">Agrupar todos</string>
+	<string id="strConnectLinkTo">Link para</string>
+	<string id="strConnectLinkFromTo">Link de {0} para {1}</string>
+	<string id="strAddNewColumn">Adicionar nova coluna</string>
+	<string id="strPromptSetEditAlias">Insira o novo alias para "{0}"</string>
+	<string id="strHintShowUnusedFields">Mostrar campos não utilizados em todos os objetos</string>
+	<string id="strHintHideUnusedFields">Ocultar campos não utilizados em todos os objetos</string>
+	<string id="strShowQuickNavPane">Mostrar painel de navegação rápida</string>
+	<string id="strTrustServerCertificate">Certificado de servidor confiável</string>
+    <string id="strUseStrongEncryptionForData">Use criptografia forte para dados</string>
+
 </language>
