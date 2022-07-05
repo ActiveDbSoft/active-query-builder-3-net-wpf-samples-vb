@@ -45,10 +45,20 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.9.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
     <PackageReference Include="NPOI" Version="2.5.5" />
-    <Reference Include="FastReport">
-      <HintPath>$(AssetsPath)Third-Party Assemblies\FastReport.dll</HintPath>
-    </Reference>
   </ItemGroup>
+
+  <!-- FastReport -->
+  <ItemGroup Condition="!$(EnableFastReportSupport)">
+    <Compile Remove="Reports\FastReport\**\*.*" />
+    <EmbeddedResource Remove="Reports\FastReport\**\*.*" />
+    <Page Remove="Reports\FastReport\**\*.*" />
+  </ItemGroup>
+  <ItemGroup Condition="$(EnableFastReportSupport)">
+    <Reference Include="FastReport" />
+  </ItemGroup>
+  <PropertyGroup Condition="$(EnableFastReportSupport)">
+    <DefineConstants>$(DefineConstants);ENABLE_FASTREPORT_SUPPORT</DefineConstants>
+  </PropertyGroup>
 
   <!-- GrapeCity ActiveReports -->
   <ItemGroup Condition="!$(EnableActiveReportsSupport)">

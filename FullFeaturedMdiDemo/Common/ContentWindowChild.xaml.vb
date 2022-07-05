@@ -14,7 +14,6 @@ Imports ActiveQueryBuilder.View.QueryView
 Imports ActiveQueryBuilder.View.WPF.ExpressionEditor
 Imports ActiveQueryBuilder.View.WPF.QueryView
 Imports FullFeaturedMdiDemo.CommonWindow
-Imports FullFeaturedMdiDemo.Reports
 Imports Microsoft.Win32
 
 Imports SQLParsingException = ActiveQueryBuilder.Core.SQLParsingException
@@ -96,7 +95,7 @@ Namespace Common
             End Set
         End Property
 
-        '        
+        '
         '        public AddObjectDialogOptions AddObjectDialogOptions
         '        {
         '            get { return QueryView; }
@@ -800,10 +799,15 @@ Namespace Common
             If IsNothing(dataTable) Then
                 Throw New ArgumentException("Argument cannot be null or empty.", "DataTable")
             End If
-            Dim reportWindow As FastReportWindow = New FastReportWindow(dataTable) With {
+#If ENABLE_FASTREPORT_SUPPORT Then
+            Dim reportWindow As Reports.FastReportWindow = New Reports.FastReportWindow(dataTable) With {
                 .Owner = ActiveQueryBuilder.View.WPF.Helpers.FindVisualParent(Of Window)(Me)
             }
             reportWindow.ShowDialog()
+#Else
+            MessageBox.Show("To test the integration with FastReport, please open the ""Directory.Build.props"" file in the demo projects installation directory (usually ""%USERPROFILE%\Documents\Active Query Builder x.x .NET Examples"") with a text editor and set the ""EnableFastReportsSupport"" flag to true. Then, open the Active Query Builder Demos solution with your IDE, compile and run the Full-featured MDI demo." & vbCrLf & vbCrLf & "
+You may also need to activate the trial version of FastReport.NET report on the Fast Reports website.", "FastReport support", MessageBoxButton.OK, MessageBoxImage.Information)
+#End If
         End Sub
 
         Private Sub CreateStimulsoftReport(dataTable As DataTable)
@@ -811,12 +815,12 @@ Namespace Common
                 Throw New ArgumentException("Argument cannot be null or empty.", "DataTable")
             End If
 #If ENABLE_REPORTSNET_SUPPORT Then
-            Dim reportWindow As StimulsoftWindow = New StimulsoftWindow(dataTable) With {
+            Dim reportWindow As Reports.StimulsoftWindow = New Reports.StimulsoftWindow(dataTable) With {
                 .Owner = ActiveQueryBuilder.View.WPF.Helpers.FindVisualParent(Of Window)(Me)
             }
             reportWindow.ShowDialog()
 #Else
-            MessageBox.Show("To test the integration with Stimulsoft Reports.NET, please open the ""Directory.Build.props"" file in the demo projects installation directory (usually ""%USERPROFILE%\Documents\Active Query Builder x.x .NET Examples"") with a text editor and set the ""EnableSupportReportsNet"" flag to true. Then, open the Active Query Builder Demos solution with your IDE, compile and run the Full-featured MDI demo." & vbCrLf & vbCrLf & "
+            MessageBox.Show("To test the integration with Stimulsoft Reports.NET, please open the ""Directory.Build.props"" file in the demo projects installation directory (usually ""%USERPROFILE%\Documents\Active Query Builder x.x .NET Examples"") with a text editor and set the ""EnableReportsNetSupport"" flag to true. Then, open the Active Query Builder Demos solution with your IDE, compile and run the Full-featured MDI demo." & vbCrLf & vbCrLf & "
 You may also need to activate the trial version of Reports.NET report on the Stimulsoft website.", "Reports.NET support", MessageBoxButton.OK, MessageBoxImage.Information)
 #End If
         End Sub
@@ -825,13 +829,13 @@ You may also need to activate the trial version of Reports.NET report on the Sti
                 Throw New ArgumentException("Argument cannot be null or empty.", "DataTable")
             End If
 #If ENABLE_ACTIVEREPORTS_SUPPORT Then
-            Dim reportWindow As ActiveReportsWindow = New ActiveReportsWindow(dataTable) With {
+            Dim reportWindow As Reports.ActiveReportsWindow = New Reports.ActiveReportsWindow(dataTable) With {
                 .Owner = ActiveQueryBuilder.View.WPF.Helpers.FindVisualParent(Of Window)(Me),
                 .ShowInTaskbar = False
             }
             reportWindow.ShowDialog()
 #Else
-            MessageBox.Show("To test the integration with GrapeCity ActiveReports, please open the ""Directory.Build.props"" file in the demo projects installation directory (usually ""%USERPROFILE%\Documents\Active Query Builder x.x .NET Examples"") with a text editor and set the ""EnableSupportActiveReports"" flag to true. Then, open the Active Query Builder Demos solution with your IDE, compile and run the Full-featured MDI demo." & vbCrLf & vbCrLf & "
+            MessageBox.Show("To test the integration with GrapeCity ActiveReports, please open the ""Directory.Build.props"" file in the demo projects installation directory (usually ""%USERPROFILE%\Documents\Active Query Builder x.x .NET Examples"") with a text editor and set the ""EnableActiveReportsSupport"" flag to true. Then, open the Active Query Builder Demos solution with your IDE, compile and run the Full-featured MDI demo." & vbCrLf & vbCrLf & "
 You may also need to activate the trial version of ActiveReports on the GrapeCity website.", "ActiveReports support", MessageBoxButton.OK, MessageBoxImage.Information)
 #End If
 
