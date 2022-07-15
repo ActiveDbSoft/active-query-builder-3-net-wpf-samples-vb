@@ -409,5 +409,9 @@
     <!--
         <string id="strTrustServerCertificate">Trust Server Certificate</string>
         <string id="strUseStrongEncryptionForData">Use strong encryption for data</string>
+		
+		<string id="strConfirmDeleteTableFromQuery">Are you sure you want to delete {0} selected objects from the query?</string>
+		<string id="strWrapIntoDerivedTable">Wrap into derived table</string>
+		<string id="strDeleteSelectedObject">Delete selected objects</string>
     -->
 </language>
