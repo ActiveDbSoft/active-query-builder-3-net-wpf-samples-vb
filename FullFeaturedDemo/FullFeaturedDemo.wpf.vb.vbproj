@@ -8,7 +8,6 @@
 
     <OutputType>WinExe</OutputType>
 
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
 
