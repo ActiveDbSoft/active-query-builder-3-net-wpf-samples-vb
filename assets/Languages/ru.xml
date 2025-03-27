@@ -10,6 +10,11 @@
     <string id="strLinkLeftObject">Левый объект</string>
     <string id="strLinkRightObject">Правый объект</string>
     <string id="strJoinExpression">Выражение связи</string>
+	<string id="strNatural">По одноименным полям (Natural)</string>
+	<string id="strOtherJoinTypes">Другие типы связей</string>
+	<string id="strQBAddJoin">Добавить связь?</string>
+	<string id="strOldJoinChanging1">Добавление новой связи приведёт к удалению существующей {0}.</string>
+	<string id="strOldJoinChanging2">Добавить связь в любом случае?</string>
     <string id="strJoinType">Тип соединения</string>
     <string id="strInnerJoin">Выбрать только совпадающие записи</string>
     <string id="strLeftOuterJoin">Выбрать все записи слева</string>

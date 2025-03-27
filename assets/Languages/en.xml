@@ -9,7 +9,12 @@
     <string id="strLinkRight">Right</string>
     <string id="strLinkLeftObject">Left Object</string>
     <string id="strLinkRightObject">Right Object</string>
-    <string id="strJoinExpression">Join Expression</string>
+    <string id="strOtherJoinTypes">Other join types</string>
+	<string id="strOldJoinChanging1">Adding a new link will cause the existing {0} to be deleted.</string>
+	<string id="strOldJoinChanging2">Add link anyway?</string>
+	<string id="strQBAddJoin">Add join?</string>
+	<string id="strJoinExpression">Join Expression</string>
+    <string id="strNatural">By same-named fields (Natural)</string>
     <string id="strJoinType">Join Type</string>
     <string id="strInnerJoin">Select corresponding records</string>
     <string id="strLeftOuterJoin">Select all from left</string>
